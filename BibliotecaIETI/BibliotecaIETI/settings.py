@@ -34,6 +34,7 @@ SECRET_KEY = env('SECRET_KEY')
     
 ALLOWED_HOSTS = []
 
+STATIC_URL = "BibliotecaApp/static/"
 
 # Application definition
 

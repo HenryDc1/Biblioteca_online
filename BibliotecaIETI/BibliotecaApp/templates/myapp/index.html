@@ -1,96 +1,125 @@
+{% block content %}
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="es">  
-    <head>    
-        <title>Biblioteca IETI</title>    
-        <meta charset="UTF-8">
-        <meta name="title" content="Los videojuegos de 2020">
-        <meta name="description" content="Descripción de la WEB">    
-        <link rel="stylesheet" href="../../src/output.css">
-    </head>  
-    <body> 
+<html lang="es">
+  <head>
+    <title>Biblioteca IETI</title>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Los videojuegos de 2020" />
+    <meta name="description" content="Descripción de la WEB" />
+    <link rel="stylesheet" href="{% static 'output.css' %}" />
+  </head>
+  <body>
     <div class="container">
-        <header class="py-4 border-b border-gray-200 bg-[#f4c095] w-full">
-            <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">Biblioteca IETI</h1>
-        </header>
-        <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32">
-            <div class="w-full md:w-1/2 pr-4 py-4">
-                <h1 class="text-5xl font-bold leading-tight text-[#bd1e59]">
-                Bibilioteca IETI, la millor biblioteca de la regió.
-                </h1>
-                <p class="mt-4 mb-8 text-lg text-[#bd1e59]">Descubreix i troba llibres de tot el món.</p>
-                <div class="flex items-center">
-                    <div class="relative">
-                        <input
-                        class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
-                        placeholder="Search books..."
-                        type="search"
-                        />
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bd1e59]"
-                        >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                        </svg>
-                    </div>
-                </div>
+      <header class="py-4 border-b border-gray-200 bg-[#f4c095] w-full">
+        <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">
+          Biblioteca IETI
+        </h1>
+      </header>
+      <div
+        class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32"
+      >
+        <div class="w-full md:w-1/2 pr-4 py-4">
+          <h1 class="text-5xl font-bold leading-tight text-[#bd1e59]">
+            Bibilioteca IETI, la millor biblioteca de la regió.
+          </h1>
+          <p class="mt-4 mb-8 text-lg text-[#bd1e59]">
+            Descubreix i troba llibres de tot el món.
+          </p>
+          <div class="flex items-center">
+            <div class="relative">
+              <input
+                class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                placeholder="Search books..."
+                type="search"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bd1e59]"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
             </div>
-            <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                <div class="flex flex-col space-y-1.5 p-6">
-                    <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-[#bd1e59]">Iniciar sessió</h3>
-                    <p class="text-sm text-[#bd1e59]">Introduïu les vostres credencials per accedir al vostre compte.</p>
-                </div>
-                <div class="p-6">
-                    <form>
-                    <div class="grid gap-4">
-                        <div>
-                        <label
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
-                            for="email"
-                        >
-                            Email
-                        </label>
-                        <input
-                            class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
-                            id="email"
-                            placeholder="elteu@email.com"
-                            type="email"
-                        />
-                        </div>
-                        <div>
-                        <label
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
-                            for="password"
-                        >
-                            Contrasenya
-                        </label>
-                        <input
-                            class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
-                            id="password"
-                            placeholder="Contrasenya"
-                            type="password"
-                        />
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                <div class="flex items-center p-6 ">
-                    <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">
-                    Entrar
-                    </button>
-                </div>
-                </div>
-            </div>
-            </div>
+          </div>
         </div>
-    </body>  
+        <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
+            <div
+              class="rounded-lg border bg-card text-card-foreground shadow-sm"
+              data-v0-t="card"
+            >
+              <div class="flex flex-col space-y-1.5 p-6">
+                <h3
+                  class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-[#bd1e59]"
+                >
+                  Iniciar sessió
+                </h3>
+                <p class="text-sm text-[#bd1e59]">
+                  Introduïu les vostres credencials per accedir al vostre compte.
+                </p>
+              </div>
+              <div class="p-6">
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <div class="grid gap-4">
+                    {% if messages %} {% for message in messages%}
+                    <div class="text-red-500">{{ message }}</div>
+                    {% endfor %} {% endif %}
+      
+                    <div>
+                      <label
+                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                        for="email"
+                      >
+                        Email
+                      </label>
+                      <input
+                        class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                        id="email"
+                        placeholder="elteu@email.com"
+                        type="email"
+                        name="email"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                        for="password"
+                      >
+                        Contrasenya
+                      </label>
+                      <input
+                        class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                        id="password"
+                        placeholder="Contrasenya"
+                        type="password"
+                        name="password"
+                      />
+                    </div>
+                  </div>
+                  <div class="flex items-center p-6">
+                    <input
+                      type="submit"
+                      value="Entrar"
+                      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </body>
 </html>
+
+{% endblock %}  
