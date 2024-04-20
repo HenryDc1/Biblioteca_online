@@ -13,10 +13,11 @@ class ItemCatalogo(models.Model):
 # Modelo para los libros
 class Libro(ItemCatalogo):
     CDU = models.CharField(max_length=100)
-    ISBN = models.CharField(max_length=13)
+    ISBN = models.CharField(max_length=30)
     editorial = models.CharField(max_length=100)
-    coleccion = models.CharField(max_length=100)
-    paginas = models.IntegerField()
+    coleccion = models.CharField(max_length=100, null=True)
+    paginas = models.IntegerField(default=0)  # Establecer un valor predeterminado
+
 
 # Modelo para los CD
 class CD(ItemCatalogo):
