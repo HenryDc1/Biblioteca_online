@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .managers import UserManager
+
 
 
 # Modelo base para los elementos del item_catálogo
@@ -63,6 +65,12 @@ class User(AbstractUser):
     # Definir accesos inversos personalizados para evitar conflictos
     groups = models.ManyToManyField('auth.Group', related_name="biblioteca_user_groups", blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name="biblioteca_user_permissions", blank=True)
+    
+    email = models.EmailField(("email"), unique=True, db_index=True)    
+    USERNAME_FIELD = 'email' 
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()  
 
 class Reserva(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
