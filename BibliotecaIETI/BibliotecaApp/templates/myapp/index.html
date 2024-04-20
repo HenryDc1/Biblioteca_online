@@ -11,18 +11,27 @@
     <link rel="stylesheet" href="{% static 'output.css' %}" />
   </head>
   <body>
-    <div class="container">
-      <header class="py-4 border-b border-gray-200 bg-[#f4c095] w-full">
+    <div class="container min-w-full">
+      <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
         <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">
           Biblioteca IETI
         </h1>
+        {% if user.is_authenticated %}
+        <div class="flex items-center space-x-4 pr-32">
+          <a
+            href="#"
+            class="text-[#bd1e59] border-b-2 border-transparent hover:border-[#bd1e59] transition-colors text-xl"
+            >Sortir</a
+          >
+        </div>
+        {% endif %}
       </header>
       <div
         class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32"
       >
         <div class="w-full md:w-1/2 pr-4 py-4">
           <h1 class="text-5xl font-bold leading-tight text-[#bd1e59]">
-            Bibilioteca IETI, la millor biblioteca de la regió.
+            Bibilioteca IETI, el teu viatge cap al coneixement.
           </h1>
           <p class="mt-4 mb-8 text-lg text-[#bd1e59]">
             Descubreix i troba llibres de tot el món.
@@ -72,7 +81,7 @@
                   {% csrf_token %}
                   <div class="grid gap-4">
                     {% if messages %} {% for message in messages%}
-                    <div class="text-red-500">{{ message }}</div>
+                    <div class="text-green-500">{{ message }}</div>
                     {% endfor %} {% endif %}
       
                     <div>
@@ -88,6 +97,7 @@
                         placeholder="elteu@email.com"
                         type="email"
                         name="email"
+                        required
                       />
                     </div>
                     <div>
@@ -103,10 +113,17 @@
                         placeholder="Contrasenya"
                         type="password"
                         name="password"
+                        required
                       />
                     </div>
                   </div>
-                  <div class="flex items-center p-6">
+                  <div class="flex items-center py-2">
+                    <a href="#"
+                      class="text-gray-500 hover:text-[#bd1e59] transition-colors text-sm font-medium border-b-2 border-transparent hover:border-[#bd1e59]"
+                      >Has oblidat la contrasenya? Recupéra-la.
+                    </a>
+                  </div>
+                  <div class="flex items-center py-2">
                     <input
                       type="submit"
                       value="Entrar"
