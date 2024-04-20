@@ -3,6 +3,8 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from BibliotecaApp.models import Libro, CD, DVD, BR, Dispositivo, Ejemplar, User, Reserva, Prestamo
 from datetime import timedelta
+from django.contrib.auth.hashers import make_password
+
 
 class Command(BaseCommand):
     help = 'Inserta datos ficticios en la base de datos'
@@ -131,9 +133,12 @@ class Command(BaseCommand):
 
     def insertar_usuarios(self, usuarios):
         for usuario_data in usuarios:
+            # Utiliza make_password para crear la contraseña en el formato correcto
+            hashed_password = make_password(usuario_data['password'])
+            
             User.objects.create(
                 username=usuario_data['username'],
-                password=usuario_data['password'],
+                password=hashed_password,  # Guarda la contraseña hasheada
                 first_name=usuario_data['first_name'],
                 last_name=usuario_data['last_name'],
                 email=usuario_data['email'],
