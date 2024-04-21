@@ -25,4 +25,7 @@ class UserManager(UM):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
+        email = self.normalize_email(email)  # Normalize email
+        extra_fields.setdefault("username", email)  # Set email as username
+
         return self._create_user(email, password, **extra_fields)
