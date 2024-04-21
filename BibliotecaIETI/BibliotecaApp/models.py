@@ -11,14 +11,17 @@ class ItemCatalogo(models.Model):
     ocio = models.TextField()
     autor = models.CharField(max_length=200)
     data_edicion = models.DateField()
+    def __str__(self):
+        return self.titulo
 
 # Modelo para los libros
 class Libro(ItemCatalogo):
     CDU = models.CharField(max_length=100)
-    ISBN = models.CharField(max_length=13)
+    ISBN = models.CharField(max_length=30)
     editorial = models.CharField(max_length=100)
-    coleccion = models.CharField(max_length=100)
-    paginas = models.IntegerField()
+    coleccion = models.CharField(max_length=100, null=True)
+    paginas = models.IntegerField(default=0)  # Establecer un valor predeterminado
+
 
 # Modelo para los CD
 class CD(ItemCatalogo):
@@ -54,6 +57,9 @@ class Ejemplar(models.Model):
     codigo = models.CharField(max_length=200)
     disponible = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.elemento
+
 class User(AbstractUser):
     fecha_nacimiento = models.DateField(null=True)
     centro = models.CharField(max_length=100)
@@ -76,18 +82,29 @@ class Reserva(models.Model):
     ejemplar = models.ForeignKey(Ejemplar, on_delete=models.CASCADE)
     fecha_reserva = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.usuario
+
 class Prestamo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     ejemplar = models.ForeignKey(Ejemplar, on_delete=models.CASCADE)
     fecha_prestamo = models.DateTimeField(auto_now_add=True)
     fecha_devolucion = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.usuario
 
 class Peticion(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     elemento = models.ForeignKey(ItemCatalogo, on_delete=models.CASCADE)
     fecha_peticion = models.DateTimeField(auto_now_add=True)
-
+    def __str__(self):
+            return self.usuario
+    
 class Log(models.Model):
     evento = models.CharField(max_length=200)
     nivel = models.CharField(max_length=20)  
     fecha_registro = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+            return self.evento

@@ -1,0 +1,378 @@
+{
+    "Libros": [
+      {
+        "id_catalogo": "LB001",
+        "titulo": "Cien anos de soledad",
+        "ocio": "Novela",
+        "autor": "Gabriel Garcia Marquez",
+        "data_edicion": "1967-05-30",
+        "CDU": "821.134.2(8)-31",
+        "ISBN": "978-84-376-0994-7",
+        "editorial": "Sudamericana",
+        "coleccion": "Biblioteca Breve",
+        "paginas": 432
+      },
+      {
+        "id_catalogo": "LB002",
+        "titulo": "El amor en los tiempos del colera",
+        "ocio": "Novela",
+        "autor": "Gabriel Garcia Marquez",
+        "data_edicion": "1985-01-01",
+        "CDU": "821.134.2(8)-31",
+        "ISBN": "978-84-376-0471-3",
+        "editorial": "Sudamericana",
+        "coleccion": "Biblioteca Breve",
+        "paginas": 573
+      },
+      {
+        "id_catalogo": "LB003",
+        "titulo": "Don Quijote de la Mancha",
+        "ocio": "Novela",
+        "autor": "Miguel de Cervantes",
+        "data_edicion": "1605-01-01",
+        "CDU": "821.134.2(460)-31",
+        "ISBN": "978-84-9759-759-3",
+        "editorial": "Francisco de Robles",
+        "coleccion": "Ingenioso Hidalgo Don Quijote de la Mancha",
+        "paginas": 863
+      },
+      {
+        "id_catalogo": "LB004",
+        "titulo": "Moby Dick",
+        "ocio": "Novela",
+        "autor": "Herman Melville",
+        "data_edicion": "1851-10-18",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-376-0496-6",
+        "editorial": "Richard Bentley",
+        "coleccion": "Bentley's Standard Novels",
+        "paginas": 635
+      },
+      {
+        "id_catalogo": "LB005",
+        "titulo": "El Principito",
+        "ocio": "Cuento",
+        "autor": "Antoine de Saint-Exupery",
+        "data_edicion": "1943-04-06",
+        "CDU": "82-93",
+        "ISBN": "978-84-674-6740-1",
+        "editorial": "Reynal & Hitchcock",
+        "coleccion": null,
+        "paginas": 96
+      },
+      {
+        "id_catalogo": "LB006",
+        "titulo": "1984",
+        "ocio": "Novela",
+        "autor": "George Orwell",
+        "data_edicion": "1949-06-08",
+        "CDU": "821.111-312.4",
+        "ISBN": "978-84-376-0244-3",
+        "editorial": "Secker & Warburg",
+        "coleccion": null,
+        "paginas": 328
+      },
+      {
+        "id_catalogo": "LB007",
+        "titulo": "Orgullo y prejuicio",
+        "ocio": "Novela",
+        "autor": "Jane Austen",
+        "data_edicion": "1813-01-28",
+        "CDU": "821.111-31Austen, Jane.07",
+        "ISBN": "978-84-376-0520-8",
+        "editorial": "T. Egerton, Whitehall",
+        "coleccion": "Novelas de la autora",
+        "paginas": 426
+      },
+      {
+        "id_catalogo": "LB008",
+        "titulo": "Los miserables",
+        "ocio": "Novela",
+        "autor": "Victor Hugo",
+        "data_edicion": "1862-03-04",
+        "CDU": "821.133.1(73)-31",
+        "ISBN": "978-84-376-0486-7",
+        "editorial": "A. Lacroix, Verboeckhoven & Cie",
+        "coleccion": null,
+        "paginas": 1232
+      },
+      {
+        "id_catalogo": "LB020",
+        "titulo": "Harry Potter y la piedra filosofal",
+        "ocio": "Novela",
+        "autor": "J.K. Rowling",
+        "data_edicion": "1997-06-26",
+        "CDU": "821.111-312.4",
+        "ISBN": "978-84-406-9641-9",
+        "editorial": "Bloomsbury",
+        "coleccion": "Harry Potter",
+        "paginas": 256
+      },
+      {
+        "id_catalogo": "LB010",
+        "titulo": "Las aventuras de Tom Sawyer",
+        "ocio": "Novela",
+        "autor": "Mark Twain",
+        "data_edicion": "1876-12-10",
+        "CDU": "821.111-312.4",
+        "ISBN": "978-84-375-0186-6",
+        "editorial": "Charles L. Webster And Company",
+        "coleccion": null,
+        "paginas": 342
+      },
+      {
+        "id_catalogo": "LB011",
+        "titulo": "El alquimista",
+        "ocio": "Novela",
+        "autor": "Paulo Coelho",
+        "data_edicion": "1988-01-01",
+        "CDU": "82-311.6",
+        "ISBN": "978-84-08-03239-5",
+        "editorial": "Harper & Row",
+        "coleccion": null,
+        "paginas": 176
+      },
+      {
+        "id_catalogo": "LB012",
+        "titulo": "El senor de los anillos: La comunidad del anillo",
+        "ocio": "Novela",
+        "autor": "J.R.R. Tolkien",
+        "data_edicion": "1954-07-29",
+        "CDU": "82-311.6",
+        "ISBN": "978-84-450-7001-3",
+        "editorial": "Allen & Unwin",
+        "coleccion": "El senor de los anillos",
+        "paginas": 488
+      },
+      {
+        "id_catalogo": "LB013",
+        "titulo": "El codigo Da Vinci",
+        "ocio": "Novela",
+        "autor": "Dan Brown",
+        "data_edicion": "2003-03-18",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-9759-759-3",
+        "editorial": "Doubleday",
+        "coleccion": null,
+        "paginas": 624
+      },
+      {
+        "id_catalogo": "LB014",
+        "titulo": "El retrato de Dorian Gray",
+        "ocio": "Novela",
+        "autor": "Oscar Wilde",
+        "data_edicion": "1890-07-20",
+        "CDU": "82-311.6",
+        "ISBN": "978-84-376-0169-9",
+        "editorial": "Ward, Lock & Company",
+        "coleccion": null,
+        "paginas": 304
+      },
+      {
+        "id_catalogo": "LB015",
+        "titulo": "Harry Potter y la piedra filosofal",
+        "ocio": "Novela",
+        "autor": "J.K. Rowling",
+        "data_edicion": "1997-06-26",
+        "CDU": "821.111-312.4",
+        "ISBN": "978-84-406-9641-9",
+        "editorial": "Bloomsbury",
+        "coleccion": "Harry Potter",
+        "paginas": 256
+      },
+      {
+        "id_catalogo": "LB016",
+        "titulo": "Crimen y castigo",
+        "ocio": "Novela",
+        "autor": "Fyodor Dostoevsky",
+        "data_edicion": "1866-01-01",
+        "CDU": "821.161.1-31",
+        "ISBN": "978-84-376-0494-2",
+        "editorial": "The Russian Messenger",
+        "coleccion": null,
+        "paginas": 671
+      },
+      {
+        "id_catalogo": "LB017",
+        "titulo": "Dracula",
+        "ocio": "Novela",
+        "autor": "Bram Stoker",
+        "data_edicion": "1897-05-26",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-376-0291-7",
+        "editorial": "Archibald Constable and Company",
+        "coleccion": null,
+        "paginas": 418
+      }
+    ],
+    "CDs": [
+      {
+        "id_catalogo": "CD001",
+        "titulo": "The Dark Side of the Moon",
+        "ocio": "Musica",
+        "autor": "Pink Floyd",
+        "data_edicion": "1973-03-01",
+        "discografica": "Harvest",
+        "estilo": "Rock progresivo",
+        "duracion": "00:42:49"
+      },
+      {
+        "id_catalogo": "CD002",
+        "titulo": "Thriller",
+        "ocio": "Musica",
+        "autor": "Michael Jackson",
+        "data_edicion": "1982-11-30",
+        "discografica": "Epic",
+        "estilo": "Pop, post-disco, funk",
+        "duracion": "00:42:19"
+      }
+    ],
+    "DVDs": [
+      {
+            "id_catalogo": "DVD001",
+            "titulo": "The Godfather",
+            "ocio": "Pelicula",
+            "autor": "Francis Ford Coppola",
+            "data_edicion": "1972-03-24",
+            "director": "Director del DVD",
+            "duracion_hours": 2,
+            "duracion_minutes": 30,
+            "duracion_seconds": 0,
+            "subtitulos": true,  
+            "idiomas_audio": "Inglés",
+            "formato_video": "DVD"
+        }
+    ],
+    "Blu-rays": [
+        {
+            "id_catalogo": "BR001",
+            "titulo": "Avatar",
+            "ocio": "Pelicula",
+            "autor": "James Cameron",
+            "data_edicion": "2009-12-10",
+            "estudio": "20th Century Fox",
+            "formato_video": "Blu-ray",
+            "extras": "Escenas eliminadas, detrás de cámaras",
+            "duracion_hours": 2,
+            "duracion_minutes": 42,
+            "duracion_seconds": 0
+        },
+        {
+            "id_catalogo": "BR002",
+            "titulo": "Interstellar",
+            "ocio": "Pelicula",
+            "autor": "Christopher Nolan",
+            "data_edicion": "2014-10-26",
+            "estudio": "Warner Bros.",
+            "formato_video": "Blu-ray",
+            "extras": "Comentarios del director, making of",
+            "duracion_hours": 2,
+            "duracion_minutes": 49,
+            "duracion_seconds": 0
+        }
+    ]
+    ,
+    "Dispositivos": [
+      {
+        "id_catalogo": "DIS001",
+        "titulo": "iPhone 13",
+        "ocio": "Dispositivo",
+        "autor": "Apple",
+        "data_edicion": "2021-09-24",
+        "marca": "Apple",
+        "modelo": "iPhone 13",
+        "tipo_conexion": "Celular",
+        "sistema_operativo": "iOS",
+        "almacenamiento": "128GB"
+      },
+      {
+        "id_catalogo": "DIS002",
+        "titulo": "Samsung Galaxy S21",
+        "ocio": "Dispositivo",
+        "autor": "Samsung",
+        "data_edicion": "2021-01-29",
+        "marca": "Samsung",
+        "modelo": "Galaxy S21",
+        "tipo_conexion": "Celular",
+        "sistema_operativo": "Android",
+        "almacenamiento": "256GB"
+      }
+    ],
+    "Ejemplares": [
+      {
+        "elemento": "LB001",
+        "codigo": "EJ001",
+        "disponible": true
+      },
+      {
+        "elemento": "LB001",
+        "codigo": "EJ002",
+        "disponible": true
+      },
+      {
+        "elemento": "CD001",
+        "codigo": "EJ003",
+        "disponible": true
+      },
+      {
+        "elemento": "DVD001",
+        "codigo": "EJ004",
+        "disponible": true
+      },
+      {
+        "elemento": "DIS001",
+        "codigo": "EJ005",
+        "disponible": true
+      }
+    ],
+    "Usuarios": [
+      {
+        "username": "Juan",
+        "password": "contrasena1",
+        "first_name": "Juan",
+        "last_name": "Gonzalez",
+        "email": "juan@example.com",
+        "fecha_nacimiento": "1990-05-15",
+        "centro": "Biblioteca Central",
+        "ciclo": "Literatura",
+        "roles": "Estudiante"
+      },
+      {
+        "username": "Maria",
+        "password": "contrasena2",
+        "first_name": "Maria",
+        "last_name": "Lopez",
+        "email": "maria@example.com",
+        "fecha_nacimiento": "1985-09-20",
+        "centro": "Biblioteca Central",
+        "ciclo": "Historia del Arte",
+        "roles": "Profesor"
+      }
+    ],
+    "Reservas": [
+        {
+          "usuario": 2,
+          "ejemplar": "EJ001",
+          "fecha_reserva": "2024-04-20T08:00:00"
+        },
+        {
+          "usuario": 3,
+          "ejemplar": "EJ003",
+          "fecha_reserva": "2024-04-20T08:00:00"
+        }
+      ],
+      "Prestamos": [
+        {
+          "usuario": 3,
+          "ejemplar": "EJ004",
+          "fecha_prestamo": "2024-04-10T08:00:00",
+          "fecha_devolucion": "2024-05-05T08:00:00"
+        },
+        {
+          "usuario": 2,
+          "ejemplar": "EJ005",
+          "fecha_prestamo": "2024-04-15T08:00:00",
+          "fecha_devolucion": null
+        }
+      ]
+    }
