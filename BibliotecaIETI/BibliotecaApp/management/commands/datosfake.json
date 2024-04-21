@@ -2,68 +2,68 @@
     "Libros": [
       {
         "id_catalogo": "LB001",
-        "titulo": "Cien anos de soledad",
-        "ocio": "Novela",
-        "autor": "Gabriel Garcia Marquez",
+        "titulo": "Cent anys de solitud",
+        "ocio": "Novel·la",
+        "autor": "Gabriel García Márquez",
         "data_edicion": "1967-05-30",
         "CDU": "821.134.2(8)-31",
         "ISBN": "978-84-376-0994-7",
         "editorial": "Sudamericana",
-        "coleccion": "Biblioteca Breve",
+        "coleccion": "Biblioteca Breu",
         "paginas": 432
-      },
-      {
+    },
+    {
         "id_catalogo": "LB002",
-        "titulo": "El amor en los tiempos del colera",
-        "ocio": "Novela",
-        "autor": "Gabriel Garcia Marquez",
+        "titulo": "El amor en els temps del còlera",
+        "ocio": "Novel·la",
+        "autor": "Gabriel García Márquez",
         "data_edicion": "1985-01-01",
         "CDU": "821.134.2(8)-31",
         "ISBN": "978-84-376-0471-3",
         "editorial": "Sudamericana",
-        "coleccion": "Biblioteca Breve",
+        "coleccion": "Biblioteca Breu",
         "paginas": 573
-      },
-      {
+    },
+    {
         "id_catalogo": "LB003",
-        "titulo": "Don Quijote de la Mancha",
-        "ocio": "Novela",
+        "titulo": "El Quixot",
+        "ocio": "Novel·la",
         "autor": "Miguel de Cervantes",
         "data_edicion": "1605-01-01",
         "CDU": "821.134.2(460)-31",
         "ISBN": "978-84-9759-759-3",
         "editorial": "Francisco de Robles",
-        "coleccion": "Ingenioso Hidalgo Don Quijote de la Mancha",
+        "coleccion": "L'enginyós fidalgo Don Quijote de la Mancha",
         "paginas": 863
-      },
-      {
+    },
+    {
         "id_catalogo": "LB004",
         "titulo": "Moby Dick",
-        "ocio": "Novela",
+        "ocio": "Novel·la",
         "autor": "Herman Melville",
         "data_edicion": "1851-10-18",
         "CDU": "821.111(73)-31",
         "ISBN": "978-84-376-0496-6",
         "editorial": "Richard Bentley",
-        "coleccion": "Bentley's Standard Novels",
+        "coleccion": "Novel·les Estàndard de Bentley",
         "paginas": 635
-      },
-      {
+    },
+    {
         "id_catalogo": "LB005",
-        "titulo": "El Principito",
-        "ocio": "Cuento",
-        "autor": "Antoine de Saint-Exupery",
+        "titulo": "El Petit Príncep",
+        "ocio": "Conte",
+        "autor": "Antoine de Saint-Exupéry",
         "data_edicion": "1943-04-06",
         "CDU": "82-93",
         "ISBN": "978-84-674-6740-1",
         "editorial": "Reynal & Hitchcock",
         "coleccion": null,
         "paginas": 96
-      },
-      {
+    },
+    {
         "id_catalogo": "LB006",
         "titulo": "1984",
-        "ocio": "Novela",
+        "ocio": "Novel·la",
         "autor": "George Orwell",
         "data_edicion": "1949-06-08",
         "CDU": "821.111-312.4",
@@ -71,23 +71,23 @@
         "editorial": "Secker & Warburg",
         "coleccion": null,
         "paginas": 328
-      },
-      {
+    },
+    {
         "id_catalogo": "LB007",
-        "titulo": "Orgullo y prejuicio",
-        "ocio": "Novela",
+        "titulo": "Orgull i prejudici",
+        "ocio": "Novel·la",
         "autor": "Jane Austen",
         "data_edicion": "1813-01-28",
         "CDU": "821.111-31Austen, Jane.07",
         "ISBN": "978-84-376-0520-8",
         "editorial": "T. Egerton, Whitehall",
-        "coleccion": "Novelas de la autora",
+        "coleccion": "Novel·les de l'autora",
         "paginas": 426
-      },
-      {
+    },
+    {
         "id_catalogo": "LB008",
-        "titulo": "Los miserables",
-        "ocio": "Novela",
+        "titulo": "Els miserables",
+        "ocio": "Novel·la",
         "autor": "Victor Hugo",
         "data_edicion": "1862-03-04",
         "CDU": "821.133.1(73)-31",
@@ -95,23 +95,23 @@
         "editorial": "A. Lacroix, Verboeckhoven & Cie",
         "coleccion": null,
         "paginas": 1232
-      },
-      {
-        "id_catalogo": "LB020",
-        "titulo": "Harry Potter y la piedra filosofal",
-        "ocio": "Novela",
-        "autor": "J.K. Rowling",
-        "data_edicion": "1997-06-26",
-        "CDU": "821.111-312.4",
-        "ISBN": "978-84-406-9641-9",
-        "editorial": "Bloomsbury",
-        "coleccion": "Harry Potter",
-        "paginas": 256
-      },
-      {
+    },
+    {
+        "id_catalogo": "LB009",
+        "titulo": "Death Note",
+        "ocio": "Manga",
+        "autor": "Tsugumi Ohba",
+        "data_edicion": "2003-12-01",
+        "CDU": "821.511-93",
+        "ISBN": "978-4-08-873621-1",
+        "editorial": "Shueisha",
+        "coleccion": "Jump Comics",
+        "paginas": 108
+    },
+    {
         "id_catalogo": "LB010",
-        "titulo": "Las aventuras de Tom Sawyer",
-        "ocio": "Novela",
+        "titulo": "Les aventures de Tom Sawyer",
+        "ocio": "Novel·la",
         "autor": "Mark Twain",
         "data_edicion": "1876-12-10",
         "CDU": "821.111-312.4",
@@ -119,11 +119,11 @@
         "editorial": "Charles L. Webster And Company",
         "coleccion": null,
         "paginas": 342
-      },
-      {
+    },
+    {
         "id_catalogo": "LB011",
-        "titulo": "El alquimista",
-        "ocio": "Novela",
+        "titulo": "L'alquimista",
+        "ocio": "Novel·la",
         "autor": "Paulo Coelho",
         "data_edicion": "1988-01-01",
         "CDU": "82-311.6",
@@ -131,23 +131,23 @@
         "editorial": "Harper & Row",
         "coleccion": null,
         "paginas": 176
-      },
-      {
+    },
+    {
         "id_catalogo": "LB012",
-        "titulo": "El senor de los anillos: La comunidad del anillo",
-        "ocio": "Novela",
+        "titulo": "El senyor dels anells: La comunitat de l'anell",
+        "ocio": "Novel·la",
         "autor": "J.R.R. Tolkien",
         "data_edicion": "1954-07-29",
         "CDU": "82-311.6",
         "ISBN": "978-84-450-7001-3",
         "editorial": "Allen & Unwin",
-        "coleccion": "El senor de los anillos",
+        "coleccion": "El senyor dels anells",
         "paginas": 488
-      },
-      {
+    },
+    {
         "id_catalogo": "LB013",
-        "titulo": "El codigo Da Vinci",
-        "ocio": "Novela",
+        "titulo": "El codi Da Vinci",
+        "ocio": "Novel·la",
         "autor": "Dan Brown",
         "data_edicion": "2003-03-18",
         "CDU": "821.111(73)-31",
@@ -155,11 +155,11 @@
         "editorial": "Doubleday",
         "coleccion": null,
         "paginas": 624
-      },
-      {
+    },
+    {
         "id_catalogo": "LB014",
-        "titulo": "El retrato de Dorian Gray",
-        "ocio": "Novela",
+        "titulo": "El retrat de Dorian Gray",
+        "ocio": "Novel·la",
         "autor": "Oscar Wilde",
         "data_edicion": "1890-07-20",
         "CDU": "82-311.6",
@@ -167,11 +167,11 @@
         "editorial": "Ward, Lock & Company",
         "coleccion": null,
         "paginas": 304
-      },
-      {
+    },
+    {
         "id_catalogo": "LB015",
-        "titulo": "Harry Potter y la piedra filosofal",
-        "ocio": "Novela",
+        "titulo": "Harry Potter i la pedra filosofal",
+        "ocio": "Novel·la",
         "autor": "J.K. Rowling",
         "data_edicion": "1997-06-26",
         "CDU": "821.111-312.4",
@@ -179,11 +179,11 @@
         "editorial": "Bloomsbury",
         "coleccion": "Harry Potter",
         "paginas": 256
-      },
-      {
+    },
+    {
         "id_catalogo": "LB016",
-        "titulo": "Crimen y castigo",
-        "ocio": "Novela",
+        "titulo": "Crim i càstig",
+        "ocio": "Novel·la",
         "autor": "Fyodor Dostoevsky",
         "data_edicion": "1866-01-01",
         "CDU": "821.161.1-31",
@@ -191,11 +191,11 @@
         "editorial": "The Russian Messenger",
         "coleccion": null,
         "paginas": 671
-      },
-      {
+    },
+    {
         "id_catalogo": "LB017",
-        "titulo": "Dracula",
-        "ocio": "Novela",
+        "titulo": "Dràcula",
+        "ocio": "Novel·la",
         "autor": "Bram Stoker",
         "data_edicion": "1897-05-26",
         "CDU": "821.111(73)-31",
@@ -203,7 +203,151 @@
         "editorial": "Archibald Constable and Company",
         "coleccion": null,
         "paginas": 418
-      }
+    },
+    {
+        "id_catalogo": "LB018",
+        "titulo": "El enginyós fidalgo Don Quijote de la Mancha",
+        "ocio": "Novel·la",
+        "autor": "Miguel de Cervantes",
+        "data_edicion": "1605-01-16",
+        "CDU": "863",
+        "ISBN": "978-84-376-0292-4",
+        "editorial": "Vàries",
+        "coleccion": null,
+        "paginas": 1056
+    },
+    {
+        "id_catalogo": "LB019",
+        "titulo": "Orgull i prejudici",
+        "ocio": "Novel·la",
+        "autor": "Jane Austen",
+        "data_edicion": "1813-01-28",
+        "CDU": "823.7",
+        "ISBN": "978-84-376-0520-8",
+        "editorial": "T. Egerton, Whitehall",
+        "coleccion": "Novel·les de l'autora",
+        "paginas": 336
+    },
+    {
+        "id_catalogo": "LB020",
+        "titulo": "1984",
+        "ocio": "Novel·la",
+        "autor": "George Orwell",
+        "data_edicion": "1949-06-08",
+        "CDU": "821.111-312.4",
+        "ISBN": "978-84-376-0509-3",
+        "editorial": "Secker & Warburg",
+        "coleccion": null,
+        "paginas": 328
+    },
+    {
+        "id_catalogo": "LB021",
+        "titulo": "La metamorfosi",
+        "ocio": "Novel·la",
+        "autor": "Franz Kafka",
+        "data_edicion": "1915-10-15",
+        "CDU": "821.112.2-31",
+        "ISBN": "978-84-376-0472-0",
+        "editorial": "Kurt Wolff Verlag",
+        "coleccion": null,
+        "paginas": 208
+    },
+    {
+        "id_catalogo": "LB022",
+        "titulo": "El gran Gatsby",
+        "ocio": "Novel·la",
+        "autor": "F. Scott Fitzgerald",
+        "data_edicion": "1925-04-10",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-376-0473-7",
+        "editorial": "Charles Scribner's Sons",
+        "coleccion": null,
+        "paginas": 200
+    },
+    {
+        "id_catalogo": "LB023",
+        "titulo": "Anna Karènina",
+        "ocio": "Novel·la",
+        "autor": "Leo Tolstoy",
+        "data_edicion": "1877-03-14",
+        "CDU": "821.161.1-31",
+        "ISBN": "978-84-376-0292-4",
+        "editorial": "The Russian Messenger",
+        "coleccion": null,
+        "paginas": 864
+    },
+    {
+        "id_catalogo": "LB024",
+        "titulo": "Matar un rossinyol",
+        "ocio": "Novel·la",
+        "autor": "Harper Lee",
+        "data_edicion": "1960-07-11",
+        "CDU": "82-31",
+        "ISBN": "978-84-376-0293-1",
+        "editorial": "J. B. Lippincott & Co.",
+        "coleccion": null,
+        "paginas": 376
+    },
+    {
+        "id_catalogo": "LB025",
+        "titulo": "El vell i la mar",
+        "ocio": "Novel·la",
+        "autor": "Ernest Hemingway",
+        "data_edicion": "1952-09-01",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-376-0245-0",
+        "editorial": "Charles Scribner's Sons",
+        "coleccion": null,
+        "paginas": 128
+    },
+    {
+        "id_catalogo": "LB026",
+        "titulo": "Alícia al país de les meravelles",
+        "ocio": "Novel·la",
+        "autor": "Lewis Carroll",
+        "data_edicion": "1865-11-26",
+        "CDU": "82-31",
+        "ISBN": "978-84-376-0505-5",
+        "editorial": "Macmillan Publishers",
+        "coleccion": null,
+        "paginas": 272
+    },
+    {
+        "id_catalogo": "LB027",
+        "titulo": "Crònica d'una mort anunciada",
+        "ocio": "Novel·la",
+        "autor": "Gabriel García Márquez",
+        "data_edicion": "1981-01-01",
+        "CDU": "821.134.2(8)-31",
+        "ISBN": "978-84-376-0995-4",
+        "editorial": "Sudamericana",
+        "coleccion": "Biblioteca Breu",
+        "paginas": 120
+    },
+    {
+        "id_catalogo": "LB028",
+        "titulo": "El Comte de Montecristo",
+        "ocio": "Novel·la",
+        "autor": "Alexandre Dumas",
+        "data_edicion": "1844-08-28",
+        "CDU": "821.133.1(73)-31",
+        "ISBN": "978-84-376-0345-8",
+        "editorial": "Ponson du Terrail",
+        "coleccion": null,
+        "paginas": 1242
+    },
+    {
+        "id_catalogo": "LB029",
+        "titulo": "L'illa del tresor",
+        "ocio": "Novel·la",
+        "autor": "Robert Louis Stevenson",
+        "data_edicion": "1883-05-23",
+        "CDU": "821.111(73)-31",
+        "ISBN": "978-84-376-0497-3",
+        "editorial": "Cassell & Company",
+        "coleccion": null,
+        "paginas": 292
+    }
     ],
     "CDs": [
       {
@@ -225,7 +369,87 @@
         "discografica": "Epic",
         "estilo": "Pop, post-disco, funk",
         "duracion": "00:42:19"
-      }
+      },
+      {
+        "id_catalogo": "CD003",
+        "titulo": "Back in Black",
+        "ocio": "Música",
+        "autor": "AC/DC",
+        "data_edicion": "1980-07-25",
+        "discografica": "Atlantic",
+        "estilo": "Hard rock",
+        "duracion": "00:42:11"
+      },
+      {
+        "id_catalogo": "CD004",
+        "titulo": "Abbey Road",
+        "ocio": "Música",
+        "autor": "The Beatles",
+        "data_edicion": "1969-09-26",
+        "discografica": "Apple",
+        "estilo": "Rock psicodélico, rock progresivo",
+        "duracion": "00:47:23"
+      },
+      {
+        "id_catalogo": "CD005",
+        "titulo": "The Wall",
+        "ocio": "Música",
+        "autor": "Pink Floyd",
+        "data_edicion": "1979-11-30",
+        "discografica": "Harvest",
+        "estilo": "Rock progresivo, rock sinfónico",
+        "duracion": "01:20:00"
+      },
+      {
+        "id_catalogo": "CD006",
+        "titulo": "Led Zeppelin IV",
+        "ocio": "Música",
+        "autor": "Led Zeppelin",
+        "data_edicion": "1971-11-08",
+        "discografica": "Atlantic",
+        "estilo": "Hard rock, rock blues",
+        "duracion": "00:42:38"
+      },
+      {
+        "id_catalogo": "CD007",
+        "titulo": "Hotel California",
+        "ocio": "Música",
+        "autor": "Eagles",
+        "data_edicion": "1976-12-08",
+        "discografica": "Asylum",
+        "estilo": "Rock, country rock",
+        "duracion": "00:43:30"
+      },
+      {
+        "id_catalogo": "CD008",
+        "titulo": "Bad",
+        "ocio": "Música",
+        "autor": "Michael Jackson",
+        "data_edicion": "1987-08-31",
+        "discografica": "Epic",
+        "estilo": "Pop, funk, R&B",
+        "duracion": "00:48:16"
+      },
+      {
+        "id_catalogo": "CD009",
+        "titulo": "Nevermind",
+        "ocio": "Música",
+        "autor": "Nirvana",
+        "data_edicion": "1991-09-24",
+        "discografica": "DGC",
+        "estilo": "Grunge, rock alternativo",
+        "duracion": "00:48:21"
+      },
+      {
+        "id_catalogo": "CD010",
+        "titulo": "Sgt. Pepper's Lonely Hearts Club Band",
+        "ocio": "Música",
+        "autor": "The Beatles",
+        "data_edicion": "1967-06-01",
+        "discografica": "Parlophone",
+        "estilo": "Rock psicodélico, rock experimental",
+        "duracion": "00:39:52"
+      }      
     ],
     "DVDs": [
       {
@@ -241,7 +465,133 @@
             "subtitulos": true,  
             "idiomas_audio": "Inglés",
             "formato_video": "DVD"
-        }
+      },
+      {
+        "id_catalogo": "DVD002",
+        "titulo": "The Shawshank Redemption",
+        "ocio": "Pel·lícula",
+        "autor": "Frank Darabont",
+        "data_edicion": "1994-09-23",
+        "director": "Frank Darabont",
+        "duracion_hours": 2,
+        "duracion_minutes": 22,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD003",
+        "titulo": "Inception",
+        "ocio": "Pel·lícula",
+        "autor": "Christopher Nolan",
+        "data_edicion": "2010-07-16",
+        "director": "Christopher Nolan",
+        "duracion_hours": 2,
+        "duracion_minutes": 28,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD004",
+        "titulo": "The Matrix",
+        "ocio": "Pel·lícula",
+        "autor": "Lana Wachowski, Lilly Wachowski",
+        "data_edicion": "1999-03-31",
+        "director": "Lana Wachowski, Lilly Wachowski",
+        "duracion_hours": 2,
+        "duracion_minutes": 16,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD005",
+        "titulo": "Pulp Fiction",
+        "ocio": "Pel·lícula",
+        "autor": "Quentin Tarantino",
+        "data_edicion": "1994-10-14",
+        "director": "Quentin Tarantino",
+        "duracion_hours": 2,
+        "duracion_minutes": 34,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD006",
+        "titulo": "The Lord of the Rings: The Fellowship of the Ring",
+        "ocio": "Pel·lícula",
+        "autor": "Peter Jackson",
+        "data_edicion": "2001-12-19",
+        "director": "Peter Jackson",
+        "duracion_hours": 2,
+        "duracion_minutes": 58,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD007",
+        "titulo": "Forrest Gump",
+        "ocio": "Pel·lícula",
+        "autor": "Robert Zemeckis",
+        "data_edicion": "1994-07-06",
+        "director": "Robert Zemeckis",
+        "duracion_hours": 2,
+        "duracion_minutes": 22,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD008",
+        "titulo": "Fight Club",
+        "ocio": "Pel·lícula",
+        "autor": "David Fincher",
+        "data_edicion": "1999-10-15",
+        "director": "David Fincher",
+        "duracion_hours": 2,
+        "duracion_minutes": 19,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD009",
+        "titulo": "The Dark Knight",
+        "ocio": "Pel·lícula",
+        "autor": "Christopher Nolan",
+        "data_edicion": "2008-07-18",
+        "director": "Christopher Nolan",
+        "duracion_hours": 2,
+        "duracion_minutes": 32,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      },
+      {
+        "id_catalogo": "DVD010",
+        "titulo": "The Silence of the Lambs",
+        "ocio": "Pel·lícula",
+        "autor": "Jonathan Demme",
+        "data_edicion": "1991-02-01",
+        "director": "Jonathan Demme",
+        "duracion_hours": 1,
+        "duracion_minutes": 58,
+        "duracion_seconds": 0,
+        "subtitulos": true,  
+        "idiomas_audio": "Inglés",
+        "formato_video": "DVD"
+      }      
     ],
     "Blu-rays": [
         {
@@ -269,14 +619,118 @@
             "duracion_hours": 2,
             "duracion_minutes": 49,
             "duracion_seconds": 0
-        }
+        },
+        {
+          "id_catalogo": "BR003",
+          "titulo": "Inception",
+          "ocio": "Pel·lícula",
+          "autor": "Christopher Nolan",
+          "data_edicion": "2010-07-16",
+          "estudio": "Warner Bros.",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 2,
+          "duracion_minutes": 28,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR004",
+          "titulo": "The Dark Knight",
+          "ocio": "Pel·lícula",
+          "autor": "Christopher Nolan",
+          "data_edicion": "2008-07-18",
+          "estudio": "Warner Bros.",
+          "formato_video": "Blu-ray",
+          "extras": "Escenas eliminadas, documentales",
+          "duracion_hours": 2,
+          "duracion_minutes": 32,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR005",
+          "titulo": "Mad Max: Fury Road",
+          "ocio": "Pel·lícula",
+          "autor": "George Miller",
+          "data_edicion": "2015-05-07",
+          "estudio": "Warner Bros.",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 2,
+          "duracion_minutes": 0,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR006",
+          "titulo": "The Avengers",
+          "ocio": "Pel·lícula",
+          "autor": "Joss Whedon",
+          "data_edicion": "2012-04-11",
+          "estudio": "Marvel Studios",
+          "formato_video": "Blu-ray",
+          "extras": "Escenas eliminadas, documentales",
+          "duracion_hours": 2,
+          "duracion_minutes": 23,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR007",
+          "titulo": "Gravity",
+          "ocio": "Pel·lícula",
+          "autor": "Alfonso Cuarón",
+          "data_edicion": "2013-10-04",
+          "estudio": "Warner Bros.",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 1,
+          "duracion_minutes": 31,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR008",
+          "titulo": "The Revenant",
+          "ocio": "Pel·lícula",
+          "autor": "Alejandro González Iñárritu",
+          "data_edicion": "2015-12-25",
+          "estudio": "20th Century Fox",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 2,
+          "duracion_minutes": 36,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR009",
+          "titulo": "Blade Runner 2049",
+          "ocio": "Pel·lícula",
+          "autor": "Denis Villeneuve",
+          "data_edicion": "2017-10-06",
+          "estudio": "Warner Bros.",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 2,
+          "duracion_minutes": 44,
+          "duracion_seconds": 0
+        },
+        {
+          "id_catalogo": "BR010",
+          "titulo": "The Martian",
+          "ocio": "Pel·lícula",
+          "autor": "Ridley Scott",
+          "data_edicion": "2015-10-02",
+          "estudio": "20th Century Fox",
+          "formato_video": "Blu-ray",
+          "extras": "Comentarios del director, detrás de cámaras",
+          "duracion_hours": 2,
+          "duracion_minutes": 24,
+          "duracion_seconds": 0
+        }        
     ]
     ,
     "Dispositivos": [
       {
         "id_catalogo": "DIS001",
         "titulo": "iPhone 13",
-        "ocio": "Dispositivo",
+        "ocio": "Dispositiu",
         "autor": "Apple",
         "data_edicion": "2021-09-24",
         "marca": "Apple",
@@ -288,7 +742,7 @@
       {
         "id_catalogo": "DIS002",
         "titulo": "Samsung Galaxy S21",
-        "ocio": "Dispositivo",
+        "ocio": "Dispositiu",
         "autor": "Samsung",
         "data_edicion": "2021-01-29",
         "marca": "Samsung",
@@ -296,7 +750,103 @@
         "tipo_conexion": "Celular",
         "sistema_operativo": "Android",
         "almacenamiento": "256GB"
-      }
+      },
+      {
+        "id_catalogo": "DIS003",
+        "titulo": "MacBook Pro",
+        "ocio": "Dispositiu",
+        "autor": "Apple",
+        "data_edicion": "2021-10-26",
+        "marca": "Apple",
+        "modelo": "MacBook Pro",
+        "tipo_conexion": "Portátil",
+        "sistema_operativo": "macOS",
+        "almacenamiento": "512GB SSD"
+      },
+      {
+        "id_catalogo": "DIS004",
+        "titulo": "Dell XPS 13",
+        "ocio": "Dispositiu",
+        "autor": "Dell",
+        "data_edicion": "2021-02-04",
+        "marca": "Dell",
+        "modelo": "XPS 13",
+        "tipo_conexion": "Portátil",
+        "sistema_operativo": "Windows 10",
+        "almacenamiento": "512GB SSD"
+      },
+      {
+        "id_catalogo": "DIS005",
+        "titulo": "iPad Air (2020)",
+        "ocio": "Dispositiu",
+        "autor": "Apple",
+        "data_edicion": "2020-10-23",
+        "marca": "Apple",
+        "modelo": "iPad Air",
+        "tipo_conexion": "Tableta",
+        "sistema_operativo": "iPadOS",
+        "almacenamiento": "64GB"
+      },
+      {
+        "id_catalogo": "DIS006",
+        "titulo": "Microsoft Surface Pro 7",
+        "ocio": "Dispositiu",
+        "autor": "Microsoft",
+        "data_edicion": "2019-10-22",
+        "marca": "Microsoft",
+        "modelo": "Surface Pro 7",
+        "tipo_conexion": "Tableta",
+        "sistema_operativo": "Windows 10",
+        "almacenamiento": "256GB SSD"
+      },
+      {
+        "id_catalogo": "DIS007",
+        "titulo": "Sony PlayStation 5",
+        "ocio": "Dispositiu",
+        "autor": "Sony",
+        "data_edicion": "2020-11-12",
+        "marca": "Sony",
+        "modelo": "PlayStation 5",
+        "tipo_conexion": "Consola de videojuegos",
+        "sistema_operativo": "Propietario",
+        "almacenamiento": "825GB SSD"
+      },
+      {
+        "id_catalogo": "DIS008",
+        "titulo": "Nintendo Switch",
+        "ocio": "Dispositiu",
+        "autor": "Nintendo",
+        "data_edicion": "2017-03-03",
+        "marca": "Nintendo",
+        "modelo": "Switch",
+        "tipo_conexion": "Consola de videojuegos",
+        "sistema_operativo": "Propietario",
+        "almacenamiento": "32GB"
+      },
+      {
+        "id_catalogo": "DIS009",
+        "titulo": "Amazon Kindle Oasis",
+        "ocio": "Dispositiu",
+        "autor": "Amazon",
+        "data_edicion": "2019-07-24",
+        "marca": "Amazon",
+        "modelo": "Kindle Oasis",
+        "tipo_conexion": "E-reader",
+        "sistema_operativo": "Propietario",
+        "almacenamiento": "8GB"
+      },
+      {
+        "id_catalogo": "DIS010",
+        "titulo": "GoPro HERO9 Black",
+        "ocio": "Dispositiu",
+        "autor": "GoPro",
+        "data_edicion": "2020-09-16",
+        "marca": "GoPro",
+        "modelo": "HERO9 Black",
+        "tipo_conexion": "Cámara de acción",
+        "sistema_operativo": "Propietario",
+        "almacenamiento": "Sin almacenamiento interno, utiliza tarjetas microSD"
+      }      
     ],
     "Ejemplares": [
       {
@@ -327,52 +877,129 @@
     ],
     "Usuarios": [
       {
-        "username": "Juan",
+        "username": "Javier",
         "password": "contrasena1",
-        "first_name": "Juan",
-        "last_name": "Gonzalez",
-        "email": "juan@example.com",
+        "first_name": "Javier",
+        "last_name": "Bernabeu",
+        "email": "contacto.javierbc@gmail.com",
         "fecha_nacimiento": "1990-05-15",
-        "centro": "Biblioteca Central",
-        "ciclo": "Literatura",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
         "roles": "Estudiante"
       },
       {
-        "username": "Maria",
+        "username": "Henry",
         "password": "contrasena2",
-        "first_name": "Maria",
-        "last_name": "Lopez",
-        "email": "maria@example.com",
+        "first_name": "Henry",
+        "last_name": "Doudo",
+        "email": "henydoudoc@gmail.com",
         "fecha_nacimiento": "1985-09-20",
-        "centro": "Biblioteca Central",
-        "ciclo": "Historia del Arte",
-        "roles": "Profesor"
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Estudiante"
+      },
+      {
+        "username": "Mehdi",
+        "password": "contrasena3",
+        "first_name": "Mehdi",
+        "last_name": "Regbaoui",
+        "email": "mregbaoui.cf@iesesteveterradas.cat",
+        "fecha_nacimiento": "1990-01-01",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Estudiante"
+      },
+      {
+        "username": "xavi",
+        "password": "contrasena4",
+        "first_name": "Xavi",
+        "last_name": "Profe",
+        "email": "xavi@example.com",
+        "fecha_nacimiento": "1978-03-12",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Professor"
+      },
+      {
+        "username": "enric",
+        "password": "contrasena5",
+        "first_name": "Enric",
+        "last_name": "Profe",
+        "email": "enric@example.com",
+        "fecha_nacimiento": "1982-07-28",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Professor"
+      },
+      {
+        "username": "Leandro",
+        "password": "contrasena6",
+        "first_name": "Leandro",
+        "last_name": "Profe",
+        "email": "leandro@example.com",
+        "fecha_nacimiento": "1975-12-05",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Professor"
+      },
+      {
+        "username": "maricarmen",
+        "password": "contrasena7",
+        "first_name": "Maricarmen",
+        "last_name": "Profe",
+        "email": "maricarmen@example.com",
+        "fecha_nacimiento": "1980-09-15",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Professor"
       }
     ],
     "Reservas": [
-        {
+      {
           "usuario": 2,
           "ejemplar": "EJ001",
           "fecha_reserva": "2024-04-20T08:00:00"
-        },
-        {
+      },
+      {
           "usuario": 3,
           "ejemplar": "EJ003",
           "fecha_reserva": "2024-04-20T08:00:00"
-        }
-      ],
-      "Prestamos": [
-        {
+      },
+      {
+          "usuario": 2,
+          "ejemplar": "EJ005",
+          "fecha_reserva": "2024-04-22T08:00:00"
+      },
+      {
+          "usuario": 8,
+          "ejemplar": "EJ004",
+          "fecha_reserva": "2024-04-23T08:00:00"
+      }
+  ],
+  "Prestamos": [
+      {
           "usuario": 3,
           "ejemplar": "EJ004",
           "fecha_prestamo": "2024-04-10T08:00:00",
           "fecha_devolucion": "2024-05-05T08:00:00"
-        },
-        {
+      },
+      {
           "usuario": 2,
           "ejemplar": "EJ005",
           "fecha_prestamo": "2024-04-15T08:00:00",
           "fecha_devolucion": null
-        }
-      ]
+      },
+      {
+          "usuario": 2,
+          "ejemplar": "EJ001",
+          "fecha_prestamo": "2024-04-25T08:00:00",
+          "fecha_devolucion": null
+      },
+      {
+          "usuario": 8,
+          "ejemplar": "EJ003",
+          "fecha_prestamo": "2024-04-26T08:00:00",
+          "fecha_devolucion": null
+      }
+  ]
     }
