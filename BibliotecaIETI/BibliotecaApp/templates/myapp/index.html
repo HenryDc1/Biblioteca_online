@@ -206,14 +206,12 @@
       const suggestionsList = document.getElementById('autocompleteResults');
       console.log("aaa  "+suggestionsList);
       suggestionsList.innerHTML = '';
-      sugerencias.forEach(item => {
-        console.log(item);
+      sugerencias.slice(0, 5).forEach(item => { // Mostrar solo las primeras 5 sugerencias
         const p = document.createElement('p');
         p.textContent = item.titulo;
         p.classList.add('px-4', 'py-2', 'font-bold', 'id_ItemCatalogo');
         p.setAttribute('data-id', item.id);
         suggestionsList.appendChild(p);
-
       });
     }
 
