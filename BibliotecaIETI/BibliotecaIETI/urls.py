@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import BibliotecaApp
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('BibliotecaApp/', include('django.contrib.auth.urls')),
     path('BibliotecaApp/', include('BibliotecaApp.urls')),
+    path('', BibliotecaApp.views.index),
+
 ]
