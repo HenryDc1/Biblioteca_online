@@ -186,9 +186,10 @@
 
 
     if (input) {
-
+        
         input.addEventListener('input', function() {
             const query = input.value;
+            registrar_evento('Búsqueda realizada: ' + query, 'INFO')
 
             if (query.length >= 3) {
                 fetch(`http://127.0.0.1:8000/get_ItemCatalogo?search=${query}`)

@@ -6,7 +6,7 @@ from django.contrib import messages
 import json
 from django.http import JsonResponse
 import requests
-
+from .models import Log
 
 # Create your views here.
 def index(request):
@@ -18,10 +18,12 @@ def index(request):
         if user is not None:
             login(request, user)
             # Aqui deberia ir un mensaje de exito.
+            registrar_evento('Inicio de sesión exitoso', 'INFO')
             messages.success(request, 'User Ok')
             return redirect('index')
         else:
             # Aqui deberia ir un mensaje de error.
+            registrar_evento('Inicio de sesión fallido', 'ERROR')
             messages.success(request, 'Email o contrasenya incorrectes')
             return redirect('index')
     else:
@@ -85,3 +87,6 @@ def cerca_cataleg(request):
     else:
         # Si la solicitud no es POST, simplemente renderizar la plantilla sin ningún dato
         return render(request, 'myapp/cerca_cataleg.html')
+    
+def registrar_evento(evento, nivel):
+    Log.objects.create(evento=evento, nivel=nivel)
