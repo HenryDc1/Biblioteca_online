@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .managers import UserManager
+
 
 
 # Modelo base para los elementos del item_catálogo
@@ -9,14 +11,17 @@ class ItemCatalogo(models.Model):
     ocio = models.TextField()
     autor = models.CharField(max_length=200)
     data_edicion = models.DateField()
+    def __str__(self):
+        return self.titulo
 
 # Modelo para los libros
 class Libro(ItemCatalogo):
     CDU = models.CharField(max_length=100)
-    ISBN = models.CharField(max_length=13)
+    ISBN = models.CharField(max_length=30)
     editorial = models.CharField(max_length=100)
-    coleccion = models.CharField(max_length=100)
-    paginas = models.IntegerField()
+    coleccion = models.CharField(max_length=100, null=True)
+    paginas = models.IntegerField(default=0)  # Establecer un valor predeterminado
+
 
 # Modelo para los CD
 class CD(ItemCatalogo):
@@ -52,6 +57,9 @@ class Ejemplar(models.Model):
     codigo = models.CharField(max_length=200)
     disponible = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.elemento
+
 class User(AbstractUser):
     fecha_nacimiento = models.DateField(null=True)
     centro = models.CharField(max_length=100)
@@ -62,24 +70,48 @@ class User(AbstractUser):
     # Definir accesos inversos personalizados para evitar conflictos
     groups = models.ManyToManyField('auth.Group', related_name="biblioteca_user_groups", blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name="biblioteca_user_permissions", blank=True)
+    
+    email = models.EmailField(("email"), unique=True, db_index=True)    
+    USERNAME_FIELD = 'email' 
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()  
 
 class Reserva(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     ejemplar = models.ForeignKey(Ejemplar, on_delete=models.CASCADE)
     fecha_reserva = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.usuario
+
 class Prestamo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     ejemplar = models.ForeignKey(Ejemplar, on_delete=models.CASCADE)
     fecha_prestamo = models.DateTimeField(auto_now_add=True)
     fecha_devolucion = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.usuario
 
 class Peticion(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     elemento = models.ForeignKey(ItemCatalogo, on_delete=models.CASCADE)
     fecha_peticion = models.DateTimeField(auto_now_add=True)
-
+    def __str__(self):
+            return self.usuario
+    
 class Log(models.Model):
+    LEVEL_CHOICES = [
+        ('INFO', 'INFO'),
+        ('WARNING', 'WARNING'),
+        ('ERROR', 'ERROR'),
+        ('FATAL', 'FATAL'),
+    ]
+
     evento = models.CharField(max_length=200)
-    nivel = models.CharField(max_length=20)  
+    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  # Utilizamos el campo de selección de opciones
     fecha_registro = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.fecha_registro} ---- {self.evento}"
