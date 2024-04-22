@@ -3,6 +3,8 @@ from django.contrib.auth import login, authenticate, logout, update_session_auth
 from django.contrib.auth.models import User
 from .forms import ChangePassword
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def index(request):
@@ -29,27 +31,22 @@ def logout_user(request):
     messages.success(request, 'Fins aviat!')
     return redirect('index')
 
+@login_required
 def canviar_contrasenya(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-        if request.method == "POST":
-            form = ChangePassword(current_user,request.POST)
-            if form.is_valid():
-                new_password = form.cleaned_data['new_password1']
-                current_user.set_password(new_password)
-                current_user.save()
-                update_session_auth_hash(request, current_user)
-                messages.success(request, 'Contraseña cambiada correctamente')
-                return redirect('index')
-            else:
-                for error in list(form.errors.values()):
-                    messages.error(request, error)   
-                    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})             
+    if request.method == "POST":
+        form = ChangePassword(request.user, request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data['new_password1']
+            request.user.set_password(new_password)
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            messages.success(request, 'Contraseña cambiada correctamente')
+            return redirect('index')
         else:
-            form = ChangePassword(current_user)
-            return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
+            for error in list(form.errors.values()):
+                messages.error(request, error)   
+            return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})             
     else:
-        messages.error(request, 'No estás autenticat. Inicia sessió per canviar la contrasenya.')
-        return redirect('index')
-
-    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {})
+        form = ChangePassword(request.user)
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
+    
