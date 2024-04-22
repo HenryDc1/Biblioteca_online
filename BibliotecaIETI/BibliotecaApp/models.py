@@ -114,4 +114,4 @@ class Log(models.Model):
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.fecha_registro} - {self.nivel} - {self.evento}"
+        return f"{self.fecha_registro} ---- {self.evento}"

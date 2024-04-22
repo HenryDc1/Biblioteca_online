@@ -8,6 +8,7 @@ from django.http import JsonResponse
 import requests
 from .models import Log
 
+
 # Create your views here.
 def index(request):
     if request.method == "POST":
@@ -18,12 +19,12 @@ def index(request):
         if user is not None:
             login(request, user)
             # Aqui deberia ir un mensaje de exito.
-            registrar_evento('Inicio de sesión exitoso', 'INFO')
+            registrar_evento(f'Inici de sessió "{user}" reeixit', 'INFO')
             messages.success(request, 'User Ok')
             return redirect('index')
         else:
             # Aqui deberia ir un mensaje de error.
-            registrar_evento('Inicio de sesión fallido', 'ERROR')
+            registrar_evento('Inici de sessió fallit', 'ERROR')
             messages.success(request, 'Email o contrasenya incorrectes')
             return redirect('index')
     else:
@@ -33,6 +34,7 @@ def index(request):
 def logout_user(request):
     logout(request)
     messages.success(request, 'Fins aviat!')
+    registrar_evento('Sescion tancada amb èxit', 'INFO')
     return redirect('index')
 
 def canviar_contrasenya(request):
@@ -46,6 +48,7 @@ def canviar_contrasenya(request):
                 current_user.save()
                 update_session_auth_hash(request, current_user)
                 messages.success(request, 'Contraseña cambiada correctamente')
+                registrar_evento('Contrasenya canviada correctament', 'INFO')
                 return redirect('index')
             else:
                 for error in list(form.errors.values()):
@@ -56,6 +59,7 @@ def canviar_contrasenya(request):
             return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
     else:
         messages.error(request, 'No estás autenticat. Inicia sessió per canviar la contrasenya.')
+        registrar_evento('No estás autenticat. Inicia sessió per canviar la contrasenya.', 'WARNING')
         return redirect('index')
 
     return render(request, 'myapp/dashboard/canviar_contrasenya.html', {})
@@ -64,7 +68,7 @@ def canviar_contrasenya(request):
 def cerca_cataleg(request):
     if request.method == 'POST':
         query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-        
+
         # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
         if len(query) >= 3:
             # Realizar la solicitud a la API de búsqueda
@@ -79,6 +83,7 @@ def cerca_cataleg(request):
             else:
                 # Si la solicitud no fue exitosa, mostrar un mensaje de error
                 error_message = 'Error al obtener resultados de la búsqueda'
+                registrar_evento('Error al obtener resultados de la búsqueda', 'ERROR')
                 return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
         else:
             # Si la longitud de la consulta es menor a 3 caracteres, mostrar un mensaje de error

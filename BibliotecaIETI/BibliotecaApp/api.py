@@ -15,3 +15,21 @@ def get_ItemCatalogo(request):
         "status": "OK",
         "ItemCatalogo": jsonData,
     }, safe=False)
+
+
+def create_log(request):
+    if request.method == 'POST':
+        evento = request.POST.get('evento', '')
+        nivel = request.POST.get('nivel', '')
+
+        if evento and nivel:
+            # Crear una nueva instancia del modelo Log
+            log = Log.objects.create(evento=evento, nivel=nivel)
+            # Devolver una respuesta JSON indicando que el registro se ha creado correctamente
+            return JsonResponse({'status': 'OK', 'message': 'Log creado correctamente'}, status=201)
+        else:
+            # Si falta algún dato, devolver un error
+            return JsonResponse({'status': 'Error', 'message': 'Faltan datos en la solicitud'}, status=400)
+    else:
+        # Si la solicitud no es POST, devolver un error de método no permitido
+        return JsonResponse({'status': 'Error', 'message': 'Método no permitido'}, status=405)
