@@ -39,29 +39,43 @@
           </p>
           <div class="flex items-center">
             <div class="relative">
-              <input
-                class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
-                placeholder="Search books..."
-                type="search"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bd1e59]"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
+              <form id="search-form" action="{% url 'cerca_cataleg' %}" method="POST">
+                {% csrf_token %}
+                <div class="relative">
+                    <input id="search-input"
+                           class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                           placeholder="Cerca ràpida..."
+                           type="search"
+                           name="query"
+                    />
+                    <svg id="search-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bd1e59] cursor-pointer">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                </div>
+            </form>
+
             </div>
           </div>
+          <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
+            <!-- Aquí se mostrarán los resultados del autocompletado -->
+            <div id="autocompleteResults" class="absolute top-full rounded-lg border bg-card text-card-foreground shadow-sm mt-1 inline-block w-auto" data-v0-t="card">
+            </div>
         </div>
+        
+          
+        </div>
+        
         <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
           {% if user.is_authenticated %}
           <div
@@ -165,6 +179,87 @@
         </div>
       </div>
     </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('search-input');
+
+
+    if (input) {
+        
+        input.addEventListener('input', function() {
+            const query = input.value;
+
+            if (query.length >= 3) {
+                fetch(`http://127.0.0.1:8000/get_ItemCatalogo?search=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarSugerencias(data.ItemCatalogo);
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener sugerencias:', error);
+                    });
+            } else {
+                const suggestionsList = document.getElementById('autocompleteResults');
+
+                // Limpiar la lista de sugerencias si la consulta es menor a 3 caracteres
+                suggestionsList.innerHTML = '';
+            }
+        });
+    }
+
+    function mostrarSugerencias(sugerencias) {
+      const suggestionsList = document.getElementById('autocompleteResults');
+      suggestionsList.innerHTML = '';
+      sugerencias.slice(0, 5).forEach(item => { // Mostrar solo las primeras 5 sugerencias
+        const p = document.createElement('p');
+        p.textContent = item.titulo;
+        p.classList.add('px-4', 'py-2', 'font-bold', 'id_ItemCatalogo');
+        p.setAttribute('data-id', item.id);
+        p.addEventListener('click', function(event) {
+          // Al hacer clic en la sugerencia, cambiar el valor del campo de entrada al texto de la sugerencia
+          input.value = item.titulo;
+          // Evitar el envío del formulario al hacer clic en una sugerencia
+          event.preventDefault();
+        });
+        suggestionsList.appendChild(p);
+      });
+    }
+
+
+
+
+    // Obtener el formulario y el campo de entrada
+    const form = document.getElementById('search-form');
+    const input2 = document.getElementById('search-input');
+    const searchIcon = document.getElementById('search-icon');
+
+    searchIcon.addEventListener('click', function() {
+        // Verificar si el campo de entrada está vacío
+        if (input2.value.trim() !== '') {
+            // Enviar el formulario solo si hay algo escrito en el campo de entrada
+            form.submit();
+        }
+    });
+
+    // Agregar un evento de escucha para la tecla Enter en el campo de entrada
+    input2.addEventListener('keypress', function(event) {
+        // Verificar si la tecla presionada es Enter (código 13)
+        if (event.key === 'Enter') {
+            // Cancelar el comportamiento predeterminado del formulario para evitar que se envíe automáticamente
+            event.preventDefault();
+            // Verificar si el campo de entrada está vacío
+            if (input2.value.trim() !== '') {
+                // Enviar el formulario solo si hay algo escrito en el campo de entrada
+                form.submit();
+            }
+        }
+    });
+
+
+});
+
+  </script>
   </body>
 </html>
 

@@ -1,0 +1,42 @@
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de la búsqueda</title>
+    <link rel="stylesheet" href="{% static 'output.css' %}">
+</head>
+<body>
+    <div class="container min-w-full">
+        <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
+            <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">Biblioteca IETI</h1>
+        </header>
+        <div >
+            <div class="w-full md:w-1/2 pr-4 py-4 md:ml-auto lg:mr-4">
+                <h1 class="text-2xl font-bold mt-4 mb-8 text-lg text-[#bd1e59]">Resultats de la cerca: "{{ query }}"</h1>
+    
+                <!-- Mostrar resultados de la búsqueda -->
+                <div class="" id="search-results">
+                    {% if resultados %}
+                        <ul>
+                            {% for libro in resultados %}
+                                <li>
+                                    <h1 class="mt-4 mb-8 text-lg text-[#bd1e59]">{{ libro.titulo }}</h1>
+                                    <p><strong>ID de catàleg:</strong> {{ libro.id_catalogo }}</p>
+                                    <p><strong>Gènere:</strong> {{ libro.ocio }}</p>
+                                    <p><strong>Autor:</strong> {{ libro.autor }}</p>
+                                    <p><strong>Data d'edició:</strong> {{ libro.data_edicion }}</p>
+                                </li>
+                                <hr class="border-2 border-[#bd1e59] mt-4 mb-8">
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No s'han trobat resultats per: "{{ query }}"</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

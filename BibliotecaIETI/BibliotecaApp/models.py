@@ -102,9 +102,16 @@ class Peticion(models.Model):
             return self.usuario
     
 class Log(models.Model):
+    LEVEL_CHOICES = [
+        ('INFO', 'INFO'),
+        ('WARNING', 'WARNING'),
+        ('ERROR', 'ERROR'),
+        ('FATAL', 'FATAL'),
+    ]
+
     evento = models.CharField(max_length=200)
-    nivel = models.CharField(max_length=20)  
+    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  # Utilizamos el campo de selección de opciones
     fecha_registro = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-            return self.evento
+        return f"{self.fecha_registro} ---- {self.evento}"
