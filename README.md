@@ -8,3 +8,6 @@ Explora les diverses seccions de la nostra biblioteca virtual, des de la secció
 A més, la nostra pàgina web ofereix una àmplia gamma de serveis, incloent la reserva en línia de llibres, la participació en clubs de lectura virtuals i l'accés a bases de dades acadèmiques. Sigui quina sigui la vostra necessitat, la Biblioteca Mari Carmen està aquí per a ajudar-vos a satisfer-la.
 
 Uneix-te a nosaltres en aquest viatge literari i descobreix tot el que la nostra biblioteca en línia té per oferir. La aventura comença ara mateix. Benvinguts a la Biblioteca Mari Carmen, el vostre refugi literari a la web.
+
+
+![portada](https://github.com/Jovaoo/BibliotecaMariCarmen/assets/115980729/37dae8e7-5c3a-4b39-8d0d-91882b554b68)
