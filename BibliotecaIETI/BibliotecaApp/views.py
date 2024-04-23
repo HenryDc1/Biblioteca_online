@@ -23,12 +23,12 @@ def index(request):
             login(request, user)
             # Aqui deberia ir un mensaje de exito.
             registrar_evento(f'Inici de sessió "{user}" reeixit', 'INFO')
-            messages.success(request, 'User Ok')
+            messages.success(request, 'Inici de sessió correcte!')
             return redirect('index')
         else:
             # Aqui deberia ir un mensaje de error.
             registrar_evento('Inici de sessió fallit', 'ERROR')
-            messages.success(request, 'Email o contrasenya incorrectes')
+            messages.error(request, 'Email o contrasenya incorrectes')
             return redirect('index')
     else:
         return render(request, 'myapp/index.html', {})
@@ -73,7 +73,7 @@ def dashboard(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, 'Fins aviat!')
+    messages.info(request, 'Fins aviat!')
     registrar_evento('Sessió tancada amb èxit', 'INFO')
     return redirect('index')
 
