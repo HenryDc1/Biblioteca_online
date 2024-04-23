@@ -7,8 +7,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('logout', views.logout_user, name='logout'),
     path('canviar_contrasenya', views.canviar_contrasenya, name='canviar_contrasenya'),
+    path('dashboard', views.dashboard, name='dashboard'),   
 
-    # Reset password
+    # Reset password 
     path('recuperar_contrasenya/', auth_views.PasswordResetView.as_view(), name='recuperar_contrasenya'),
     path('recuperar_contrasenya/ok/',auth_views.PasswordResetDoneView.as_view(template_name='myapp/registration/password_reset_done.html'),name='password_reset_done'),
     path('reestablir_contrasenya/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='myapp/registration/password_reset_confirm.html'),name='password_reset_confirm'),

@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
-from django.contrib.auth.models import User
 from .forms import ChangePassword
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log
+from .models import Log, User
 
 # Create your views here.
 def index(request):
@@ -30,11 +29,38 @@ def index(request):
     else:
         return render(request, 'myapp/index.html', {})
     
-    
+@login_required
+def dashboard(request):
+    users = User.objects.all()
+    # actualizar dades del usuari
+    if request.method == "POST":
+        user_id = request.POST.get('id')
+        if user_id:
+            try:
+                user = User.objects.get(pk=user_id)
+                user.first_name = request.POST.get('first_name', user.first_name)
+                user.last_name = request.POST.get('last_name', user.last_name)
+                user.centro = request.POST.get('centro', user.centro)
+                user.ciclo = request.POST.get('ciclo', user.ciclo)
+                user.save()
+                messages.success(request, 'Dades actualitzades correctament')
+                registrar_evento(f'Dades de "{user}" actualitzades correctament', 'INFO')
+                return redirect('dashboard')
+            except User.DoesNotExist:
+                messages.error(request, 'El usuari no existeix')
+                registrar_evento(f'Intent d\'actualització de dades per a un usuari inexistent', 'ERROR')
+                return redirect('dashboard')
+        else:
+            messages.error(request, 'Falta el camp ID')
+            registrar_evento('Intent d\'actualització de dades sense ID', 'ERROR')
+            return redirect('dashboard')
+    return render(request, 'myapp/dashboard/dashboard.html', {'users': users})
+
+
 def logout_user(request):
     logout(request)
     messages.success(request, 'Fins aviat!')
-    registrar_evento('Sescion tancada amb èxit', 'INFO')
+    registrar_evento('Sessió tancada amb èxit', 'INFO')
     return redirect('index')
 
 @login_required
