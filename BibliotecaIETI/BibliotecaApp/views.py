@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.utils import formats
+from datetime import datetime
+from dateutil import parser
 from .forms import ChangePassword
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -30,12 +33,15 @@ def index(request):
     else:
         return render(request, 'myapp/index.html', {})
     
+
 @login_required
 def dashboard(request):
     users = User.objects.all()
-    # actualizar dades del usuari
+
+    # actualizar datos del usuario
     if request.method == "POST":
         user_id = request.POST.get('id')
+
         if user_id:
             try:
                 user = User.objects.get(pk=user_id)
@@ -43,19 +49,26 @@ def dashboard(request):
                 user.last_name = request.POST.get('last_name', user.last_name)
                 user.centro = request.POST.get('centro', user.centro)
                 user.ciclo = request.POST.get('ciclo', user.ciclo)
+                user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
                 user.save()
-                messages.success(request, 'Dades actualitzades correctament')
-                registrar_evento(f'Dades de "{user}" actualitzades correctament', 'INFO')
+                messages.success(request, 'Datos actualizados correctamente')
+                registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
                 return redirect('dashboard')
             except User.DoesNotExist:
-                messages.error(request, 'El usuari no existeix')
-                registrar_evento(f'Intent d\'actualització de dades per a un usuari inexistent', 'ERROR')
+                messages.error(request, 'El usuario no existe')
+                registrar_evento(f'Intento de actualización de datos para un usuario inexistente', 'ERROR')
                 return redirect('dashboard')
         else:
-            messages.error(request, 'Falta el camp ID')
-            registrar_evento('Intent d\'actualització de dades sense ID', 'ERROR')
+            messages.error(request, 'Falta el campo ID')
+            registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
             return redirect('dashboard')
-    return render(request, 'myapp/dashboard/dashboard.html', {'users': users})
+
+    # Obtener fecha de nacimiento del usuario
+    fecha_nacimiento = None
+    if request.user.fecha_nacimiento:
+        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
+
+    return render(request, 'myapp/dashboard/dashboard.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
 
 
 def logout_user(request):

@@ -620,21 +620,12 @@ video {
   grid-column: span 6 / span 6;
 }
 
-.my-24 {
-  margin-top: 6rem;
-  margin-bottom: 6rem;
-}
-
 .mb-4 {
   margin-bottom: 1rem;
 }
 
 .mb-8 {
   margin-bottom: 2rem;
-}
-
-.ml-auto {
-  margin-left: auto;
 }
 
 .mt-1 {
@@ -669,12 +660,12 @@ video {
   display: grid;
 }
 
-.h-10 {
-  height: 2.5rem;
+.hidden {
+  display: none;
 }
 
-.h-4 {
-  height: 1rem;
+.h-10 {
+  height: 2.5rem;
 }
 
 .h-5 {
@@ -683,10 +674,6 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.w-4 {
-  width: 1rem;
 }
 
 .w-5 {
@@ -722,6 +709,10 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -732,10 +723,6 @@ video {
 
 .flex-col {
   flex-direction: column;
-}
-
-.flex-col-reverse {
-  flex-direction: column-reverse;
 }
 
 .items-center {
@@ -900,16 +887,6 @@ video {
   padding-bottom: 1rem;
 }
 
-.px-12 {
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
-
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .pl-3 {
   padding-left: 0.75rem;
 }
@@ -1020,10 +997,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.opacity-50 {
-  opacity: 0.5;
-}
-
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
@@ -1034,6 +1007,118 @@ video {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Custom CSS */
+
+.trigger-button {
+  background-color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-size: 0.8rem;
+  min-height: 2.5rem;
+  max-width: 10rem;
+  width: 100%;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+
+.trigger-button:hover {
+  text-decoration: underline;
+}
+
+.notification {
+  position: absolute;
+  bottom: 1rem;
+  padding: 0px 0.5rem;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  background-color: var(--success);
+  color: var(--text);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeInAnimation ease-in-out 0.25s forwards;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
+                0px 6px 10px 0px rgba(0,0,0,0.14),
+                0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+
+.none {
+  display: none;
+}
+
+.hide {
+  visibility: hidden;
+  animation: fadeOutAnimation ease-in-out 0.25s forwards;
+}
+
+.notification__body {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: clamp(0.8rem, 3vw, 1.2rem);
+}
+
+.notification__body__first {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notification__body__first > svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  fill: var(--text);
+}
+
+.notification__body > svg:nth-last-child(1) {
+  cursor: pointer;
+  margin: auto;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    min-height: 2.5rem;
+    visibility: hidden;
+  }
+
+  100% {
+    opacity: 1;
+    min-height: 3.75rem;
+    visibility: visible;
+  }
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+    min-height: 3.75rem;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+    min-height: 2.5rem;
+    visibility: hidden;
+  }
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .file\:border-0::file-selector-button {
@@ -1051,10 +1136,6 @@ video {
 
 .file\:font-medium::file-selector-button {
   font-weight: 500;
-}
-
-.hover\:cursor-pointer:hover {
-  cursor: pointer;
 }
 
 .hover\:border-\[\#bd1e59\]:hover {
@@ -1164,23 +1245,11 @@ video {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
-
-  .lg\:px-32 {
-    padding-left: 8rem;
-    padding-right: 8rem;
-  }
 }
 
 @media (min-width: 1280px) {
   .xl\:px-32 {
     padding-left: 8rem;
     padding-right: 8rem;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .dark\:text-gray-400 {
-    --tw-text-opacity: 1;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
   }
 }
