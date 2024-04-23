@@ -111,8 +111,9 @@ class Log(models.Model):
     ]
 
     evento = models.CharField(max_length=200)
-    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  # Utilizamos el campo de selección de opciones
+    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  
     fecha_registro = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.fecha_registro} ---- {self.evento}"

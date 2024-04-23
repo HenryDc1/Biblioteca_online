@@ -877,6 +877,17 @@
     ],
     "Usuarios": [
       {
+        "username": "Anonimo",
+        "password": "Anonimo",
+        "first_name": "Anonimo",
+        "last_name": "Anonimo",
+        "email": "Anonimo@Anonimo.com",
+        "fecha_nacimiento": "1990-05-15",
+        "centro": "Esteve Terradas Illa",
+        "ciclo": "DAW",
+        "roles": "Anonimo"
+      },
+      {
         "username": "Javier",
         "password": "contrasena1",
         "first_name": "Javier",

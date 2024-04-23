@@ -18,5 +18,7 @@ urlpatterns = [
     path('cerca_cataleg/', views.cerca_cataleg, name='cerca_cataleg'),
     path('create_log/', api.create_log, name='create_log'),
 
+    path('guardar-log/', views.guardar_log, name='guardar_log'),
+
 ]
 

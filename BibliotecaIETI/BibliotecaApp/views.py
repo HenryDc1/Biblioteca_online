@@ -11,6 +11,8 @@ import json
 from django.http import JsonResponse
 import requests
 from .models import Log, User
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create your views here.
 def index(request):
@@ -22,7 +24,7 @@ def index(request):
         if user is not None:
             login(request, user)
             # Aqui deberia ir un mensaje de exito.
-            registrar_evento(f'Inici de sessió "{user}" reeixit', 'INFO')
+            registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
             messages.success(request, 'User Ok')
             return redirect('index')
         else:
@@ -123,5 +125,28 @@ def cerca_cataleg(request):
         # Si la solicitud no es POST, simplemente renderizar la plantilla sin ningún dato
         return render(request, 'myapp/cerca_cataleg.html')
     
-def registrar_evento(evento, nivel):
-    Log.objects.create(evento=evento, nivel=nivel)
+def registrar_evento(evento, nivel, usuario=None):
+    # Si no se proporciona un usuario, se asumirá como Anónimo
+    if usuario is None:
+        usuario = User.objects.get(username='Anonimo')
+
+    # Crear el registro de log
+    Log.objects.create(evento=evento, nivel=nivel, usuario=usuario)
+
+@csrf_exempt
+def guardar_log(request):
+    if request.method == 'POST':
+        evento = request.POST.get('evento')
+        nivel = request.POST.get('nivel')
+        
+        if request.user.is_authenticated:
+            usuario = request.user
+        else:
+            usuario_anonimo = User.objects.get(username='Anonimo')
+            usuario = usuario_anonimo
+        
+        Log.objects.create(evento=evento, nivel=nivel, usuario=usuario)
+        
+        return JsonResponse({'mensaje': 'Log guardado correctamente.'})
+    else:
+        return JsonResponse({'error': 'Método no permitido.'}, status=405)

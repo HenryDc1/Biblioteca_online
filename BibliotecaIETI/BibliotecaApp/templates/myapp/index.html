@@ -9,6 +9,8 @@
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <link rel="stylesheet" href="{% static 'input.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
   </head>
   <body>
     <div class="container min-w-full">
@@ -231,6 +233,8 @@
     const searchIcon = document.getElementById('search-icon');
 
     searchIcon.addEventListener('click', function() {
+      llamadaAjax();
+
         // Verificar si el campo de entrada está vacío
         if (input2.value.trim() !== '') {
             // Enviar el formulario solo si hay algo escrito en el campo de entrada
@@ -240,6 +244,8 @@
 
     // Agregar un evento de escucha para la tecla Enter en el campo de entrada
     input2.addEventListener('keypress', function(event) {
+      llamadaAjax();
+
         // Verificar si la tecla presionada es Enter (código 13)
         if (event.key === 'Enter') {
             // Cancelar el comportamiento predeterminado del formulario para evitar que se envíe automáticamente
@@ -251,8 +257,22 @@
             }
         }
     });
-
-
+    function llamadaAjax(){
+        $.ajax({
+          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          type: 'POST',  // Método POST para enviar los datos al servidor
+          data: {
+              evento: 'Se ha echo una busqueda',
+              nivel: 'INFO',  // Nivel de log (INFO, WARNING, ERROR, etc.)
+          },
+          success: function(response) {
+              console.log('Log guardado correctamente:', response);
+          },
+          error: function(error) {
+              console.error('Error al guardar el log:', error);
+          }
+        });
+      }
 });
 
   </script>
