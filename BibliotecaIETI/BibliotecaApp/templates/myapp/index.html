@@ -230,7 +230,7 @@
     const searchIcon = document.getElementById('search-icon');
 
     searchIcon.addEventListener('click', function() {
-      llamadaAjax();
+      llamadaAjaxLog("S'ha fet una cerca","INFO");
 
         // Verificar si el campo de entrada está vacío
         if (input2.value.trim() !== '') {
@@ -241,7 +241,7 @@
 
     // Agregar un evento de escucha para la tecla Enter en el campo de entrada
     input2.addEventListener('keypress', function(event) {
-      llamadaAjax();
+      llamadaAjaxLog("S'ha fet una cerca","INFO");
 
         // Verificar si la tecla presionada es Enter (código 13)
         if (event.key === 'Enter') {
@@ -254,13 +254,13 @@
             }
         }
     });
-    function llamadaAjax(){
+    function llamadaAjaxLog(evento,nivel){
         $.ajax({
           url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
           type: 'POST',  // Método POST para enviar los datos al servidor
           data: {
-              evento: 'Se ha echo una busqueda',
-              nivel: 'INFO',  // Nivel de log (INFO, WARNING, ERROR, etc.)
+              evento: evento,
+              nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
           },
           success: function(response) {
               console.log('Log guardado correctamente:', response);
