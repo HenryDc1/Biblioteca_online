@@ -11,8 +11,8 @@ class ItemCatalogo(models.Model):
     ocio = models.TextField()
     autor = models.CharField(max_length=200)
     data_edicion = models.DateField()
-    def __str__(self):
-        return self.titulo
+
+
 
 # Modelo para los libros
 class Libro(ItemCatalogo):
@@ -51,14 +51,14 @@ class Dispositivo(ItemCatalogo):
     sistema_operativo = models.CharField(max_length=100)
     almacenamiento = models.CharField(max_length=100)
 
-# Modelo para los ejemplares
 class Ejemplar(models.Model):
     elemento = models.ForeignKey(ItemCatalogo, on_delete=models.CASCADE)
     codigo = models.CharField(max_length=200)
     disponible = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.elemento
+        return f"{self.elemento.id_catalogo} - {self.elemento.titulo}"
+
 
 class User(AbstractUser):
     fecha_nacimiento = models.DateField(null=True)
@@ -83,7 +83,7 @@ class Reserva(models.Model):
     fecha_reserva = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.usuario
+        return str(self.usuario)
 
 class Prestamo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -92,14 +92,15 @@ class Prestamo(models.Model):
     fecha_devolucion = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
-        return self.usuario
+        return str(self.usuario)
 
 class Peticion(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     elemento = models.ForeignKey(ItemCatalogo, on_delete=models.CASCADE)
     fecha_peticion = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-            return self.usuario
+            return str(self.usuario)
+
     
 class Log(models.Model):
     LEVEL_CHOICES = [
