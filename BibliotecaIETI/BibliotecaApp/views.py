@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import ChangePassword
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -66,23 +67,19 @@ def logout_user(request):
 @login_required
 def canviar_contrasenya(request):
     if request.method == "POST":
-        form = ChangePassword(request.user, request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            new_password = form.cleaned_data['new_password1']
-            request.user.set_password(new_password)
-            request.user.save()
-            update_session_auth_hash(request, request.user)
+            user = form.save()
+            update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
             messages.success(request, 'Contraseña cambiada correctamente')
             registrar_evento('Contrasenya canviada correctament', 'INFO')
-            return redirect('index')
+            return redirect('dashboard')
         else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)   
-            return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})             
+            for error in form.errors.values():
+                messages.error(request, error)
     else:
-        form = ChangePassword(request.user)
-        return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
-    
+        form = PasswordChangeForm(request.user)
+    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
 
 
 def cerca_cataleg(request):
