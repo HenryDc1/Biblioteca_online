@@ -9,10 +9,10 @@ urlpatterns = [
     path('canviar_contrasenya', views.canviar_contrasenya, name='canviar_contrasenya'),
 
     # Reset password
-    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='myapp/registration/password_reset_form.html'), name='recuperar_contrasenya'),
-    path('recuperar_contrasenya/ok/',auth_views.PasswordResetDoneView.as_view(),name='recuperar_contrasenya_ok'),
-    path('reestablir_contrasenya/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(),name='reestablir_contrasenya'),
-    path('reestablir_contrasenya/done/',auth_views.PasswordResetCompleteView.as_view(),name='reestablir_contrasenya_ok'),
+    path('recuperar_contrasenya/', auth_views.PasswordResetView.as_view(), name='recuperar_contrasenya'),
+    path('recuperar_contrasenya/ok/',auth_views.PasswordResetDoneView.as_view(template_name='myapp/registration/password_reset_done.html'),name='password_reset_done'),
+    path('reestablir_contrasenya/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='myapp/registration/password_reset_confirm.html'),name='password_reset_confirm'),
+    path('reestablir_contrasenya/done/', auth_views.PasswordResetCompleteView.as_view(template_name='myapp/registration/password_reset_complete.html'), name='password_reset_complete'),
     
     path('cerca_cataleg/', views.cerca_cataleg, name='cerca_cataleg'),
     path('create_log/', api.create_log, name='create_log'),
