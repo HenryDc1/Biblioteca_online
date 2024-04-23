@@ -22,7 +22,7 @@
         </a>    
         </h1>
         {% if user.is_authenticated %}
-        <div class="flex items-center space-x-4 pr-32">
+        <div class="clickSortir flex items-center space-x-4 pr-32">
           <a
             href="{% url 'logout' %}"
             class="text-[#bd1e59] border-b-2 border-transparent hover:border-[#bd1e59] transition-colors text-xl"
@@ -124,13 +124,13 @@
               <h3
               class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight"
             >
-              Información del admin
+                Informació de admin
             </h3>
               {% elif user.email != "admin@admin.com"  %}
               <h3
                 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight"
               >
-                Información del usuario
+                Informació de usuario
               </h3>
               {% endif %}
             </div>
@@ -229,7 +229,7 @@
                   </div>
 
                   <div>
-                    <input type="submit" value="Guardar" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">
+                    <input type="submit" value="Desa" class="guardarClick inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">
                   </div>
                   <!-- Link to change password -->
 
@@ -239,7 +239,7 @@
               <div class="grid grid-cols-4 items-center gap-4 mt-4">
                 <a
                 href="{% url 'canviar_contrasenya' %}"
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 pl-3 text-left font-normal text-gray-900 col-span-6 hover:bg-gray-200 shadow-sm hover:text-gray-800"
+                class="canviarPass inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 pl-3 text-left font-normal text-gray-900 col-span-6 hover:bg-gray-200 shadow-sm hover:text-gray-800"
                 >
                 Canviar contrasenya
                 </a>
@@ -253,9 +253,16 @@
 
     <script>
   document.addEventListener('DOMContentLoaded', function() {
-
-
-
+    $('.clickSortir').click(function() {
+        llamadaAjaxLog("DASHBOARD: a donat click a 'Sortir (Tencar Sessió)'","INFO");
+    });
+    $('.guardarClick').click(function() {
+        llamadaAjaxLog("DASHBOARD: a realitzat canvis en Informació personal al donar click a 'Desa'","INFO");
+    });
+    
+    $('.canviarPass').click(function() {
+        llamadaAjaxLog("DASHBOARD:  a donat click a 'Canviar contrasenya'","INFO");
+    });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({
           url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django

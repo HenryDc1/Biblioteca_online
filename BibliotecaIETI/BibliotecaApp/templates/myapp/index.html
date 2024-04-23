@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <link rel="stylesheet" href="{% static 'input.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
   </head>
   <body>
     {% include 'myapp/messages.html' %}
@@ -230,10 +229,11 @@
     const searchIcon = document.getElementById('search-icon');
 
     searchIcon.addEventListener('click', function() {
-      llamadaAjaxLog("S'ha fet una cerca","INFO");
 
         // Verificar si el campo de entrada está vacío
         if (input2.value.trim() !== '') {
+            llamadaAjaxLog("LANDIGPAGE: S'ha fet una cerca","INFO");
+
             // Enviar el formulario solo si hay algo escrito en el campo de entrada
             form.submit();
         }
@@ -241,7 +241,6 @@
 
     // Agregar un evento de escucha para la tecla Enter en el campo de entrada
     input2.addEventListener('keypress', function(event) {
-      llamadaAjaxLog("S'ha fet una cerca","INFO");
 
         // Verificar si la tecla presionada es Enter (código 13)
         if (event.key === 'Enter') {
@@ -249,6 +248,8 @@
             event.preventDefault();
             // Verificar si el campo de entrada está vacío
             if (input2.value.trim() !== '') {
+                llamadaAjaxLog("LANDIGPAGE: S'ha fet una cerca","INFO");
+
                 // Enviar el formulario solo si hay algo escrito en el campo de entrada
                 form.submit();
             }
@@ -256,16 +257,16 @@
     });
 
     $('.verPerfil').click(function() {
-        llamadaAjaxLog("sé a clicat a 'Veure el teu perfil'","INFO");
+        llamadaAjaxLog("LANDIGPAGE: a donat click a 'Veure el teu perfil'","INFO");
     });
     $('.OlvidarPass').click(function() {
-        llamadaAjaxLog("sé a clicat a 'Has oblidat la contrasenya? Recupéra-la.'","INFO");
+        llamadaAjaxLog("LANDIGPAGE: a donat click a 'Has oblidat la contrasenya? Recupéra-la.'","INFO");
     });
     $('.clickEntra').click(function() {
-        llamadaAjaxLog("sé a clicat a 'Entrar (Iniciar Sessió)'","INFO");
+        llamadaAjaxLog("LANDIGPAGE: a donat click a 'Entrar (Iniciar Sessió)'","INFO");
     });
     $('.clickSortir').click(function() {
-        llamadaAjaxLog("sé a clicat a 'Sortir (Tencar Sessió)'","INFO");
+        llamadaAjaxLog("LANDIGPAGE: a donat click a 'Sortir (Tencar Sessió)'","INFO");
     });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({

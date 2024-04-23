@@ -878,7 +878,7 @@
     "Usuarios": [
       {
         "username": "Anonimo",
-        "password": "Anonimo",
+        "password": "password",
         "first_name": "Anonimo",
         "last_name": "Anonimo",
         "email": "Anonimo@Anonimo.com",
@@ -889,7 +889,7 @@
       },
       {
         "username": "Javier",
-        "password": "contrasena1",
+        "password": "password",
         "first_name": "Javier",
         "last_name": "Bernabeu",
         "email": "contacto.javierbc@gmail.com",
@@ -900,7 +900,7 @@
       },
       {
         "username": "Henry",
-        "password": "contrasena2",
+        "password": "password",
         "first_name": "Henry",
         "last_name": "Doudo",
         "email": "henydoudoc@gmail.com",
@@ -911,7 +911,7 @@
       },
       {
         "username": "Mehdi",
-        "password": "contrasena3",
+        "password": "password",
         "first_name": "Mehdi",
         "last_name": "Regbaoui",
         "email": "mregbaoui.cf@iesesteveterradas.cat",
@@ -922,7 +922,7 @@
       },
       {
         "username": "xavi",
-        "password": "contrasena4",
+        "password": "password",
         "first_name": "Xavi",
         "last_name": "Profe",
         "email": "xavi@example.com",
@@ -933,7 +933,7 @@
       },
       {
         "username": "enric",
-        "password": "contrasena5",
+        "password": "password",
         "first_name": "Enric",
         "last_name": "Profe",
         "email": "enric@example.com",
@@ -944,7 +944,7 @@
       },
       {
         "username": "Leandro",
-        "password": "contrasena6",
+        "password": "password",
         "first_name": "Leandro",
         "last_name": "Profe",
         "email": "leandro@example.com",
@@ -955,7 +955,7 @@
       },
       {
         "username": "maricarmen",
-        "password": "contrasena7",
+        "password": "password",
         "first_name": "Maricarmen",
         "last_name": "Profe",
         "email": "maricarmen@example.com",
@@ -967,7 +967,7 @@
     ],
     "Reservas": [
       {
-          "usuario": 2,
+          "usuario": 4,
           "ejemplar": "EJ001",
           "fecha_reserva": "2024-04-20T08:00:00"
       },
@@ -977,12 +977,12 @@
           "fecha_reserva": "2024-04-20T08:00:00"
       },
       {
-          "usuario": 2,
+          "usuario": 5,
           "ejemplar": "EJ005",
           "fecha_reserva": "2024-04-22T08:00:00"
       },
       {
-          "usuario": 8,
+          "usuario": 6,
           "ejemplar": "EJ004",
           "fecha_reserva": "2024-04-23T08:00:00"
       }
@@ -995,19 +995,19 @@
           "fecha_devolucion": "2024-05-05T08:00:00"
       },
       {
-          "usuario": 2,
+          "usuario": 4,
           "ejemplar": "EJ005",
           "fecha_prestamo": "2024-04-15T08:00:00",
           "fecha_devolucion": null
       },
       {
-          "usuario": 2,
+          "usuario": 5,
           "ejemplar": "EJ001",
           "fecha_prestamo": "2024-04-25T08:00:00",
           "fecha_devolucion": null
       },
       {
-          "usuario": 8,
+          "usuario": 7,
           "ejemplar": "EJ003",
           "fecha_prestamo": "2024-04-26T08:00:00",
           "fecha_devolucion": null

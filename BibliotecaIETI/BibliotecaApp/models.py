@@ -116,4 +116,4 @@ class Log(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.fecha_registro} ---- {self.evento} ---- {self.usuario}"
+        return f"{self.nivel} ---- {self.evento} ---- {self.usuario}"

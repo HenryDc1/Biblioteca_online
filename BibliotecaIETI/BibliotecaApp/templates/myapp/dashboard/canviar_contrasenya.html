@@ -8,6 +8,7 @@
     <meta name="title" content="Los videojuegos de 2020" />
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
   <body>
     {% include 'myapp/messages.html' %}
@@ -21,7 +22,7 @@
           </a>
         </h1>
         {% if user.is_authenticated %}
-        <div class="flex items-center space-x-4 pr-32">
+        <div class="clickSortir flex items-center space-x-4 pr-32">
           <a
             href="{% url 'logout' %}"
             class="text-[#bd1e59] border-b-2 border-transparent hover:border-[#bd1e59] transition-colors text-xl"
@@ -106,7 +107,7 @@
                   <input
                     type="submit"
                     value="Canviar"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer"
+                    class="canviarPassOkk inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer"
                   />
                 </div>
               </form>
@@ -118,6 +119,32 @@
         </div>
       </div>
     </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        $('.clickSortir').click(function() {
+        llamadaAjaxLog("CANVIAR_CONTRASENYA: a donat click a 'Sortir (Tencar Sessió)'","INFO");
+        });
+        $('.canviarPassOkk').click(function() {
+            llamadaAjaxLog("CANVIAR_CONTRASENYA:  a donat click a 'Canviar'","INFO");
+        });
+        function llamadaAjaxLog(evento,nivel){
+            $.ajax({
+              url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+              type: 'POST',  // Método POST para enviar los datos al servidor
+              data: {
+                  evento: evento,
+                  nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
+              },
+              success: function(response) {
+                  console.log('Log guardado correctamente:', response);
+              },
+              error: function(error) {
+                  console.error('Error al guardar el log:', error);
+              }
+            });
+          }
+        });  
+        </script>
   </body>
 </html>
 
