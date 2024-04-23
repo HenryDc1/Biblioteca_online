@@ -8,6 +8,7 @@
     <meta name="title" content="Los videojuegos de 2020" />
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -249,6 +250,32 @@
         </div>
       </main>
     </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+
+
+    function llamadaAjaxLog(evento,nivel){
+        $.ajax({
+          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          type: 'POST',  // Método POST para enviar los datos al servidor
+          data: {
+              evento: evento,
+              nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
+          },
+          success: function(response) {
+              console.log('Log guardado correctamente:', response);
+          },
+          error: function(error) {
+              console.error('Error al guardar el log:', error);
+          }
+        });
+      }
+    });
+
+
+    </script>
   </body>
 </html>
 
