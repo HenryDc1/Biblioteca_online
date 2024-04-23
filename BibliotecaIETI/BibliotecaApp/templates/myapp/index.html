@@ -13,6 +13,7 @@
 
   </head>
   <body>
+    {% include 'myapp/messages.html' %}
     <div class="container min-w-full">
       <header
         class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between"
@@ -119,10 +120,6 @@
               <form action="" method="POST">
                 {% csrf_token %}
                 <div class="grid gap-4">
-                  {% if messages %} {% for message in messages%}
-                  <div class="text-green-500">{{ message }}</div>
-                  {% endfor %} {% endif %}
-
                   <div>
                     <label
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
