@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import ChangePassword
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log
-
+from .models import Log, User
 
 # Create your views here.
 def index(request):
@@ -30,39 +30,56 @@ def index(request):
     else:
         return render(request, 'myapp/index.html', {})
     
-    
+@login_required
+def dashboard(request):
+    users = User.objects.all()
+    # actualizar dades del usuari
+    if request.method == "POST":
+        user_id = request.POST.get('id')
+        if user_id:
+            try:
+                user = User.objects.get(pk=user_id)
+                user.first_name = request.POST.get('first_name', user.first_name)
+                user.last_name = request.POST.get('last_name', user.last_name)
+                user.centro = request.POST.get('centro', user.centro)
+                user.ciclo = request.POST.get('ciclo', user.ciclo)
+                user.save()
+                messages.success(request, 'Dades actualitzades correctament')
+                registrar_evento(f'Dades de "{user}" actualitzades correctament', 'INFO')
+                return redirect('dashboard')
+            except User.DoesNotExist:
+                messages.error(request, 'El usuari no existeix')
+                registrar_evento(f'Intent d\'actualització de dades per a un usuari inexistent', 'ERROR')
+                return redirect('dashboard')
+        else:
+            messages.error(request, 'Falta el camp ID')
+            registrar_evento('Intent d\'actualització de dades sense ID', 'ERROR')
+            return redirect('dashboard')
+    return render(request, 'myapp/dashboard/dashboard.html', {'users': users})
+
+
 def logout_user(request):
     logout(request)
     messages.success(request, 'Fins aviat!')
-    registrar_evento('Sescion tancada amb èxit', 'INFO')
+    registrar_evento('Sessió tancada amb èxit', 'INFO')
     return redirect('index')
 
+@login_required
 def canviar_contrasenya(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-        if request.method == "POST":
-            form = ChangePassword(current_user,request.POST)
-            if form.is_valid():
-                new_password = form.cleaned_data['new_password1']
-                current_user.set_password(new_password)
-                current_user.save()
-                update_session_auth_hash(request, current_user)
-                messages.success(request, 'Contraseña cambiada correctamente')
-                registrar_evento('Contrasenya canviada correctament', 'INFO')
-                return redirect('index')
-            else:
-                for error in list(form.errors.values()):
-                    messages.error(request, error)   
-                    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})             
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
+            messages.success(request, 'Contraseña cambiada correctamente')
+            registrar_evento('Contrasenya canviada correctament', 'INFO')
+            return redirect('dashboard')
         else:
-            form = ChangePassword(current_user)
-            return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
+            for error in form.errors.values():
+                messages.error(request, error)
     else:
-        messages.error(request, 'No estás autenticat. Inicia sessió per canviar la contrasenya.')
-        registrar_evento('No estás autenticat. Inicia sessió per canviar la contrasenya.', 'WARNING')
-        return redirect('index')
-
-    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {})
+        form = PasswordChangeForm(request.user)
+    return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
 
 
 def cerca_cataleg(request):
