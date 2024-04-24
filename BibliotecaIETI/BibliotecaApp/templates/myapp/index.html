@@ -185,7 +185,7 @@
             const query = input.value;
 
             if (query.length >= 3) {
-                fetch(`https://biblio5.ieti.site/get_ItemCatalogo?search=${query}`)
+                fetch(`http://127.0.0.1:8000/get_ItemCatalogo?search=${query}`)
                     .then(response => response.json())
                     .then(data => {
                         mostrarSugerencias(data.ItemCatalogo);
@@ -270,7 +270,7 @@
     });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({
-          url: 'https://biblio5.ieti.site/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
           type: 'POST',  // Método POST para enviar los datos al servidor
           data: {
               evento: evento,
