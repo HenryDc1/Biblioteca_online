@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # self.eliminar_datos_antiguos()
-        with open(r'D:\Usuarios\M E H D I\Desktop\Proyecto-Biblioteca\BibliotecaMariCarmen\BibliotecaIETI\BibliotecaApp\management\commands\datosfake.json', 'r',encoding='utf-8') as f:
+        with open(r'/home/super/Escriptori/project-3/ProyectoBiblioteca/BibliotecaIETI/BibliotecaApp/management/commands/datosfake.json', 'r',encoding='utf-8') as f:
             data = json.load(f)
             self.insertar_datos_ficticios(data)
         self.stdout.write(self.style.SUCCESS("¡Datos insertados exitosamente!"))

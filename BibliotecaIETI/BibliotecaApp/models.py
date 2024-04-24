@@ -11,7 +11,8 @@ class ItemCatalogo(models.Model):
     ocio = models.TextField()
     autor = models.CharField(max_length=200)
     data_edicion = models.DateField()
-
+    def __str__(self):
+        return str(self.titulo)
 
 
 # Modelo para los libros
@@ -21,7 +22,6 @@ class Libro(ItemCatalogo):
     editorial = models.CharField(max_length=100)
     coleccion = models.CharField(max_length=100, null=True)
     paginas = models.IntegerField(default=0)  # Establecer un valor predeterminado
-
 
 # Modelo para los CD
 class CD(ItemCatalogo):
