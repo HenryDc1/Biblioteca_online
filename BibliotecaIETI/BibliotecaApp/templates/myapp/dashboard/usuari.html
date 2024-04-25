@@ -13,9 +13,7 @@
 
   <body>
     <div class="min-h-screen flex flex-col">
-      <header
-        class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between"
-      >
+      {% include 'myapp/header.html'%}
         <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">
             <a href="{% url 'index' %}">
           Biblioteca IETI

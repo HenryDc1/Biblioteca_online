@@ -37,7 +37,7 @@ def index(request):
     
 
 @login_required
-def dashboard(request):
+def usuari(request):
     users = User.objects.all()
 
     # actualizar datos del usuario
