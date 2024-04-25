@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import BibliotecaApp
-from BibliotecaApp import api
+from BibliotecaApp import api, views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('', BibliotecaApp.views.index),
     path('get_ItemCatalogo', api.get_ItemCatalogo, name='get_ItemCatalogo'),
 
+    path('guardar-log/', views.guardar_log, name='guardar_log'),
 
 ]

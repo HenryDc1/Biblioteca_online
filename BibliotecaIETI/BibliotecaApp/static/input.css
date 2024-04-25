@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom CSS */
+
+.alert-success {
+    background-color: rgb(223, 240, 216);
+    color: rgb(0, 100, 0);
+    border: 1px solid rgb(0, 100, 0);
+}
+
+.button-success {
+    background-color: rgb(223, 240, 216);
+    color: rgb(0, 100, 0);
+}
+
+.alert-error {
+    background-color: rgb(242, 222, 222);
+    color: rgb(185, 74, 72);
+    border: 1px solid rgb(185, 74, 72);
+}
+
+.button-error {
+    background-color: rgb(242, 222, 222);
+    color: rgb(185, 74, 72);
+}
+
+.alert-warning {
+    background-color: rgb(255, 236, 209);
+    color: rgb(215, 148, 24);
+    border: 1px solid rgb(215, 148, 24);
+}
+
+.button-warning {
+    background-color: rgb(255, 236, 209);
+    color: rgb(215, 148, 24);
+}
+
+.alert-info {
+    background-color: rgb(217, 237, 247);
+    color: rgb(13, 103, 118);
+    border: 1px solid rgb(13, 103, 118);
+}
+
+.button-info {
+    background-color: rgb(217, 237, 247);
+    color: rgb(13, 103, 118);
+}
+
+.alert-debug {
+    background-color: rgb(248, 249, 250);
+    color: rgb(33, 37, 41);
+    border: 1px solid rgb(33, 37, 41);
+}
+
+.button-debug {
+    background-color: rgb(248, 249, 250);
+    color: rgb(33, 37, 41);
+}
+
+
+@keyframes fadeOutAnimation {
+    0% {
+        opacity: 1;
+        min-height: 3.75rem;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        min-height: 2.5rem;
+        display: none;
+    }
+}
+
+.hide {
+    visibility: hidden;
+    animation: fadeOutAnimation ease-in-out 0.25s forwards;
+}

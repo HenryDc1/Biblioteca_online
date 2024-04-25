@@ -5,18 +5,21 @@
     <meta charset="UTF-8">
     <title>Resultados de la búsqueda</title>
     <link rel="stylesheet" href="{% static 'output.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+    {% include 'myapp/messages.html' %}
     <div class="container min-w-full">
         <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
             <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">Biblioteca IETI</h1>
         </header>
+        
         <div >
-            <div class="w-full md:w-1/2 pr-4 py-4 md:ml-auto lg:mr-4">
+            <div class="w-full md:w-0 pr-4 py-4 md:ml-auto lg:mr-4">
                 <h1 class="text-2xl font-bold mt-4 mb-8 text-lg text-[#bd1e59]">Resultats de la cerca: "{{ query }}"</h1>
     
                 <!-- Mostrar resultados de la búsqueda -->
-                <div class="" id="search-results">
+                <div class="search-results" id="search-results">
                     {% if resultados %}
                         <ul>
                             {% for libro in resultados %}
@@ -30,6 +33,7 @@
                                 <hr class="border-2 border-[#bd1e59] mt-4 mb-8">
                             {% endfor %}
                         </ul>
+                    </div>
                     {% else %}
                         <p>No s'han trobat resultats per: "{{ query }}"</p>
                     {% endif %}
@@ -37,6 +41,30 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.search-results ul li').length === 0) {
+                llamadaAjaxLog("CERCA_CATALEG: No ha trobat resultat a la cerca","ERROR");
+            }
+
+            function llamadaAjaxLog(evento,nivel){
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+                    type: 'POST',  // Método POST para enviar los datos al servidor
+                    data: {
+                        evento: evento,
+                        nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
+                    },
+                    success: function(response) {
+                        console.log('Log guardado correctamente:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error al guardar el log:', error);
+                    }
+                });
+            }
+        });  
+    </script>
 </body>
 </html>
 {% endblock %}

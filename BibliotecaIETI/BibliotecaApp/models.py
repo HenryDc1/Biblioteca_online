@@ -11,7 +11,8 @@ class ItemCatalogo(models.Model):
     ocio = models.TextField()
     autor = models.CharField(max_length=200)
     data_edicion = models.DateField()
-
+    def __str__(self):
+        return str(self.titulo)
 
 
 # Modelo para los libros
@@ -21,7 +22,6 @@ class Libro(ItemCatalogo):
     editorial = models.CharField(max_length=100)
     coleccion = models.CharField(max_length=100, null=True)
     paginas = models.IntegerField(default=0)  # Establecer un valor predeterminado
-
 
 # Modelo para los CD
 class CD(ItemCatalogo):
@@ -111,8 +111,9 @@ class Log(models.Model):
     ]
 
     evento = models.CharField(max_length=200)
-    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  # Utilizamos el campo de selección de opciones
+    nivel = models.CharField(max_length=20, choices=LEVEL_CHOICES)  
     fecha_registro = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.fecha_registro} ---- {self.evento}"
+        return f"{self.nivel} ---- {self.evento} ---- {self.usuario}"
