@@ -39,7 +39,7 @@ def index(request):
     
 
 @login_required
-def dashboard(request):
+def usuari(request):
     users = User.objects.all()
 
     # actualizar datos del usuario
@@ -57,24 +57,28 @@ def dashboard(request):
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
-                return redirect('dashboard')
+                return redirect('usuari')
             except User.DoesNotExist:
                 messages.error(request, 'El usuario no existe')
                 registrar_evento(f'Intento de actualización de datos para un usuario inexistente', 'ERROR')
-                return redirect('dashboard')
+                return redirect('usuari')
         else:
             messages.error(request, 'Falta el campo ID')
             registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
-            return redirect('dashboard')
+            return redirect('usuari')
 
     # Obtener fecha de nacimiento del usuario
     fecha_nacimiento = None
     if request.user.fecha_nacimiento:
         fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
 
-    return render(request, 'myapp/dashboard/dashboard.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
+    return render(request, 'myapp/dashboard/usuari.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
 
+@login_required
+def dashboard(request):
+    return render(request, 'myapp/dashboard/dashboard.html')
 
+@login_required
 def logout_user(request):
     logout(request)
     messages.info(request, 'Fins aviat!')
@@ -90,7 +94,7 @@ def canviar_contrasenya(request):
             update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
             messages.success(request, 'Contraseña cambiada correctamente')
             registrar_evento('Contrasenya canviada correctament', 'INFO')
-            return redirect('dashboard')
+            return redirect('usuari')
         else:
             for error in form.errors.values():
                 messages.error(request, error)
