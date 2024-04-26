@@ -1,10 +1,11 @@
+import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils import formats
 from datetime import datetime
 from dateutil import parser
-from .forms import ChangePassword
+from .forms import ChangePassword, Importar
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
@@ -12,7 +13,8 @@ from django.http import JsonResponse
 import requests
 from .models import Log, User
 from django.views.decorators.csrf import csrf_exempt
-
+import csv
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your views here.
 def index(request):
@@ -150,3 +152,56 @@ def guardar_log(request):
         return JsonResponse({'mensaje': 'Log guardado correctamente.'})
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
+
+def process_csv(csv_file, centre_educatiu,request):
+    # Guardar el archivo CSV en el sistema de archivos
+    file_path = os.path.join('/home/super/Baixades/', csv_file.name)
+    with open(file_path, 'wb+') as destination:
+        for chunk in csv_file.chunks():
+            destination.write(chunk)
+    
+    # Ahora abrir el archivo CSV desde la ubicación guardada
+    with open(file_path, 'r', encoding='ISO-8859-1') as file:
+        csv_reader = csv.reader(file, delimiter=',')
+        # Iterar sobre cada fila del archivo CSV
+        for line_number, row in enumerate(csv_reader, start=1):
+            try:
+                # Supongamos que el archivo CSV tiene el formato: nombre, apellidos, email, fecha de nacimiento, ciclo, roles
+                username, last_name, email, fecha_nacimiento, ciclo, centro, roles, telefono  = row
+                # Crea un nuevo objeto User y asigna los valores
+                user = User(
+                    username=username,
+                    last_name=last_name,
+                    email=email,
+                    fecha_nacimiento=fecha_nacimiento,
+                    centro=centre_educatiu,
+                    ciclo=ciclo,
+                    roles=roles, # Guarda la imagen y asigna la ruta
+                    telefono=telefono
+                )
+                # Guarda el objeto User en la base de datos
+                user.save()
+            except ValueError:
+                # Manejar el caso donde la fila no tiene el formato correcto
+                messages.warning(request, f"Línea {line_number}: No se importó correctamente. Formato incorrecto.")
+
+# En tu vista Django
+def upload_file(request):
+    if request.method == 'POST':
+        form = Importar(request.POST, request.FILES)
+        if form.is_valid():  # Verificar si el formulario es válido
+            csv_file = request.FILES.get('csv_file')  # Obtener el archivo CSV si existe
+            if csv_file:  # Verificar si se proporcionó un archivo CSV
+                print("Paso por aqui 2") 
+                centre_educatiu = form.cleaned_data.get('centre_educatiu') 
+                process_csv(csv_file, centre_educatiu,request)
+                messages.success(request, 'El archivo CSV se ha importado correctamente.')
+                return render(request, 'myapp/dashboard/importar.html', {'form': form})
+            else:
+                # Manejar el caso donde no se proporciona el archivo CSV
+                messages.error(request, 'No se proporcionó un archivo CSV')
+                print(form.errors)  # Imprime los errores del formulario en la consola
+    else:
+        form = Importar()
+        print("Paso por aqui 3") 
+    return render(request, 'myapp/dashboard/importar.html', {'form': form})
