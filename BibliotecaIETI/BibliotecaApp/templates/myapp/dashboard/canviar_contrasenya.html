@@ -37,6 +37,7 @@
               <form action="{% url 'canviar_contrasenya' %}" method="POST">
                 {% csrf_token %}
                 <div class="grid gap-4">
+                  <input type="hidden" name="id" value="{{ user.id }}"/>
                   <div>
                     <label
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
@@ -86,6 +87,7 @@
                     />
                   </div>
                 </div>
+                <input type="hidden" id="has_password_changed" name="has_password_changed" value="True"/>
                 <div class="flex items-center py-8" style="margin-top:20px;">
                   <input
                     type="submit"

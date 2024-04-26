@@ -17,16 +17,21 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def index(request):
     if request.method == "POST":
+
         # Validate using the User model
         username = request.POST["email"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Aqui deberia ir un mensaje de exito.
-            registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
-            messages.success(request, 'Inici de sessió correcte!')
-            return redirect('index')
+            if not user.has_password_changed:
+                messages.warning(request, 'La contrasenya predeterminada es insegura. Canvia-la ara mateix per poder accedir als continguts.')
+                return redirect('canviar_contrasenya')
+            else:
+                # Aqui deberia ir un mensaje de exito.
+                registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
+                messages.success(request, 'Inici de sessió correcte!')
+                return redirect('index')
         else:
             # Aqui deberia ir un mensaje de error.
             registrar_evento('Inici de sessió fallit', 'ERROR')
