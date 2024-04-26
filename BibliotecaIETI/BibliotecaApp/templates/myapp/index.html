@@ -29,6 +29,13 @@
             <div class="relative">
               <form id="search-form" action="{% url 'cerca_cataleg' %}" method="POST">
                 {% csrf_token %}
+                <div class="relative flex items-center">
+                  <input id="only-available" type="checkbox" class="hidden"/>
+                  <label for="only-available" class="text-sm text-[#bd1e59] py-2 flex items-center cursor-pointer">
+                      <span class="w-4 h-4 border border-[#bd1e59] rounded-sm mr-2 flex-shrink-0"></span>
+                      Cercar només disponibles
+                  </label>
+                </div>
                 <div class="relative">
                     <input id="search-input"
                            class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
