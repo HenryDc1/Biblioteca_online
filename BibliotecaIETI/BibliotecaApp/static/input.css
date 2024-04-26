@@ -77,3 +77,15 @@
     visibility: hidden;
     animation: fadeOutAnimation ease-in-out 0.25s forwards;
 }
+
+#only-available:checked + label span::after {
+    content: 'X';
+    display: block;
+    position: absolute;
+    top: 72%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 1px;
+}
