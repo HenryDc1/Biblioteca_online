@@ -23,6 +23,9 @@ urlpatterns = [
     path('guardar-log/', views.guardar_log, name='guardar_log'),
 
     path('upload_file/', views.upload_file, name='upload_file'),
+    path('crear_usuari/', views.crear_usuari, name='crear_usuari')
+
+    
 
 ]
 

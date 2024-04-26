@@ -15,6 +15,7 @@ from .models import Log, User
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
+from .forms import UserProfileForm
 
 # Create your views here.
 def index(request):
@@ -214,3 +215,24 @@ def upload_file(request):
         form = Importar()
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
+
+def crear_usuari(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        print('paso por aqui 1')
+        print(request.POST)
+        print(request.FILES)
+        if form.is_valid():
+            print('paso por aqui 2')
+            # Guarda el formulario y vincúlalo al usuario actual
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return redirect('dashboard')  # Cambia 'dashboard' por el nombre de la URL de tu dashboard
+    else:
+        form = UserProfileForm()
+    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+
+
+
