@@ -10,7 +10,9 @@
         "ISBN": "978-84-376-0994-7",
         "editorial": "Sudamericana",
         "coleccion": "Biblioteca Breu",
-        "paginas": 432
+        "paginas": 432,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB002",
@@ -22,7 +24,10 @@
         "ISBN": "978-84-376-0471-3",
         "editorial": "Sudamericana",
         "coleccion": "Biblioteca Breu",
-        "paginas": 573
+        "paginas": 573,
+        "cantidad": 10,
+        "cantidad_disponible": 10
+        
     },
     {
         "id_catalogo": "LB003",
@@ -34,7 +39,9 @@
         "ISBN": "978-84-9759-759-3",
         "editorial": "Francisco de Robles",
         "coleccion": "L'enginyós fidalgo Don Quijote de la Mancha",
-        "paginas": 863
+        "paginas": 863,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB004",
@@ -46,7 +53,9 @@
         "ISBN": "978-84-376-0496-6",
         "editorial": "Richard Bentley",
         "coleccion": "Novel·les Estàndard de Bentley",
-        "paginas": 635
+        "paginas": 635,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB005",
@@ -58,7 +67,9 @@
         "ISBN": "978-84-674-6740-1",
         "editorial": "Reynal & Hitchcock",
         "coleccion": null,
-        "paginas": 96
+        "paginas": 96,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB006",
@@ -70,7 +81,9 @@
         "ISBN": "978-84-376-0244-3",
         "editorial": "Secker & Warburg",
         "coleccion": null,
-        "paginas": 328
+        "paginas": 328,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB007",
@@ -82,7 +95,9 @@
         "ISBN": "978-84-376-0520-8",
         "editorial": "T. Egerton, Whitehall",
         "coleccion": "Novel·les de l'autora",
-        "paginas": 426
+        "paginas": 426,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB008",
@@ -94,7 +109,9 @@
         "ISBN": "978-84-376-0486-7",
         "editorial": "A. Lacroix, Verboeckhoven & Cie",
         "coleccion": null,
-        "paginas": 1232
+        "paginas": 1232,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB009",
@@ -106,7 +123,9 @@
         "ISBN": "978-4-08-873621-1",
         "editorial": "Shueisha",
         "coleccion": "Jump Comics",
-        "paginas": 108
+        "paginas": 108,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB010",
@@ -118,7 +137,9 @@
         "ISBN": "978-84-375-0186-6",
         "editorial": "Charles L. Webster And Company",
         "coleccion": null,
-        "paginas": 342
+        "paginas": 342,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB011",
@@ -130,7 +151,9 @@
         "ISBN": "978-84-08-03239-5",
         "editorial": "Harper & Row",
         "coleccion": null,
-        "paginas": 176
+        "paginas": 176,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB012",
@@ -142,7 +165,9 @@
         "ISBN": "978-84-450-7001-3",
         "editorial": "Allen & Unwin",
         "coleccion": "El senyor dels anells",
-        "paginas": 488
+        "paginas": 488,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB013",
@@ -154,7 +179,9 @@
         "ISBN": "978-84-9759-759-3",
         "editorial": "Doubleday",
         "coleccion": null,
-        "paginas": 624
+        "paginas": 624,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB014",
@@ -166,7 +193,9 @@
         "ISBN": "978-84-376-0169-9",
         "editorial": "Ward, Lock & Company",
         "coleccion": null,
-        "paginas": 304
+        "paginas": 304,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB015",
@@ -178,7 +207,9 @@
         "ISBN": "978-84-406-9641-9",
         "editorial": "Bloomsbury",
         "coleccion": "Harry Potter",
-        "paginas": 256
+        "paginas": 256,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB016",
@@ -190,7 +221,9 @@
         "ISBN": "978-84-376-0494-2",
         "editorial": "The Russian Messenger",
         "coleccion": null,
-        "paginas": 671
+        "paginas": 671,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB017",
@@ -202,7 +235,9 @@
         "ISBN": "978-84-376-0291-7",
         "editorial": "Archibald Constable and Company",
         "coleccion": null,
-        "paginas": 418
+        "paginas": 418,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB018",
@@ -214,7 +249,9 @@
         "ISBN": "978-84-376-0292-4",
         "editorial": "Vàries",
         "coleccion": null,
-        "paginas": 1056
+        "paginas": 1056,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB019",
@@ -226,7 +263,9 @@
         "ISBN": "978-84-376-0520-8",
         "editorial": "T. Egerton, Whitehall",
         "coleccion": "Novel·les de l'autora",
-        "paginas": 336
+        "paginas": 336,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB020",
@@ -238,7 +277,9 @@
         "ISBN": "978-84-376-0509-3",
         "editorial": "Secker & Warburg",
         "coleccion": null,
-        "paginas": 328
+        "paginas": 328,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB021",
@@ -250,7 +291,9 @@
         "ISBN": "978-84-376-0472-0",
         "editorial": "Kurt Wolff Verlag",
         "coleccion": null,
-        "paginas": 208
+        "paginas": 208,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB022",
@@ -262,7 +305,9 @@
         "ISBN": "978-84-376-0473-7",
         "editorial": "Charles Scribner's Sons",
         "coleccion": null,
-        "paginas": 200
+        "paginas": 200,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB023",
@@ -274,7 +319,9 @@
         "ISBN": "978-84-376-0292-4",
         "editorial": "The Russian Messenger",
         "coleccion": null,
-        "paginas": 864
+        "paginas": 864,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB024",
@@ -286,7 +333,9 @@
         "ISBN": "978-84-376-0293-1",
         "editorial": "J. B. Lippincott & Co.",
         "coleccion": null,
-        "paginas": 376
+        "paginas": 376,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB025",
@@ -298,7 +347,9 @@
         "ISBN": "978-84-376-0245-0",
         "editorial": "Charles Scribner's Sons",
         "coleccion": null,
-        "paginas": 128
+        "paginas": 128,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB026",
@@ -310,7 +361,9 @@
         "ISBN": "978-84-376-0505-5",
         "editorial": "Macmillan Publishers",
         "coleccion": null,
-        "paginas": 272
+        "paginas": 272,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB027",
@@ -322,7 +375,9 @@
         "ISBN": "978-84-376-0995-4",
         "editorial": "Sudamericana",
         "coleccion": "Biblioteca Breu",
-        "paginas": 120
+        "paginas": 120,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB028",
@@ -334,7 +389,9 @@
         "ISBN": "978-84-376-0345-8",
         "editorial": "Ponson du Terrail",
         "coleccion": null,
-        "paginas": 1242
+        "paginas": 1242,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     },
     {
         "id_catalogo": "LB029",
@@ -346,7 +403,9 @@
         "ISBN": "978-84-376-0497-3",
         "editorial": "Cassell & Company",
         "coleccion": null,
-        "paginas": 292
+        "paginas": 292,
+        "cantidad": 10,
+        "cantidad_disponible": 10
     }
     ],
     "CDs": [
@@ -358,7 +417,9 @@
         "data_edicion": "1973-03-01",
         "discografica": "Harvest",
         "estilo": "Rock progresivo",
-        "duracion": "00:42:49"
+        "duracion": "00:42:49",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD002",
@@ -368,7 +429,9 @@
         "data_edicion": "1982-11-30",
         "discografica": "Epic",
         "estilo": "Pop, post-disco, funk",
-        "duracion": "00:42:19"
+        "duracion": "00:42:19",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD003",
@@ -378,7 +441,9 @@
         "data_edicion": "1980-07-25",
         "discografica": "Atlantic",
         "estilo": "Hard rock",
-        "duracion": "00:42:11"
+        "duracion": "00:42:11",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD004",
@@ -388,7 +453,9 @@
         "data_edicion": "1969-09-26",
         "discografica": "Apple",
         "estilo": "Rock psicodélico, rock progresivo",
-        "duracion": "00:47:23"
+        "duracion": "00:47:23",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD005",
@@ -398,7 +465,9 @@
         "data_edicion": "1979-11-30",
         "discografica": "Harvest",
         "estilo": "Rock progresivo, rock sinfónico",
-        "duracion": "01:20:00"
+        "duracion": "01:20:00",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD006",
@@ -408,7 +477,9 @@
         "data_edicion": "1971-11-08",
         "discografica": "Atlantic",
         "estilo": "Hard rock, rock blues",
-        "duracion": "00:42:38"
+        "duracion": "00:42:38",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD007",
@@ -418,7 +489,9 @@
         "data_edicion": "1976-12-08",
         "discografica": "Asylum",
         "estilo": "Rock, country rock",
-        "duracion": "00:43:30"
+        "duracion": "00:43:30",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD008",
@@ -428,7 +501,9 @@
         "data_edicion": "1987-08-31",
         "discografica": "Epic",
         "estilo": "Pop, funk, R&B",
-        "duracion": "00:48:16"
+        "duracion": "00:48:16",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD009",
@@ -438,7 +513,9 @@
         "data_edicion": "1991-09-24",
         "discografica": "DGC",
         "estilo": "Grunge, rock alternativo",
-        "duracion": "00:48:21"
+        "duracion": "00:48:21",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "CD010",
@@ -448,7 +525,9 @@
         "data_edicion": "1967-06-01",
         "discografica": "Parlophone",
         "estilo": "Rock psicodélico, rock experimental",
-        "duracion": "00:39:52"
+        "duracion": "00:39:52",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       }      
     ],
     "DVDs": [
@@ -464,7 +543,9 @@
             "duracion_seconds": 0,
             "subtitulos": true,  
             "idiomas_audio": "Inglés",
-            "formato_video": "DVD"
+            "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD002",
@@ -478,7 +559,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD003",
@@ -492,7 +575,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD004",
@@ -506,7 +591,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD005",
@@ -520,7 +607,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD006",
@@ -534,7 +623,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD007",
@@ -548,7 +639,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD008",
@@ -562,7 +655,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD009",
@@ -576,7 +671,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DVD010",
@@ -590,7 +687,9 @@
         "duracion_seconds": 0,
         "subtitulos": true,  
         "idiomas_audio": "Inglés",
-        "formato_video": "DVD"
+        "formato_video": "DVD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       }      
     ],
     "Blu-rays": [
@@ -605,7 +704,9 @@
             "extras": "Escenas eliminadas, detrás de cámaras",
             "duracion_hours": 2,
             "duracion_minutes": 42,
-            "duracion_seconds": 0
+            "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
             "id_catalogo": "BR002",
@@ -618,7 +719,9 @@
             "extras": "Comentarios del director, making of",
             "duracion_hours": 2,
             "duracion_minutes": 49,
-            "duracion_seconds": 0
+            "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR003",
@@ -631,7 +734,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 2,
           "duracion_minutes": 28,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR004",
@@ -644,7 +749,9 @@
           "extras": "Escenas eliminadas, documentales",
           "duracion_hours": 2,
           "duracion_minutes": 32,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR005",
@@ -657,7 +764,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 2,
           "duracion_minutes": 0,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR006",
@@ -670,7 +779,9 @@
           "extras": "Escenas eliminadas, documentales",
           "duracion_hours": 2,
           "duracion_minutes": 23,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR007",
@@ -683,7 +794,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 1,
           "duracion_minutes": 31,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR008",
@@ -696,7 +809,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 2,
           "duracion_minutes": 36,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR009",
@@ -709,7 +824,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 2,
           "duracion_minutes": 44,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         },
         {
           "id_catalogo": "BR010",
@@ -722,7 +839,9 @@
           "extras": "Comentarios del director, detrás de cámaras",
           "duracion_hours": 2,
           "duracion_minutes": 24,
-          "duracion_seconds": 0
+          "duracion_seconds": 0,
+        "cantidad": 10,
+        "cantidad_disponible": 10
         }        
     ]
     ,
@@ -737,7 +856,9 @@
         "modelo": "iPhone 13",
         "tipo_conexion": "Celular",
         "sistema_operativo": "iOS",
-        "almacenamiento": "128GB"
+        "almacenamiento": "128GB",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS002",
@@ -749,7 +870,9 @@
         "modelo": "Galaxy S21",
         "tipo_conexion": "Celular",
         "sistema_operativo": "Android",
-        "almacenamiento": "256GB"
+        "almacenamiento": "256GB",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS003",
@@ -761,7 +884,9 @@
         "modelo": "MacBook Pro",
         "tipo_conexion": "Portátil",
         "sistema_operativo": "macOS",
-        "almacenamiento": "512GB SSD"
+        "almacenamiento": "512GB SSD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS004",
@@ -773,7 +898,9 @@
         "modelo": "XPS 13",
         "tipo_conexion": "Portátil",
         "sistema_operativo": "Windows 10",
-        "almacenamiento": "512GB SSD"
+        "almacenamiento": "512GB SSD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS005",
@@ -785,7 +912,9 @@
         "modelo": "iPad Air",
         "tipo_conexion": "Tableta",
         "sistema_operativo": "iPadOS",
-        "almacenamiento": "64GB"
+        "almacenamiento": "64GB",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS006",
@@ -797,7 +926,9 @@
         "modelo": "Surface Pro 7",
         "tipo_conexion": "Tableta",
         "sistema_operativo": "Windows 10",
-        "almacenamiento": "256GB SSD"
+        "almacenamiento": "256GB SSD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS007",
@@ -809,7 +940,9 @@
         "modelo": "PlayStation 5",
         "tipo_conexion": "Consola de videojuegos",
         "sistema_operativo": "Propietario",
-        "almacenamiento": "825GB SSD"
+        "almacenamiento": "825GB SSD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS008",
@@ -821,7 +954,9 @@
         "modelo": "Switch",
         "tipo_conexion": "Consola de videojuegos",
         "sistema_operativo": "Propietario",
-        "almacenamiento": "32GB"
+        "almacenamiento": "32GB",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS009",
@@ -833,7 +968,9 @@
         "modelo": "Kindle Oasis",
         "tipo_conexion": "E-reader",
         "sistema_operativo": "Propietario",
-        "almacenamiento": "8GB"
+        "almacenamiento": "8GB",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       },
       {
         "id_catalogo": "DIS010",
@@ -845,7 +982,9 @@
         "modelo": "HERO9 Black",
         "tipo_conexion": "Cámara de acción",
         "sistema_operativo": "Propietario",
-        "almacenamiento": "Sin almacenamiento interno, utiliza tarjetas microSD"
+        "almacenamiento": "Sin almacenamiento interno, utiliza tarjetas microSD",
+        "cantidad": 10,
+        "cantidad_disponible": 10
       }      
     ],
     "Ejemplares": [
@@ -885,7 +1024,8 @@
         "fecha_nacimiento": "1990-05-15",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Anonimo"
+        "roles": "Anonimo",
+        "telefono": "123456789"
       },
       {
         "username": "Javier",
@@ -896,7 +1036,8 @@
         "fecha_nacimiento": "1990-05-15",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Estudiante"
+        "roles": "Estudiante",
+        "telefono": "987654321"
       },
       {
         "username": "Henry",
@@ -907,7 +1048,8 @@
         "fecha_nacimiento": "1985-09-20",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Estudiante"
+        "roles": "Estudiante",
+        "telefono": "654987321"
       },
       {
         "username": "Mehdi",
@@ -918,7 +1060,8 @@
         "fecha_nacimiento": "1990-01-01",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Estudiante"
+        "roles": "Estudiante",
+        "telefono": "789654123"
       },
       {
         "username": "xavi",
@@ -929,7 +1072,8 @@
         "fecha_nacimiento": "1978-03-12",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Professor"
+        "roles": "Professor",
+        "telefono": "456321789"
       },
       {
         "username": "enric",
@@ -940,7 +1084,8 @@
         "fecha_nacimiento": "1982-07-28",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Professor"
+        "roles": "Professor",
+        "telefono": "321789456"
       },
       {
         "username": "Leandro",
@@ -951,7 +1096,8 @@
         "fecha_nacimiento": "1975-12-05",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Professor"
+        "roles": "Professor",
+        "telefono": "654123987"
       },
       {
         "username": "maricarmen",
@@ -962,8 +1108,9 @@
         "fecha_nacimiento": "1980-09-15",
         "centro": "Esteve Terradas Illa",
         "ciclo": "DAW",
-        "roles": "Professor"
-      }
+        "roles": "Professor",
+        "telefono": "123789456"
+      }    
     ],
     "Reservas": [
       {
