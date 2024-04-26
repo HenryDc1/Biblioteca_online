@@ -15,7 +15,7 @@
     {% include 'myapp/messages.html' %}
     <div class="min-h-screen flex flex-col">
       {% include 'myapp/header.html'%}
-      <main class="flex-1 flex">
+      <main class="flex flex-1">
         <div class="bg-gray-100 w-64 p-4">
           <nav class="space-y-4">
             <a
@@ -38,7 +38,7 @@
             </a>
             {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
               <a id="importar"
-                class="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-300 transition-colors"
+                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                 href="{% url 'upload_file' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">

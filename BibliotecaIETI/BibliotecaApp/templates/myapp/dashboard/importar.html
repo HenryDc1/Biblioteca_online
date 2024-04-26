@@ -1,35 +1,68 @@
 {% block content %} {% load static %}
 
 <!DOCTYPE html>
-<html lang="ca">
-
-<head>
-    <title>Importar CSV| Biblioteca IETI</title>
+<html lang="es">
+  <head>
+    <title>Dashboard | Biblioteca IETI</title>
     <meta charset="UTF-8" />
     <meta name="title" content="Los videojuegos de 2020" />
-    <meta name="description" content="DescripciÃ³n de la WEB" />
+    <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     {% include 'myapp/messages.html' %}
-    <div class="container min-w-full">
-        <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
-            <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">
-                <a href="{% url 'index' %}">
-                    Biblioteca IETI
-                </a>
-            </h1>
-            {% if user.is_authenticated %}
-            <div class="clickSortir flex items-center space-x-4 pr-32">
-                <a href="{% url 'logout' %}"
-                    class="text-[#bd1e59] border-b-2 border-transparent hover:border-[#bd1e59] transition-colors text-xl">Sortir</a>
-            </div>
-            {% endif %}
-        </header>
-        <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32 justify-center">
-            <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
+    <div class="min-h-screen flex flex-col">
+      {% include 'myapp/header.html'%}
+      <main class="flex flex-1">
+        <div class="bg-gray-100 w-64 p-4">
+          <nav class="space-y-4">
+            <a
+              class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+              href="{% url 'dashboard' %}"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              Dashboard
+            </a>
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+            </svg>
+              Préstamos
+            </a>
+            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
+              <a id="importar"
+                class="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-200 transition-colors"
+                href="{% url 'upload_file' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Importar
+              </a>
+              {% endif %}
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors " href="{% url 'usuari' %}">
+            <svg
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+              Perfil
+            </a>
+          </nav>
+        </div>
+        <div class="flex-1 p-4">
+          <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32 justify-center">
+            <div class="w-full md:w-4/6 mt-8 md:mt-0 lg:px-24">
                 {% if user.is_authenticated %}
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
@@ -77,9 +110,15 @@
                 {% endif %}
             </div>
         </div>
+        </div>
+      </main>
     </div>
-</body>
 
+    <script>
+        // logs PENDIENTES
+
+    </script>
+  </body>
 </html>
 
 {% endblock %}

@@ -27,8 +27,15 @@ def index(request):
         if user is not None:
             login(request, user)
             if not user.has_password_changed:
-                messages.warning(request, 'La contrasenya predeterminada es insegura. Canvia-la ara mateix per poder accedir als continguts.')
-                return redirect('canviar_contrasenya')
+                if user.email == 'admin@admin.com':
+                    user.has_password_changed = True
+                    user.save()
+                    registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
+                    messages.success(request, 'Inici de sessió correcte!')
+                    return redirect('index')
+                else:
+                    messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+                    return redirect('canviar_contrasenya')
             else:
                 # Aqui deberia ir un mensaje de exito.
                 registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
@@ -45,6 +52,10 @@ def index(request):
 
 @login_required
 def usuari(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     users = User.objects.all()
 
     # actualizar datos del usuario
@@ -81,6 +92,10 @@ def usuari(request):
 
 @login_required
 def dashboard(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     return render(request, 'myapp/dashboard/dashboard.html')
 
 @login_required
@@ -96,10 +111,18 @@ def canviar_contrasenya(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
-            messages.success(request, 'Contraseña cambiada correctamente')
-            registrar_evento('Contrasenya canviada correctament', 'INFO')
-            return redirect('usuari')
+            if not user.has_password_changed:
+                user.has_password_changed = True
+                user.save()
+                update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
+                messages.success(request, 'Contraseña cambiada correctamente')
+                registrar_evento('Contrasenya canviada correctament', 'INFO')
+                return redirect('dashboard')
+            else:
+                update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
+                messages.success(request, 'Contraseña cambiada correctamente')
+                registrar_evento('Contrasenya canviada correctament', 'INFO')
+                return redirect('usuari')
         else:
             for error in form.errors.values():
                 messages.error(request, error)
@@ -162,7 +185,12 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
 
+@login_required
 def process_csv(csv_file, centre_educatiu,request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     # Guardar el archivo CSV en el sistema de archivos
     file_path = os.path.join('/home/super/Baixades/', csv_file.name)
     with open(file_path, 'wb+') as destination:

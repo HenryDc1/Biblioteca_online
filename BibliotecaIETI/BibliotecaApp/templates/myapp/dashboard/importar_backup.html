@@ -1,0 +1,76 @@
+{% block content %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <title>Importar CSV| Biblioteca IETI</title>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Los videojuegos de 2020" />
+    <meta name="description" content="DescripciÃ³n de la WEB" />
+    <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    {% include 'myapp/messages.html' %}
+    <div class="min-h-screen flex flex-col">
+        {% include 'myapp/header.html'%}
+        <div clas="flex flex-1">
+            
+            <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32 justify-center">
+                <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24">
+                    {% if user.is_authenticated %}
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                        <div class="flex flex-col space-y-1.5 p-6">
+                            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-[#bd1e59]">
+                                Importar usuaris desde CSV
+                            </h3>
+                            <p class="text-sm text-[#bd1e59]">
+                                Importa usuaris desde un arxiu CSV.
+                            </p>
+                        </div>
+                        <div class="p-6">
+                            <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="grid gap-4">
+                                    <div>
+                                        <label
+                                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                            for="csv_file">
+                                            Carrega l' arxiu CSV
+                                        </label>
+                                        <input class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                        id="csv_file" type="file" name="csv_file" accept=".csv" required />
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                            for="centre_educatiu">
+                                            Selecciona un centre educatiu
+                                        </label>
+                                        <input
+                                        class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                        id="centre" placeholder="Nom del centre educatiu" type="text"
+                                        name="centre_educatiu" required  />
+                                    </div>
+                                </div>
+                                <div class="flex items-center py-8" style="margin-top:20px;">
+                                    <input type="submit" value="Importar"
+                                        class="canviarPassOkk inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}
