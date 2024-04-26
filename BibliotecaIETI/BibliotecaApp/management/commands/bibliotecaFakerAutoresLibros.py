@@ -4,8 +4,21 @@ from faker import Faker
 from datetime import datetime
 from BibliotecaApp.models import Libro
 
-fake_author = Faker(['es_ES'])  # Faker para nombres de autores
-fake_title = Faker('es_ES')  # Faker para títulos de libros en español
+fake_author = Faker(['es_ES']) 
+fake_title = Faker('es_ES')
+
+
+word_categories = {
+    "adjetivos": ["el", "la", "los", "las", "un", "una", "unos", "unas", "este", "esta", "estos", "estas"],
+    "sustantivos": ["señor", "señora", "anillos", "aventura", "misterio", "fantasía", "romance", "historia", 
+                    "ciencia", "ficción", "intriga", "suspenso", "viaje", "descubrimiento", "amor", "poder", 
+                    "destino", "guerra", "tesoro", "espada", "rey", "reina", "príncipe", "princesa", "héroe", 
+                    "heroína", "mundo", "universo", "ciudad", "paisaje", "sueño", "pesadilla"],
+    "verbos": ["en busca de", "en el reino de", "la búsqueda de", "la conquista de", "la venganza de", 
+                "el regreso de", "el secreto de", "el destino de", "la leyenda de", "el poder de"],
+    "adverbios": ["oscuro", "legendario", "mágico", "olvidado", "perdido", "eterno", "prohibido", "inmortal",
+                    "desconocido", "oculto", "fatal", "infinito", "solitario", "temible", "legendario"]
+}
 
 class Command(BaseCommand):
     help = 'Generate libros with random data'
@@ -27,7 +40,14 @@ class Command(BaseCommand):
             self.stdout.write(f'Generating libros for author: {author_name}')
             for j in range(books_per_author):
                 id_catalogo = f"LB{i*books_per_author + j + 100}"
-                titulo = fake_title.sentence(nb_words=4, variable_nb_words=True, ext_word_list=None)
+                # Genera el título del libro utilizando palabras de las categorías del diccionario
+                titulo_parts = [
+                    random.choice(word_categories["adjetivos"]), 
+                    random.choice(word_categories["sustantivos"]), 
+                    random.choice(word_categories["verbos"]), 
+                    random.choice(word_categories["adverbios"])
+                ]
+                titulo = ' '.join(titulo_parts)
                 ocio = "Novel·la"
                 autor = author_name
                 data_edicion = fake_author.date_between(start_date='-50y', end_date='today')
