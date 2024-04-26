@@ -1,0 +1,93 @@
+{% block content %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Dashboard | Biblioteca IETI</title>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Los videojuegos de 2020" />
+    <meta name="description" content="Descripción de la WEB" />
+    <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    {% include 'myapp/messages.html' %}
+    <div class="min-h-screen flex flex-col">
+      {% include 'myapp/header.html'%}
+      <main class="flex-1 flex">
+        <div class="bg-gray-100 w-64 p-4">
+          <nav class="space-y-4">
+            <a
+              class="bg-gray-200 flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-300 transition-colors"
+              href="{% url 'dashboard' %}"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              Dashboard
+            </a>
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+            </svg>
+              Préstamos
+            </a>
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors " href="{% url 'usuari' %}">
+            <svg
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+              Usuari
+            </a>
+          </nav>
+        </div>
+        <div class="flex-1 p-4">
+          <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+
+        </div>
+      </main>
+    </div>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    $('.clickSortir').click(function() {
+        llamadaAjaxLog("DASHBOARD: a donat click a 'Sortir (Tencar Sessió)'","INFO");
+    });
+    $('.guardarClick').click(function() {
+        llamadaAjaxLog("DASHBOARD: a realitzat canvis en Informació personal al donar click a 'Desa'","INFO");
+    });
+    
+    $('.canviarPass').click(function() {
+        llamadaAjaxLog("DASHBOARD:  a donat click a 'Canviar contrasenya'","INFO");
+    });
+    function llamadaAjaxLog(evento,nivel){
+        $.ajax({
+          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          type: 'POST',  // Método POST para enviar los datos al servidor
+          data: {
+              evento: evento,
+              nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
+          },
+          success: function(response) {
+              console.log('Log guardado correctamente:', response);
+          },
+          error: function(error) {
+              console.error('Error al guardar el log:', error);
+          }
+        });
+      }
+    });
+
+
+    </script>
+  </body>
+</html>
+
+{% endblock %}
