@@ -45,7 +45,9 @@ class Command(BaseCommand):
                 ISBN=libro_data['ISBN'],
                 editorial=libro_data['editorial'],
                 coleccion=libro_data['coleccion'],
-                paginas=libro_data['paginas']
+                paginas=libro_data['paginas'],
+                cantidad=libro_data.get('cantidad', 0),
+                cantidad_disponible=libro_data.get('cantidad_disponible', 0)
             )
 
     def insertar_cds(self, cds):
@@ -58,7 +60,9 @@ class Command(BaseCommand):
                 data_edicion=datetime.strptime(cd_data['data_edicion'], "%Y-%m-%d").date(),
                 discografica=cd_data['discografica'],
                 estilo=cd_data['estilo'],
-                duracion=cd_data['duracion']
+                duracion=cd_data['duracion'],
+                cantidad=cd_data.get('cantidad', 0),
+                cantidad_disponible=cd_data.get('cantidad_disponible', 0)
             )
 
     def insertar_dvds(self, dvds):
@@ -78,7 +82,9 @@ class Command(BaseCommand):
                 duracion=duracion,
                 subtitulos=dvd_data['subtitulos'],
                 idiomas_audio=dvd_data['idiomas_audio'],
-                formato_video=dvd_data['formato_video']
+                formato_video=dvd_data['formato_video'],
+                cantidad=dvd_data.get('cantidad', 0),
+                cantidad_disponible=dvd_data.get('cantidad_disponible', 0)
             )
 
     def insertar_blurays(self, blurays):
@@ -93,6 +99,8 @@ class Command(BaseCommand):
                 estudio=br_data['estudio'],
                 formato_video=br_data['formato_video'],
                 extras=br_data['extras'],
+                cantidad=br_data.get('cantidad', 0),
+                cantidad_disponible=br_data.get('cantidad_disponible', 0)
             )
 
     def insertar_dispositivos(self, dispositivos):
@@ -107,7 +115,9 @@ class Command(BaseCommand):
                 modelo=dispositivo_data['modelo'],
                 tipo_conexion=dispositivo_data['tipo_conexion'],
                 sistema_operativo=dispositivo_data['sistema_operativo'],
-                almacenamiento=dispositivo_data['almacenamiento']
+                almacenamiento=dispositivo_data['almacenamiento'],
+                cantidad=dispositivo_data.get('cantidad', 0),
+                cantidad_disponible=dispositivo_data.get('cantidad_disponible', 0)
             )
 
     def insertar_ejemplares(self, ejemplares):
@@ -145,7 +155,8 @@ class Command(BaseCommand):
                 fecha_nacimiento=datetime.strptime(usuario_data['fecha_nacimiento'], "%Y-%m-%d").date(),
                 centro=usuario_data['centro'],
                 ciclo=usuario_data['ciclo'],
-                roles=usuario_data['roles']
+                roles=usuario_data['roles'],
+                telefono=usuario_data.get('telefono')  # Obtener el teléfono del diccionario o None si no está presente
             )
 
     def insertar_reservas(self, reservas):

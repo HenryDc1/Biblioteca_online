@@ -70,6 +70,7 @@ class User(AbstractUser):
     roles = models.CharField(max_length=100)
     image = models.ImageField(upload_to='profile_photos', default='default.jpg')
     has_password_changed = models.BooleanField(default=False)  # Nuevo campo para rastrear el cambio de contraseña
+    telefono = models.CharField(max_length=20, null=True, blank=True)  # Null y blank para permitir valores nulos y vacíos
 
     # Definir accesos inversos personalizados para evitar conflictos
     groups = models.ManyToManyField('auth.Group', related_name="biblioteca_user_groups", blank=True)

@@ -12,4 +12,6 @@ class ChangePassword(SetPasswordForm):
         fields = ('old_password', 'new_password1', 'new_password2')
 
          
-        
+class Importar(forms.Form):
+    csv_file = forms.FileField(label='Arxiu CSV', widget=forms.FileInput(attrs={'class': 'form-control'}))
+    centre_educatiu = forms.CharField(label='Nom del centre educatiu', widget=forms.TextInput(attrs={'class': 'form-control'}))
