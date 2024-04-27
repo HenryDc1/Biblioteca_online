@@ -139,11 +139,11 @@
           const newPassword2ValidationMessage = document.getElementById('new-password2-validation-message');
 
           const validationRules = [
-              { regex: /^.{8,16}$/, message: 'La contraseña debe tener entre 8 y 16 caracteres. ' },
-              { regex: /[A-Z]/, message: 'La contraseña debe contener al menos una letra mayúscula. ' },
-              { regex: /[a-z]/, message: 'La contraseña debe contener al menos una letra minúscula. ' },
-              { regex: /[0-9]/, message: 'La contraseña debe contener al menos un número. ' },
-              { regex: /[^A-Za-z0-9]/, message: 'La contraseña debe contener al menos un símbolo. ' }
+            { regex: /^.{8,16}$/, message: 'La contrasenya ha de tenir entre 8 i 16 caràcters. ' },
+            { regex: /[A-Z]/, message: 'La contrasenya ha de contenir almenys una lletra majúscula. ' },
+            { regex: /[a-z]/, message: 'La contrasenya ha de contenir almenys una lletra minúscula. ' },
+            { regex: /[0-9]/, message: 'La contrasenya ha de contenir almenys un número. ' },
+            { regex: /[^A-Za-z0-9]/, message: 'La contrasenya ha de contenir almenys un símbol. ' }
           ];
 
           // Función para validar una contraseña y mostrar el mensaje de error correspondiente
@@ -174,7 +174,7 @@
               let errorMessage = '';
 
               if (password1 !== password2) {
-                  errorMessage = 'Las contraseñas no coinciden.';
+                  errorMessage = 'Les contrasenyes no coincideixen.';
               }
 
               // Mostrar el mensaje de error encontrado, o vacío si no hay errores
