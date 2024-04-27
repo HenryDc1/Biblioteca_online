@@ -27,6 +27,7 @@
                                     <p><strong>Gènere:</strong> {{ libro.ocio }}</p>
                                     <p><strong>Autor:</strong> {{ libro.autor }}</p>
                                     <p><strong>Data d'edició:</strong> {{ libro.data_edicion }}</p>
+                                    <p><strong>Disponibles:</strong> {{ libro.cantidad_disponible }} unitats</p>
                                 </li>
                                 <hr class="border-2 border-[#bd1e59] mt-4 mb-8">
                             {% endfor %}
@@ -47,7 +48,7 @@
 
             function llamadaAjaxLog(evento,nivel){
                 $.ajax({
-                    url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+                    url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
                     type: 'POST',  // Método POST para enviar los datos al servidor
                     data: {
                         evento: evento,

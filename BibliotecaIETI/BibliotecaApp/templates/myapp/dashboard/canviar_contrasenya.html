@@ -69,6 +69,7 @@
                       name="new_password1"
                       required
                     />
+                    <div id="new-password1-validation-message" class="text-sm text-[#bd1e59]"></div>
                   </div>
                   <div>
                     <label
@@ -85,11 +86,13 @@
                       name="new_password2"
                       required
                     />
+                    <div id="new-password2-validation-message" class="text-sm text-[#bd1e59]"></div>
                   </div>
                 </div>
                 <input type="hidden" id="has_password_changed" name="has_password_changed" value="True"/>
                 <div class="flex items-center py-8" style="margin-top:20px;">
                   <input
+                    id="submitBtn"
                     type="submit"
                     value="Canviar"
                     class="canviarPassOkk inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer"
@@ -114,7 +117,7 @@
         });
         function llamadaAjaxLog(evento,nivel){
             $.ajax({
-              url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+              url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
               type: 'POST',  // Método POST para enviar los datos al servidor
               data: {
                   evento: evento,
@@ -128,6 +131,86 @@
               }
             });
           }
+
+          // VALIDACION DE CONTRASEÑA
+          const new_password1Input = document.getElementById('new_password1');
+          const new_password2Input = document.getElementById('new_password2');
+          const newPassword1ValidationMessage = document.getElementById('new-password1-validation-message');
+          const newPassword2ValidationMessage = document.getElementById('new-password2-validation-message');
+
+          const validationRules = [
+            { regex: /^.{8,16}$/, message: 'La contrasenya ha de tenir entre 8 i 16 caràcters. ' },
+            { regex: /[A-Z]/, message: 'La contrasenya ha de contenir almenys una lletra majúscula. ' },
+            { regex: /[a-z]/, message: 'La contrasenya ha de contenir almenys una lletra minúscula. ' },
+            { regex: /[0-9]/, message: 'La contrasenya ha de contenir almenys un número. ' },
+            { regex: /[^A-Za-z0-9]/, message: 'La contrasenya ha de contenir almenys un símbol. ' }
+          ];
+
+          // Función para validar una contraseña y mostrar el mensaje de error correspondiente
+          function validatePassword(passwordInput, validationMessageElement) {
+              const password = passwordInput.value;
+              let errorMessage = '';
+              
+              // Encontrar el primer error de validación
+              for (let i = 0; i < validationRules.length; i++) {
+                  const rule = validationRules[i];
+                  if (!rule.regex.test(password)) {
+                      errorMessage = rule.message;
+                      break;
+                  }
+              }
+
+              // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+              validationMessageElement.textContent = errorMessage;
+
+              // Devolver true si no hay errores, false de lo contrario
+              return errorMessage === '';
+          }
+
+          // Función para validar si las contraseñas coinciden
+          function validatePasswordMatch(password1Input, password2Input, validationMessageElement) {
+              const password1 = password1Input.value;
+              const password2 = password2Input.value;
+              let errorMessage = '';
+
+              if (password1 !== password2) {
+                  errorMessage = 'Les contrasenyes no coincideixen.';
+              }
+
+              // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+              validationMessageElement.textContent = errorMessage;
+
+              // Devolver true si no hay errores, false de lo contrario
+              return errorMessage === '';
+          }
+
+          // Agregar un evento de escucha para la entrada en el campo de "Nova contrasenya"
+          new_password1Input.addEventListener('input', function() {
+              // Validar la "Nova contrasenya" y mostrar el mensaje de error en el div correspondiente
+              const newPasswordIsValid = validatePassword(new_password1Input, newPassword1ValidationMessage);
+              const passwordsMatch = validatePasswordMatch(new_password1Input, new_password2Input, newPassword2ValidationMessage);
+
+              // Deshabilitar temporalmente el formulario si hay un mensaje de error en alguno de los campos de contraseña
+              const isFormDisabled = !newPasswordIsValid || !passwordsMatch || new_password2Input.value.trim() === '';
+              const form = document.getElementById('search-form');
+              form.disabled = isFormDisabled;
+          });
+
+          // Agregar un evento de escucha para la entrada en el campo de "Repeteix la nova contrasenya"
+          new_password2Input.addEventListener('input', function() {
+              // Validar la "Repeteix la nova contrasenya" y mostrar el mensaje de error en el div correspondiente
+              const newPasswordIsValid = validatePassword(new_password1Input, newPassword1ValidationMessage);
+              const passwordsMatch = validatePasswordMatch(new_password1Input, new_password2Input, newPassword2ValidationMessage);
+
+              // Deshabilitar temporalmente el formulario si hay un mensaje de error en alguno de los campos de contraseña
+              const isFormDisabled = !newPasswordIsValid || !passwordsMatch || new_password2Input.value.trim() === '';
+              const form = document.getElementById('search-form');
+              form.disabled = isFormDisabled;
+          });
+          // FIN DE LA VALIDACION
+
+
+
         });  
         </script>
   </body>

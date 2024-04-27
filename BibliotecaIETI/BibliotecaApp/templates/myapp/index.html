@@ -30,7 +30,7 @@
               <form id="search-form" action="{% url 'cerca_cataleg' %}" method="POST">
                 {% csrf_token %}
                 <div class="relative flex items-center">
-                  <input id="only-available" type="checkbox" class="hidden"/>
+                  <input id="only-available" name="only_available" type="checkbox" class="hidden"/>
                   <label for="only-available" class="text-sm text-[#bd1e59] py-2 flex items-center cursor-pointer">
                       <span class="w-4 h-4 border border-[#bd1e59] rounded-sm mr-2 flex-shrink-0"></span>
                       Cercar només disponibles
@@ -142,6 +142,7 @@
                       name="password"
                       required
                     />
+                    <div id="password-validation-message" class="text-sm text-[#bd1e59]"></div>
                   </div>
                 </div>
                 <div class="flex items-center py-2 OlvidarPass">
@@ -177,7 +178,7 @@
             const query = input.value;
 
             if (query.length >= 3) {
-                fetch(`http://127.0.0.1:8000/get_ItemCatalogo?search=${query}`)
+                fetch(`/get_ItemCatalogo?search=${query}`)
                     .then(response => response.json())
                     .then(data => {
                         mostrarSugerencias(data.ItemCatalogo);
@@ -262,7 +263,7 @@
     });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({
-          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
           type: 'POST',  // Método POST para enviar los datos al servidor
           data: {
               evento: evento,
@@ -276,6 +277,63 @@
           }
         });
       }
+
+
+    // VALIDACION DE CONTRASEÑA
+    const passwordInput = document.getElementById('password');
+    const passwordValidationMessage = document.getElementById('password-validation-message');
+
+    const validationRules = [
+      { regex: /^.{8,16}$/, message: 'La contrasenya ha de tenir entre 8 i 16 caràcters. ' },
+      { regex: /[A-Z]/, message: 'La contrasenya ha de contenir almenys una lletra majúscula. ' },
+      { regex: /[a-z]/, message: 'La contrasenya ha de contenir almenys una lletra minúscula. ' },
+      { regex: /[0-9]/, message: 'La contrasenya ha de contenir almenys un número. ' },
+      { regex: /[^A-Za-z0-9]/, message: 'La contrasenya ha de contenir almenys un símbol. ' }
+    ];
+
+    passwordInput.addEventListener('input', function() {
+      const password = passwordInput.value;
+
+      // Encontrar el primer error de validación
+      let errorMessage = '';
+      for (let i = 0; i < validationRules.length; i++) {
+        const rule = validationRules[i];
+        if (!rule.regex.test(password)) {
+          errorMessage = rule.message;
+          break;
+        }
+      }
+
+      // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+      passwordValidationMessage.textContent = errorMessage;
+    });
+    // Obtener el formulario
+  const form2 = document.getElementById('search-form');
+
+  passwordInput.addEventListener('input', function() {
+    const password = passwordInput.value;
+
+    // Encontrar el primer error de validación
+    let errorMessage = '';
+    for (let i = 0; i < validationRules.length; i++) {
+      const rule = validationRules[i];
+      if (!rule.regex.test(password)) {
+        errorMessage = rule.message;
+        break;
+      }
+    }
+
+    // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+    passwordValidationMessage.textContent = errorMessage;
+
+    // Deshabilitar temporalmente el formulario si hay un mensaje de error
+    if (errorMessage) {
+      form2.setAttribute('disabled', 'true');
+    } else {
+      form2.removeAttribute('disabled');
+    }
+  });
+    // FIN DE LA VALIDACION
 });
 
   </script>
