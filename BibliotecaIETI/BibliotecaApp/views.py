@@ -15,6 +15,7 @@ from .models import Log, User
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -61,15 +62,33 @@ def usuari(request):
     # actualizar datos del usuario
     if request.method == "POST":
         user_id = request.POST.get('id')
-
         if user_id:
             try:
                 user = User.objects.get(pk=user_id)
-                user.first_name = request.POST.get('first_name', user.first_name)
-                user.last_name = request.POST.get('last_name', user.last_name)
-                user.centro = request.POST.get('centro', user.centro)
-                user.ciclo = request.POST.get('ciclo', user.ciclo)
-                user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+                image_file = request.FILES.get('image')
+                if image_file:
+                    image_file.name = f'{user_id}.png'
+                    file_path = os.path.join(settings.STATIC_ROOT)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            # delete the old image
+                            if user.image:
+                                user.image.delete()
+                                
+                            destination.write(chunk)
+
+                    user.image = request.FILES.get('image')
+
+                if user.first_name != request.POST.get('first_name', user.first_name):
+                    user.first_name = request.POST.get('first_name', user.first_name)
+                if user.last_name != request.POST.get('last_name', user.last_name):
+                    user.last_name = request.POST.get('last_name', user.last_name)
+                if user.centro != request.POST.get('centro', user.centro):
+                    user.centro = request.POST.get('centro', user.centro)
+                if user.ciclo != request.POST.get('ciclo', user.ciclo):
+                    user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
+                    user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')

@@ -36,6 +36,13 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
 STATIC_URL = "BibliotecaApp/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "BibliotecaApp/static"),
+]
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'BibliotecaApp/static/')
+MEDIA_URL = '/media/'
 
 # Application definition
 

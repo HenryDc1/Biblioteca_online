@@ -30,13 +30,13 @@
               </svg>
               Dashboard
             </a>
+            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" href="#">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
             </svg>
-              Préstamos
+              Préstecs
             </a>
-            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
               <a id="importar"
                 class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                 href="{% url 'upload_file' %}">
@@ -82,21 +82,18 @@
               </h3>
               {% endif %}
             </div>
-              <div class="p-6">
-                  <form action="" method="post" class="w-full flex">
-                    <div class="w-1/6 flex justify-center relative">
-                      <img
-                      src="{% static 'profile_photos/' %}{{ user.image }}"
-                      alt="Imatge de perfil"
-                        class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block"
-                      />
-                        <label for="image" class=" hover:cursor-pointer rounded-full w-48 h-48 absolute top-0 left-0 bg-black/50 flex justify-center items-center flex-col opacity-0 [transition:0.6s;] hover:opacity-100">
+              <div class="p-6 flex">
+                  <form action="{% url 'usuari' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
+                    <div class="w-48 h-48 flex justify-center relative mb-4">
+                     
+                      <img id="profile-image" src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
+                      <label for="image" class="hover:cursor-pointer rounded-full w-48 h-48 absolute top-0 left-0 bg-black/50 flex justify-center items-center flex-col opacity-0 transition-opacity hover:opacity-100">
                           <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"/>
-                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                              <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"/>
+                              <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                           </svg>
-                        </label>    
-                        <input type="file" name="image" id="image" class="hidden w-48 h-48 hover:cursor-pointer"/>
+                      </label>    
+                      <input type="file" name="image" id="image" class="hidden w-48 h-48 hover:cursor-pointer"/>
                     </div>
                     {% csrf_token %}
                     <div class="w-5/6">
@@ -240,7 +237,17 @@
       }
     });
 
-
+    // actualiza img de perfil
+    document.getElementById('image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('profile-image').src = e.target.result;
+        }
+        
+        reader.readAsDataURL(file);
+    });
     </script>
   </body>
 </html>
