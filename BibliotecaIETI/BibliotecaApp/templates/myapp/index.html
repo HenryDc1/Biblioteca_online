@@ -177,7 +177,7 @@
             const query = input.value;
 
             if (query.length >= 3) {
-                fetch(`http://127.0.0.1:8000/get_ItemCatalogo?search=${query}`)
+                fetch(`/get_ItemCatalogo?search=${query}`)
                     .then(response => response.json())
                     .then(data => {
                         mostrarSugerencias(data.ItemCatalogo);
@@ -262,7 +262,7 @@
     });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({
-          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
           type: 'POST',  // Método POST para enviar los datos al servidor
           data: {
               evento: evento,

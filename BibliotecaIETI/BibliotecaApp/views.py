@@ -140,9 +140,9 @@ def cerca_cataleg(request):
         if len(query) >= 3:
             # Realizar la solicitud a la API de búsqueda
             if only_available:
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
+                response = requests.get(f'/get_ItemCatalogo?search={query}&only_available=true')
             else:
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
+                response = requests.get(f'/get_ItemCatalogo?search={query}')
             # Verificar si la solicitud fue exitosa (código de estado 200)
             if response.status_code == 200:
                 # Obtener los resultados de la respuesta JSON

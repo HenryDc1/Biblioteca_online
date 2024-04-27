@@ -81,7 +81,7 @@
     });
     function llamadaAjaxLog(evento,nivel){
         $.ajax({
-          url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+          url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
           type: 'POST',  // Método POST para enviar los datos al servidor
           data: {
               evento: evento,
