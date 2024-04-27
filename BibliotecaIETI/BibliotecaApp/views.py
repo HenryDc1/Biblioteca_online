@@ -78,7 +78,7 @@ def usuari(request):
                             destination.write(chunk)
 
                     user.image = request.FILES.get('image')
-
+                ''' 
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -89,6 +89,7 @@ def usuari(request):
                     user.ciclo = request.POST.get('ciclo', user.ciclo)
                 if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
                     user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+                '''
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
