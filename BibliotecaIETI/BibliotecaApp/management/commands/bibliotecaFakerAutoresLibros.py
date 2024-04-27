@@ -9,7 +9,7 @@ fake_title = Faker('es_ES')
 
 
 word_categories = {
-    "adjetivos": ["el", "la", "los", "las", "un", "una", "unos", "unas", "este", "esta", "estos", "estas"],
+    "adjetivos": ["El", "La", "Los", "Las", "Un", "Una", "Unos", "Unas", "Este", "Esta", "Estos", "Estas"],
     "sustantivos": ["señor", "señora", "anillos", "aventura", "misterio", "fantasía", "romance", "historia", 
                     "ciencia", "ficción", "intriga", "suspenso", "viaje", "descubrimiento", "amor", "poder", 
                     "destino", "guerra", "tesoro", "espada", "rey", "reina", "príncipe", "princesa", "héroe", 

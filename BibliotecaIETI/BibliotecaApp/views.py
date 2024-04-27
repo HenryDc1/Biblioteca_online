@@ -134,12 +134,15 @@ def canviar_contrasenya(request):
 def cerca_cataleg(request):
     if request.method == 'POST':
         query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-
+        only_available = request.POST.get('only_available', '')  # Verificar si el checkbox está marcado
+        print("Valor de only_available:", only_available)  # Agregar un print para verificar el valor
         # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
         if len(query) >= 3:
             # Realizar la solicitud a la API de búsqueda
-            response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
-            
+            if only_available:
+                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
+            else:
+                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
             # Verificar si la solicitud fue exitosa (código de estado 200)
             if response.status_code == 200:
                 # Obtener los resultados de la respuesta JSON

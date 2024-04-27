@@ -30,7 +30,7 @@
               <form id="search-form" action="{% url 'cerca_cataleg' %}" method="POST">
                 {% csrf_token %}
                 <div class="relative flex items-center">
-                  <input id="only-available" type="checkbox" class="hidden"/>
+                  <input id="only-available" name="only_available" type="checkbox" class="hidden"/>
                   <label for="only-available" class="text-sm text-[#bd1e59] py-2 flex items-center cursor-pointer">
                       <span class="w-4 h-4 border border-[#bd1e59] rounded-sm mr-2 flex-shrink-0"></span>
                       Cercar només disponibles
