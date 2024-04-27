@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 import BibliotecaApp
 from BibliotecaApp import api, views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +30,4 @@ urlpatterns = [
 
     path('guardar-log/', views.guardar_log, name='guardar_log'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

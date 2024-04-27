@@ -30,13 +30,13 @@
               </svg>
               Dashboard
             </a>
+            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" href="#">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
             </svg>
-              Préstamos
+              Préstecs
             </a>
-            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
               <a id="importar"
                 class="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-200 transition-colors"
                 href="{% url 'upload_file' %}">
@@ -60,7 +60,8 @@
             </a>
           </nav>
         </div>
-        <div class="flex-1 p-4">
+        <div class="flex-1 p-4 flex flex-col">
+          <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
           <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32 justify-center">
             <div class="w-full md:w-4/6 mt-8 md:mt-0 lg:px-24">
                 {% if user.is_authenticated %}

@@ -2,6 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from . import api
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -24,5 +26,4 @@ urlpatterns = [
 
     path('upload_file/', views.upload_file, name='upload_file'),
 
-]
-
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
