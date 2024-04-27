@@ -142,6 +142,7 @@
                       name="password"
                       required
                     />
+                    <div id="password-validation-message" class="text-sm text-[#bd1e59]"></div>
                   </div>
                 </div>
                 <div class="flex items-center py-2 OlvidarPass">
@@ -276,6 +277,63 @@
           }
         });
       }
+
+
+    // VALIDACION DE CONTRASEÑA
+    const passwordInput = document.getElementById('password');
+    const passwordValidationMessage = document.getElementById('password-validation-message');
+
+    const validationRules = [
+      { regex: /^.{8,16}$/, message: 'La contraseña debe tener entre 8 y 16 caracteres. ' },
+      { regex: /[A-Z]/, message: 'La contraseña debe contener al menos una letra mayúscula. ' },
+      { regex: /[a-z]/, message: 'La contraseña debe contener al menos una letra minúscula. ' },
+      { regex: /[0-9]/, message: 'La contraseña debe contener al menos un número. ' },
+      { regex: /[^A-Za-z0-9]/, message: 'La contraseña debe contener al menos un símbolo. ' }
+    ];
+
+    passwordInput.addEventListener('input', function() {
+      const password = passwordInput.value;
+
+      // Encontrar el primer error de validación
+      let errorMessage = '';
+      for (let i = 0; i < validationRules.length; i++) {
+        const rule = validationRules[i];
+        if (!rule.regex.test(password)) {
+          errorMessage = rule.message;
+          break;
+        }
+      }
+
+      // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+      passwordValidationMessage.textContent = errorMessage;
+    });
+    // Obtener el formulario
+  const form2 = document.getElementById('search-form');
+
+  passwordInput.addEventListener('input', function() {
+    const password = passwordInput.value;
+
+    // Encontrar el primer error de validación
+    let errorMessage = '';
+    for (let i = 0; i < validationRules.length; i++) {
+      const rule = validationRules[i];
+      if (!rule.regex.test(password)) {
+        errorMessage = rule.message;
+        break;
+      }
+    }
+
+    // Mostrar el mensaje de error encontrado, o vacío si no hay errores
+    passwordValidationMessage.textContent = errorMessage;
+
+    // Deshabilitar temporalmente el formulario si hay un mensaje de error
+    if (errorMessage) {
+      form2.setAttribute('disabled', 'true');
+    } else {
+      form2.removeAttribute('disabled');
+    }
+  });
+    // FIN DE LA VALIDACION
 });
 
   </script>
