@@ -41,7 +41,7 @@ def index(request):
                 # Aqui deberia ir un mensaje de exito.
                 registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
                 messages.success(request, 'Inici de sessió correcte!')
-                return redirect('index')
+                return redirect('dashboard')
         else:
             # Aqui deberia ir un mensaje de error.
             registrar_evento('Inici de sessió fallit', 'ERROR')
