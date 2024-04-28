@@ -1,5 +1,5 @@
 import os
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils import formats
@@ -109,6 +109,67 @@ def usuari(request):
         fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
 
     return render(request, 'myapp/dashboard/usuari.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
+
+#Editar Otros usuarios,
+@login_required
+def editUsuaris(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
+    users = User.objects.all()
+
+    # actualizar datos del usuario
+    if request.method == "POST":
+        user_id = request.POST.get('id')
+        if user_id:
+            try:
+                user = User.objects.get(pk=user_id)
+                image_file = request.FILES.get('image')
+                if image_file:
+                    image_file.name = f'{user_id}.png'
+                    file_path = os.path.join(settings.STATIC_ROOT)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            # delete the old image
+                            if user.image:
+                                user.image.delete()
+                                
+                            destination.write(chunk)
+
+                    user.image = request.FILES.get('image')
+                ''' 
+                if user.first_name != request.POST.get('first_name', user.first_name):
+                    user.first_name = request.POST.get('first_name', user.first_name)
+                if user.last_name != request.POST.get('last_name', user.last_name):
+                    user.last_name = request.POST.get('last_name', user.last_name)
+                if user.centro != request.POST.get('centro', user.centro):
+                    user.centro = request.POST.get('centro', user.centro)
+                if user.ciclo != request.POST.get('ciclo', user.ciclo):
+                    user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
+                    user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+                '''
+                user.save()
+                messages.success(request, 'Datos actualizados correctamente')
+                registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
+                return redirect('usuaris')
+            except User.DoesNotExist:
+                messages.error(request, 'El usuario no existe')
+                registrar_evento(f'Intento de actualización de datos para un usuario inexistente', 'ERROR')
+                return redirect('usuaris')
+        else:
+            messages.error(request, 'Falta el campo ID')
+            registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
+            return redirect('usuaris')
+
+    # Obtener fecha de nacimiento del usuario
+    fecha_nacimiento = None
+    if request.user.fecha_nacimiento:
+        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
+
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
+
 
 @login_required
 def dashboard(request):
@@ -265,3 +326,22 @@ def upload_file(request):
         form = Importar()
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
+
+def usuaris(request):
+    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id)
+    
+    # Renderiza el template con la lista de usuarios
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
+
+def EditUsuaris(request, user_id):
+    # Obtener el usuario por su ID
+    user = get_object_or_404(User, id=user_id)
+    
+    # Aquí podrías definir el formulario de edición de usuario
+    # Por ejemplo, si estás utilizando forms.py:
+    # from .forms import UserForm
+    # form = UserForm(instance=user)
+    
+    # Luego, renderizas el template con el formulario y el usuario
+    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user})

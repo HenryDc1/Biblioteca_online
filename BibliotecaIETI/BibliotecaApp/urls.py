@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/usuari', views.usuari, name='usuari'),   
+    path('dashboard/usuaris/EditUsuaris', views.editUsuaris, name='editUsuaris'),
 
     # Reset password 
     path('recuperar_contrasenya/', auth_views.PasswordResetView.as_view(), name='recuperar_contrasenya'),
@@ -22,8 +23,13 @@ urlpatterns = [
     path('cerca_cataleg/', views.cerca_cataleg, name='cerca_cataleg'),
     path('create_log/', api.create_log, name='create_log'),
 
-    path('guardar-log/', views.guardar_log, name='guardar_log'),
+    path('guardar-log', views.guardar_log, name='guardar_log'),
 
-    path('upload_file/', views.upload_file, name='upload_file'),
+    path('dashboard/upload_file', views.upload_file, name='upload_file'),
+
+    path('dashboard/usuaris/', views.usuaris, name='usuaris'),
+
+    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuaris, name='EditUsuaris'),
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
