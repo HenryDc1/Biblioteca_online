@@ -1,3 +1,4 @@
+import hashlib
 import os
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
@@ -127,17 +128,19 @@ def editUsuaris(request):
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
                 if image_file:
-                    image_file.name = f'{user_id}.png'
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Guardar la imagen en el directorio adecuado
                     file_path = os.path.join(settings.STATIC_ROOT)
                     with open(file_path, 'wb+') as destination:
                         for chunk in image_file.chunks():
-                            # delete the old image
-                            if user.image:
-                                user.image.delete()
-                                
                             destination.write(chunk)
-
+                    
+                    # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
+
                 ''' 
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
