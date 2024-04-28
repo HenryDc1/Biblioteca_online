@@ -198,46 +198,8 @@
     </div>
 
     <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    $('.clickSortir').click(function() {
-        llamadaAjaxLog("DASHBOARD: a donat click a 'Sortir (Tencar Sessió)'","INFO");
-    });
-    $('.guardarClick').click(function() {
-        llamadaAjaxLog("DASHBOARD: a realitzat canvis en Informació personal al donar click a 'Desa'","INFO");
-    });
-    
-    $('.canviarPass').click(function() {
-        llamadaAjaxLog("DASHBOARD:  a donat click a 'Canviar contrasenya'","INFO");
-    });
-    function llamadaAjaxLog(evento,nivel){
-        $.ajax({
-          url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
-          type: 'POST',  // Método POST para enviar los datos al servidor
-          data: {
-              evento: evento,
-              nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
-          },
-          success: function(response) {
-              console.log('Log guardado correctamente:', response);
-          },
-          error: function(error) {
-              console.error('Error al guardar el log:', error);
-          }
-        });
-      }
-    });
+         // logs PENDIENTES
 
-    // actualiza img de perfil
-    document.getElementById('image').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            document.getElementById('profile-image').src = e.target.result;
-        }
-        
-        reader.readAsDataURL(file);
-    });
     </script>
   </body>
 </html>
