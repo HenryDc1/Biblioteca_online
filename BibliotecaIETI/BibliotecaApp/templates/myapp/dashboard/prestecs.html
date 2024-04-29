@@ -31,7 +31,7 @@
               Dashboard
             </a>
             {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
-            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" 
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors bg-gray-200" 
             href="{% url 'prestamos' %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
@@ -45,7 +45,7 @@
                 Importar
               </a>
               <a id="usuaris"
-                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors bg-gray-200"
+                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                 href="{% url 'usuaris' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5">
                     <path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/>
@@ -72,32 +72,39 @@
             data-v0-t="card"
           >
           <div class="flex flex-col space-y-1.5 p-6">
-            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
-                Llista d'usuaris disponibles
-            </h3>
+            <div class="flex justify-between">
+              <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Llistat de préstecs</h3>
+              <a href="{% url 'EditUsuaris' user.id %}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 bg-[#bd1e59] text-white hover:bg-[#f4c095]">Nou préstec</a>
+            </div>
+            
+            
             <br>
             <hr class="border-2 border-[#bd1e59] mt-4 mb-8"> 
             <table>
               <thead class="mt-4 mb-4">
                 <tr>
-                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Foto de perfil</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Correu electrònic</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Id cataleg</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Nombre</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data de préstec</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data de devolució</th>
                     <th class="align-middle border-b-2 border-[#bd1e59]">Acció</th>
                 </tr>
             </thead>
             <tbody class="mt-4">
-              {% for user in users %}
+              {% for prestamos in prestamos %}
                   <tr class="space-x-4">
-                      <td class="align-middle">
-                          <img src="{% static '' %}{{ user.image }}" alt="Foto de perfil" class="h-10 w-10 rounded-full">
-                      </td>
-                      <td class="align-middle">{{ user.email }}</td>
+                      <td class="align-middle">{{ prestamos.usuario }}</td>
+                      <td class="align-middle">{{ prestamos.ejemplar.elemento.id_catalogo }}</td>
+                      <td class="align-middle">{{ prestamos.ejemplar.elemento.titulo }}</td>
+                      <td class="align-middle">{{ prestamos.fecha_prestamo }}</td>
+                      <td class="align-middle">{{ prestamos.fecha_devolucion }}</td>
                       <td class="align-middle">
                           <a href="{% url 'EditUsuaris' user.id %}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">Editar</a>
                       </td>
                   </tr>
-                  {% endfor %}
-              </tbody>
+              {% endfor %}
+            </tbody>
           </table>
           <hr class="border-2 border-[#bd1e59] mt-4 mb-8"> 
         </div>

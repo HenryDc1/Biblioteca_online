@@ -27,6 +27,8 @@ urlpatterns = [
 
     path('dashboard/upload_file', views.upload_file, name='upload_file'),
 
+    path('dashboard/prestecs', views.prestamos, name='prestamos'),
+
     path('dashboard/usuaris/', views.usuaris, name='usuaris'),
 
     path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuaris, name='EditUsuaris'),

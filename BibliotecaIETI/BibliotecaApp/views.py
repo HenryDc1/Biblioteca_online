@@ -12,11 +12,12 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log, User
+from .models import Log, Prestamo, User
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -79,7 +80,7 @@ def usuari(request):
                             destination.write(chunk)
 
                     user.image = request.FILES.get('image')
-                ''' 
+                 
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -90,7 +91,7 @@ def usuari(request):
                     user.ciclo = request.POST.get('ciclo', user.ciclo)
                 if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
                     user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
-                '''
+                
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
@@ -141,7 +142,7 @@ def editUsuaris(request):
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
 
-                ''' 
+                 
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -152,7 +153,7 @@ def editUsuaris(request):
                     user.ciclo = request.POST.get('ciclo', user.ciclo)
                 if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
                     user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
-                '''
+
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
@@ -272,7 +273,6 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
 
-@login_required
 def process_csv(csv_file, centre_educatiu,request):
     user = request.user
     if not user.has_password_changed:
@@ -295,6 +295,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Crea un nuevo objeto User y asigna los valores
                 user = User(
                     username=username,
+                    first_name=username,
                     last_name=last_name,
                     email=email,
                     fecha_nacimiento=fecha_nacimiento,
@@ -332,7 +333,8 @@ def upload_file(request):
 
 def usuaris(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
-    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id)
+    centro_usuario_actual = request.user.centro
+    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual,)
     
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
@@ -348,3 +350,12 @@ def EditUsuaris(request, user_id):
     
     # Luego, renderizas el template con el formulario y el usuario
     return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user})
+
+## Prestamos
+
+def prestamos(request):
+    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    prestamos = Prestamo.objects.all()
+    
+    # Renderiza el template con la lista de usuarios
+    return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
