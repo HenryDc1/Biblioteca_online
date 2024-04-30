@@ -274,9 +274,9 @@ def guardar_log(request):
         
         Log.objects.create(evento=evento, nivel=nivel, usuario=usuario)
         
-        return JsonResponse({'mensaje': 'Log guardado correctamente.'})
+        return JsonResponse({'mensaje': 'Log guardat correctament.'})
     else:
-        return JsonResponse({'error': 'Método no permitido.'}, status=405)
+        return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
 def process_csv(csv_file, centre_educatiu,request):
     user = request.user
@@ -317,7 +317,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 user.save()
             except ValueError:
                 # Manejar el caso donde la fila no tiene el formato correcto
-                messages.warning(request, f"Línea {line_number}: No se importó correctamente. Formato incorrecto.")
+                messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
 # En tu vista Django
 def upload_file(request):
@@ -329,11 +329,11 @@ def upload_file(request):
                 print("Paso por aqui 2") 
                 centre_educatiu = form.cleaned_data.get('centre_educatiu') 
                 process_csv(csv_file, centre_educatiu,request)
-                messages.success(request, 'El archivo CSV se ha importado correctamente.')
+                messages.success(request, "El fitxer CSV s'ha importat correctament.")
                 return render(request, 'myapp/dashboard/importar.html', {'form': form})
             else:
                 # Manejar el caso donde no se proporciona el archivo CSV
-                messages.error(request, 'No se proporcionó un archivo CSV')
+                messages.error(request, "No s'ha proporcionat cap fitxer CSV.")
                 print(form.errors)  # Imprime los errores del formulario en la consola
     else:
         form = Importar()
@@ -371,32 +371,50 @@ def prestamos(request):
 
 # CREAR USUARIO PANEL
 def crear_usuari(request):
-    print("Paso por aquí 1")
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
-        print("Datos del formulario POST:", request.POST)
-        print("Archivos del formulario POST:", request.FILES)
         
-        # contraseña hash
-        hashed_password = make_password("password")
+        try:
+            # Contraseña hash
+            hashed_password = make_password("password")
 
-        if form.is_valid():
-            print("Paso por aquí 2")
-            user = form.save(commit=False)
-            user.has_password_changed = False
-            user.first_name = request.POST.get('first_name')
-            user.last_name = request.POST.get('last_name')
-            user.username = request.POST.get('first_name')   # Asigna el valor predeterminado o el que desees
-            user.password = hashed_password  # Guarda la contraseña hasheada
-            user.save()
-            messages.success(request, 'Usuari creat amb exit.')
+            if form.is_valid():
+                username = request.POST.get('username')
+                #email = request.POST.get('email')
+
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, 'El nom de usuario ja está en us.')
+                    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+                
+                user = form.save(commit=False)
+                user.has_password_changed = False
+                user.first_name = request.POST.get('first_name')
+                user.last_name = request.POST.get('last_name')
+                user.username = request.POST.get('first_name')
+                user.password = hashed_password
+                user.save()
+                messages.success(request, 'Usuario creat amb éxit.')
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+            else:
+                # Capturar errores de validación específicos del campo email
+                email_errors = form.errors.get('email')
+                username_errors = form.errors.get('username')
+
+                if email_errors:
+                    messages.error(request, email_errors)
+                elif username_errors:
+                    messages.error(request, username_errors)
+                else:
+                    messages.error(request, 'Error de validació en el formulari')
+                
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+        except Exception as e:
+            print("Error:", str(e))
+            messages.error(request, 'El nom de usuari ya existeix.')
             return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
 
-
-        else:
-            print("Errores de validación del formulario:", form.errors)
     else:
         form = UserForm()
-        print("Paso por aquí 3")
    
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
