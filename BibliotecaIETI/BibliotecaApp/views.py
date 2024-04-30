@@ -72,16 +72,17 @@ def usuari(request):
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
                 if image_file:
-                    image_file.name = f'{user_id}.png'
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Guardar la imagen en el directorio adecuado
                     file_path = os.path.join(settings.STATIC_ROOT)
                     with open(file_path, 'wb+') as destination:
                         for chunk in image_file.chunks():
-                            # delete the old image
-                            if user.image:
-                                user.image.delete()
-                                
                             destination.write(chunk)
-
+                    
+                    # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
@@ -122,7 +123,6 @@ def editUsuaris(request):
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
-    users = User.objects.all()
 
     # actualizar datos del usuario
     if request.method == "POST":
@@ -172,13 +172,27 @@ def editUsuaris(request):
             registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
             return redirect('usuaris')
 
-    # Obtener fecha de nacimiento del usuario
+
+
+    return render(request, 'myapp/dashboard/usuaris.html')
+
+@login_required
+def EditUsuarisView(request, user_id):
+    # Obtener el usuario por su ID
+    user = get_object_or_404(User, id=user_id)
+    
+    # Aquí podrías definir el formulario de edición de usuario
+    # Por ejemplo, si estás utilizando forms.py:
+    # from .forms import UserForm
+    # form = UserForm(instance=user)
+
+    # Obtener la fecha de nacimiento del usuario si está disponible
     fecha_nacimiento = None
-    if request.user.fecha_nacimiento:
-        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
-
-    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
-
+    if user.fecha_nacimiento:
+        fecha_nacimiento = user.fecha_nacimiento.strftime('%Y-%m-%d')
+    
+    # Luego, renderizas el template con el formulario y el usuario
+    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user, 'fecha_nacimiento': fecha_nacimiento})
 
 @login_required
 def dashboard(request):
@@ -348,20 +362,7 @@ def usuaris(request):
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
 
-def EditUsuaris(request, user_id):
-    # Obtener el usuario por su ID
-    user = get_object_or_404(User, id=user_id)
-    
-    # Aquí podrías definir el formulario de edición de usuario
-    # Por ejemplo, si estás utilizando forms.py:
-    # from .forms import UserForm
-    # form = UserForm(instance=user)
-    
-    # Luego, renderizas el template con el formulario y el usuario
-    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user})
-
 ## Prestamos
-
 def prestamos(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     prestamos = Prestamo.objects.all()
