@@ -18,6 +18,8 @@ import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
 from django.db.models import Q
+from django.contrib.auth.hashers import make_password
+
 
 # Create your views here.
 def index(request):
@@ -289,6 +291,9 @@ def process_csv(csv_file, centre_educatiu,request):
     # Ahora abrir el archivo CSV desde la ubicación guardada
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
+        # contraseña hash
+        hashed_password = make_password("password")
+
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
             try:
@@ -297,6 +302,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Crea un nuevo objeto User y asigna los valores
                 user = User(
                     username=username,
+                    password=hashed_password,  # Guarda la contraseña hasheada
                     first_name=username,
                     last_name=last_name,
                     email=email,
