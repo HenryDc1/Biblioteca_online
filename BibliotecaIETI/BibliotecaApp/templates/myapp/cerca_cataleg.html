@@ -10,13 +10,11 @@
 <body>
     {% include 'myapp/messages.html' %}
     <div class="container min-w-full">
-        <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
-            <h1 class="text-2xl font-bold text-[#bd1e59] text-start pl-32">Biblioteca IETI</h1>
-        </header>
+        {% include 'myapp/header.html'%}
         
         <div >
-            <div class="w-full md:w-0 pr-4 py-4 md:ml-auto lg:mr-4">
-                <h1 class="text-2xl font-bold mt-4 mb-8 text-lg text-[#bd1e59]">Resultats de la cerca: "{{ query }}"</h1>
+            <div class="w-full py-2 lg:py-4 md:ml-auto p-12 lg:p-32">
+                <h1 class="text-3xl font-bold mt-4 mb-8 text-[#bd1e59]">Resultats de la cerca: "{{ query }}"</h1>
     
                 <!-- Mostrar resultados de la búsqueda -->
                 <div class="search-results" id="search-results">
@@ -29,6 +27,7 @@
                                     <p><strong>Gènere:</strong> {{ libro.ocio }}</p>
                                     <p><strong>Autor:</strong> {{ libro.autor }}</p>
                                     <p><strong>Data d'edició:</strong> {{ libro.data_edicion }}</p>
+                                    <p><strong>Disponibles:</strong> {{ libro.cantidad_disponible }} unitats</p>
                                 </li>
                                 <hr class="border-2 border-[#bd1e59] mt-4 mb-8">
                             {% endfor %}
@@ -49,7 +48,7 @@
 
             function llamadaAjaxLog(evento,nivel){
                 $.ajax({
-                    url: 'http://127.0.0.1:8000/guardar-log/',  // Endpoint para guardar logs en tu backend Django
+                    url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
                     type: 'POST',  // Método POST para enviar los datos al servidor
                     data: {
                         evento: evento,

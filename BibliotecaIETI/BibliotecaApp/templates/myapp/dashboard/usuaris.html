@@ -15,7 +15,7 @@
     {% include 'myapp/messages.html' %}
     <div class="min-h-screen flex flex-col">
       {% include 'myapp/header.html'%}
-      <main class="flex flex-1">
+      <main class="flex-1 flex">
         <div class="bg-gray-100 w-64 p-4">
           <nav class="space-y-4">
             <a
@@ -39,13 +39,13 @@
               Préstecs
             </a>
               <a id="importar"
-                class="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-200 transition-colors"
+                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                 href="{% url 'upload_file' %}">
                 <svg class="w-5 h-5"  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-database-import"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3" /><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68 -.05 2.454 -.144m5.546 -2.856v-6" /><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341 -.002 .51 -.006" /><path d="M19 22v-6" /><path d="M22 19l-3 -3l-3 3" /></svg>
                 Importar
               </a>
               <a id="usuaris"
-                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors bg-gray-200"
                 href="{% url 'usuaris' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5">
                     <path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/>
@@ -53,7 +53,7 @@
                 Editar Usuaris
               </a>
               {% endif %}
-            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors " href="{% url 'usuari' %}">
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-300 transition-colors" href="{% url 'usuari' %}">
             <svg
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -65,57 +65,45 @@
             </a>
           </nav>
         </div>
-        <div class="flex-1 p-4 flex flex-col">
+        <div class="flex-1 p-4">
           <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
-          <div class="flex flex-col-reverse lg:flex-row items-center my-24 px-12 lg:px-32 justify-center">
-            <div class="w-full md:w-4/6 mt-8 md:mt-0 lg:px-24">
-                {% if user.is_authenticated %}
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                    <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-[#bd1e59]">
-                            Importar usuaris desde CSV
-                        </h3>
-                        <p class="text-sm text-[#bd1e59]">
-                            Importa usuaris desde un arxiu CSV.
-                        </p>
-                    </div>
-                    <div class="p-6">
-                        <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="grid gap-4">
-                                <div>
-                                    <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
-                                        for="csv_file">
-                                        Carrega l' arxiu CSV
-                                    </label>
-                                    <input class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
-                                    id="csv_file" type="file" name="csv_file" accept=".csv" required />
-                                </div>
-                                <div>
-                                    <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
-                                        for="centre_educatiu">
-                                        Selecciona un centre educatiu
-                                    </label>
-                                    <input
-                                    class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
-                                    id="centre" placeholder="Nom del centre educatiu" type="text"
-                                    name="centre_educatiu" required  />
-                                </div>
-                            </div>
-                            <div class="flex items-center py-8" style="margin-top:20px;">
-                                <input type="submit" value="Importar"
-                                    class="canviarPassOkk inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                {% else %}
-
-                {% endif %}
-            </div>
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+          <div class="flex flex-col space-y-1.5 p-6">
+            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+                Llista d'usuaris disponibles
+            </h3>
+            <br>
+            <hr class="border-2 border-[#bd1e59] mt-4 mb-8"> 
+            <table>
+              <thead class="mt-4 mb-4">
+                <tr>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Foto de perfil</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Correu electrònic</th>
+                    <th class="align-middle border-b-2 border-[#bd1e59]">Acció</th>
+                </tr>
+            </thead>
+            <tbody class="mt-4">
+              {% for user in users %}
+                  <tr class="space-x-4">
+                      <td class="align-middle">
+                          <img src="{% static '' %}{{ user.image }}" alt="Foto de perfil" class="h-10 w-10 rounded-full">
+                      </td>
+                      <td class="align-middle">{{ user.email }}</td>
+                      <td class="align-middle">
+                          <a href="{% url 'EditUsuaris' user.id %}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">Editar</a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <hr class="border-2 border-[#bd1e59] mt-4 mb-8"> 
         </div>
+        
+        
+        
         </div>
       </main>
     </div>

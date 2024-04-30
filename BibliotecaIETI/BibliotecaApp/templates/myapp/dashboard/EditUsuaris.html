@@ -30,7 +30,6 @@
               </svg>
               Dashboard
             </a>
-            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" 
             href="{% url 'prestamos' %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
@@ -45,15 +44,14 @@
                 Importar
               </a>
               <a id="usuaris"
-                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors bg-gray-200"
                 href="{% url 'usuaris' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5">
                     <path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/>
                 </svg>
                 Editar Usuaris
               </a>
-              {% endif %}
-            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-300 transition-colors bg-gray-200" href="{% url 'usuari' %}">
+            <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-300 transition-colors" href="{% url 'usuari' %}">
             <svg
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -72,23 +70,15 @@
             data-v0-t="card"
           >
             <div class="flex flex-col space-y-1.5 p-6">
-              {% if user.email == "admin@admin.com" %}
-
               <h3
               class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight"
             >
-                Informació de admin
+                Informació de {{ user.email }}
             </h3>
-              {% elif user.email != "admin@admin.com"  %}
-              <h3
-                class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight"
-              >
-                Informació de usuari
-              </h3>
-              {% endif %}
+
             </div>
               <div class="p-6 flex">
-                  <form action="{% url 'usuari' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
+                  <form action="{% url 'editUsuaris' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
                     <div class="w-48 h-48 flex justify-center relative mb-4">
                      
                       <img id="profile-image" src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
@@ -114,7 +104,6 @@
                           <input
                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="email"
-                            readonly=""
 
                             value="{{ user.email }}"
                           />
@@ -130,8 +119,8 @@
                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="name"
                             name="first_name"
-                            
 
+                            
                             value="{{ user.first_name }}"
                           />
                         </div>
@@ -146,7 +135,6 @@
                             class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="surnames"
                             name="last_name"
-                            
 
                             value="{{ user.last_name }}"
                           />
@@ -162,12 +150,6 @@
                             class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="centro"
                             name="centro"
-                            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
-
-                            {%else %}
-                              readonly=""
-                              
-                            {% endif %}
 
                             value="{{ user.centro }}"
                           />
@@ -183,12 +165,6 @@
                             class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="ciclo"
                             name="ciclo"
-                            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
-
-                            {%else %}
-                              readonly=""
-                              
-                            {% endif %}
 
                             value="{{ user.ciclo }}"
                           />
@@ -204,13 +180,7 @@
                             class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
                             id="telefono"
                             name="telefono"
-                            {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
-
-                            {%else %}
-                              readonly=""
-                              
-                            {% endif %}
-
+                            
                             value="{{ user.telefono }}"
                           />
                         </div>
@@ -226,12 +196,6 @@
                               type="date"
                               id="birthdate"
                               name="fecha_nacimiento"
-                              {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
-
-                              {%else %}
-                                readonly=""
-                                
-                              {% endif %}
 
                               value="{{ fecha_nacimiento }}"
                               />
@@ -240,65 +204,17 @@
                           <input type="submit" value="Desa" class="guardarClick inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]"/>
                         </div>
                         <!-- Link to change password -->
-
                       </div>
                   </form>
-                <div class="grid grid-cols-4 items-center gap-4 mt-4">
-                  <a
-                  href="{% url 'canviar_contrasenya' %}"
-                  class="canviarPass inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 pl-3 text-left font-normal text-gray-900 col-span-6 hover:bg-gray-200 shadow-sm hover:text-gray-800"
-                  >
-                  Canviar contrasenya
-                  </a>
-                </div>
               </div>
-            
           </div>
         </div>
       </main>
     </div>
 
     <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    $('.clickSortir').click(function() {
-        llamadaAjaxLog("DASHBOARD: a donat click a 'Sortir (Tencar Sessió)'","INFO");
-    });
-    $('.guardarClick').click(function() {
-        llamadaAjaxLog("DASHBOARD: a realitzat canvis en Informació personal al donar click a 'Desa'","INFO");
-    });
-    
-    $('.canviarPass').click(function() {
-        llamadaAjaxLog("DASHBOARD:  a donat click a 'Canviar contrasenya'","INFO");
-    });
-    function llamadaAjaxLog(evento,nivel){
-        $.ajax({
-          url: '/guardar-log/',  // Endpoint para guardar logs en tu backend Django
-          type: 'POST',  // Método POST para enviar los datos al servidor
-          data: {
-              evento: evento,
-              nivel: nivel,  //  (INFO, WARNING, ERROR, FATAL.)
-          },
-          success: function(response) {
-              console.log('Log guardado correctamente:', response);
-          },
-          error: function(error) {
-              console.error('Error al guardar el log:', error);
-          }
-        });
-      }
-    });
+         // logs PENDIENTES
 
-    // actualiza img de perfil
-    document.getElementById('image').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            document.getElementById('profile-image').src = e.target.result;
-        }
-        
-        reader.readAsDataURL(file);
-    });
     </script>
   </body>
 </html>

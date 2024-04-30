@@ -68,7 +68,7 @@ class User(AbstractUser):
     centro = models.CharField(max_length=100)
     ciclo = models.CharField(max_length=100)
     roles = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='profile_photos', default='default.jpg')
+    image = models.ImageField(upload_to='profile_photos', default='profile_photos/default.jpg')
     has_password_changed = models.BooleanField(default=False)  # Nuevo campo para rastrear el cambio de contraseña
     telefono = models.CharField(max_length=20, null=True, blank=True)  # Null y blank para permitir valores nulos y vacíos
 

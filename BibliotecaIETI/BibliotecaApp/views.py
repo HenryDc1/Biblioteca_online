@@ -1,5 +1,6 @@
+import hashlib
 import os
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.utils import formats
@@ -11,11 +12,15 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log, User
+from .models import Log, Prestamo, User
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
-from .forms import UserProfileForm
+from django.conf import settings
+from django.db.models import Q
+from .forms import UserForm
+from django.contrib.auth.hashers import make_password
+
 
 # Create your views here.
 def index(request):
@@ -28,13 +33,20 @@ def index(request):
         if user is not None:
             login(request, user)
             if not user.has_password_changed:
-                messages.warning(request, 'La contrasenya predeterminada es insegura. Canvia-la ara mateix per poder accedir als continguts.')
-                return redirect('canviar_contrasenya')
+                if user.email == 'admin@admin.com':
+                    user.has_password_changed = True
+                    user.save()
+                    registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
+                    messages.success(request, 'Inici de sessió correcte!')
+                    return redirect('index')
+                else:
+                    messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+                    return redirect('canviar_contrasenya')
             else:
                 # Aqui deberia ir un mensaje de exito.
                 registrar_evento(f'Inicio de sesión exitoso', 'INFO', request.user)
                 messages.success(request, 'Inici de sessió correcte!')
-                return redirect('index')
+                return redirect('dashboard')
         else:
             # Aqui deberia ir un mensaje de error.
             registrar_evento('Inici de sessió fallit', 'ERROR')
@@ -46,20 +58,43 @@ def index(request):
 
 @login_required
 def usuari(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     users = User.objects.all()
 
     # actualizar datos del usuario
     if request.method == "POST":
         user_id = request.POST.get('id')
-
         if user_id:
             try:
                 user = User.objects.get(pk=user_id)
-                user.first_name = request.POST.get('first_name', user.first_name)
-                user.last_name = request.POST.get('last_name', user.last_name)
-                user.centro = request.POST.get('centro', user.centro)
-                user.ciclo = request.POST.get('ciclo', user.ciclo)
-                user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+                image_file = request.FILES.get('image')
+                if image_file:
+                    image_file.name = f'{user_id}.png'
+                    file_path = os.path.join(settings.STATIC_ROOT)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            # delete the old image
+                            if user.image:
+                                user.image.delete()
+                                
+                            destination.write(chunk)
+
+                    user.image = request.FILES.get('image')
+                 
+                if user.first_name != request.POST.get('first_name', user.first_name):
+                    user.first_name = request.POST.get('first_name', user.first_name)
+                if user.last_name != request.POST.get('last_name', user.last_name):
+                    user.last_name = request.POST.get('last_name', user.last_name)
+                if user.centro != request.POST.get('centro', user.centro):
+                    user.centro = request.POST.get('centro', user.centro)
+                if user.ciclo != request.POST.get('ciclo', user.ciclo):
+                    user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
+                    user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+                
                 user.save()
                 messages.success(request, 'Datos actualizados correctamente')
                 registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
@@ -80,8 +115,77 @@ def usuari(request):
 
     return render(request, 'myapp/dashboard/usuari.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
 
+#Editar Otros usuarios,
+@login_required
+def editUsuaris(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
+    users = User.objects.all()
+
+    # actualizar datos del usuario
+    if request.method == "POST":
+        user_id = request.POST.get('id')
+        if user_id:
+            try:
+                user = User.objects.get(pk=user_id)
+                image_file = request.FILES.get('image')
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Guardar la imagen en el directorio adecuado
+                    file_path = os.path.join(settings.STATIC_ROOT)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)
+                    
+                    # Asignar el nombre de la imagen al usuario
+                    user.image = request.FILES.get('image')
+
+                 
+                if user.first_name != request.POST.get('first_name', user.first_name):
+                    user.first_name = request.POST.get('first_name', user.first_name)
+                if user.last_name != request.POST.get('last_name', user.last_name):
+                    user.last_name = request.POST.get('last_name', user.last_name)
+                if user.centro != request.POST.get('centro', user.centro):
+                    user.centro = request.POST.get('centro', user.centro)
+                if user.ciclo != request.POST.get('ciclo', user.ciclo):
+                    user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.telefono != request.POST.get('telefono', user.telefono):
+                    user.telefono = request.POST.get('telefono', user.telefono)
+                if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
+                    user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
+
+                user.save()
+                messages.success(request, 'Datos actualizados correctamente')
+                registrar_evento(f'Datos de "{user}" actualizados correctamente', 'INFO')
+                return redirect('usuaris')
+            except User.DoesNotExist:
+                messages.error(request, 'El usuario no existe')
+                registrar_evento(f'Intento de actualización de datos para un usuario inexistente', 'ERROR')
+                return redirect('usuaris')
+        else:
+            messages.error(request, 'Falta el campo ID')
+            registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
+            return redirect('usuaris')
+
+    # Obtener fecha de nacimiento del usuario
+    fecha_nacimiento = None
+    if request.user.fecha_nacimiento:
+        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
+
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
+
+
 @login_required
 def dashboard(request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     return render(request, 'myapp/dashboard/dashboard.html')
 
 @login_required
@@ -97,10 +201,18 @@ def canviar_contrasenya(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
-            messages.success(request, 'Contraseña cambiada correctamente')
-            registrar_evento('Contrasenya canviada correctament', 'INFO')
-            return redirect('usuari')
+            if not user.has_password_changed:
+                user.has_password_changed = True
+                user.save()
+                update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
+                messages.success(request, 'Contraseña cambiada correctamente')
+                registrar_evento('Contrasenya canviada correctament', 'INFO')
+                return redirect('dashboard')
+            else:
+                update_session_auth_hash(request, user)  # Actualiza la sesión para que el usuario no sea deslogueado
+                messages.success(request, 'Contraseña cambiada correctamente')
+                registrar_evento('Contrasenya canviada correctament', 'INFO')
+                return redirect('usuari')
         else:
             for error in form.errors.values():
                 messages.error(request, error)
@@ -112,12 +224,15 @@ def canviar_contrasenya(request):
 def cerca_cataleg(request):
     if request.method == 'POST':
         query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-
+        only_available = request.POST.get('only_available', '')  # Verificar si el checkbox está marcado
+        print("Valor de only_available:", only_available)  # Agregar un print para verificar el valor
         # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
         if len(query) >= 3:
             # Realizar la solicitud a la API de búsqueda
-            response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
-            
+            if only_available:
+                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
+            else:
+                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
             # Verificar si la solicitud fue exitosa (código de estado 200)
             if response.status_code == 200:
                 # Obtener los resultados de la respuesta JSON
@@ -164,6 +279,10 @@ def guardar_log(request):
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
 
 def process_csv(csv_file, centre_educatiu,request):
+    user = request.user
+    if not user.has_password_changed:
+        messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
+        return render(request, 'myapp/dashboard/canviar_contrasenya.html')
     # Guardar el archivo CSV en el sistema de archivos
     file_path = os.path.join('/home/super/Baixades/', csv_file.name)
     with open(file_path, 'wb+') as destination:
@@ -173,6 +292,9 @@ def process_csv(csv_file, centre_educatiu,request):
     # Ahora abrir el archivo CSV desde la ubicación guardada
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
+        # contraseña hash
+        hashed_password = make_password("password")
+
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
             try:
@@ -181,6 +303,8 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Crea un nuevo objeto User y asigna los valores
                 user = User(
                     username=username,
+                    password=hashed_password,  # Guarda la contraseña hasheada
+                    first_name=username,
                     last_name=last_name,
                     email=email,
                     fecha_nacimiento=fecha_nacimiento,
@@ -216,23 +340,63 @@ def upload_file(request):
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
 
+def usuaris(request):
+    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    centro_usuario_actual = request.user.centro
+    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual,)
+    
+    # Renderiza el template con la lista de usuarios
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
+
+def EditUsuaris(request, user_id):
+    # Obtener el usuario por su ID
+    user = get_object_or_404(User, id=user_id)
+    
+    # Aquí podrías definir el formulario de edición de usuario
+    # Por ejemplo, si estás utilizando forms.py:
+    # from .forms import UserForm
+    # form = UserForm(instance=user)
+    
+    # Luego, renderizas el template con el formulario y el usuario
+    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user})
+
+## Prestamos
+
+def prestamos(request):
+    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    prestamos = Prestamo.objects.all()
+    
+    # Renderiza el template con la lista de usuarios
+    return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
+
+# CREAR USUARIO PANEL
 def crear_usuari(request):
+    print("Paso por aquí 1")
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        print('paso por aqui 1')
-        print(request.POST)
-        print(request.FILES)
+        form = UserForm(request.POST, request.FILES)
+        print("Datos del formulario POST:", request.POST)
+        print("Archivos del formulario POST:", request.FILES)
+        
+        # contraseña hash
+        hashed_password = make_password("password")
+
         if form.is_valid():
-            print('paso por aqui 2')
-            # Guarda el formulario y vincúlalo al usuario actual
-            user_profile = form.save(commit=False)
-            user_profile.user = request.user
-            user_profile.save()
-            return redirect('dashboard')  # Cambia 'dashboard' por el nombre de la URL de tu dashboard
+            print("Paso por aquí 2")
+            user = form.save(commit=False)
+            user.has_password_changed = False
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.username = request.POST.get('first_name')   # Asigna el valor predeterminado o el que desees
+            user.password = hashed_password  # Guarda la contraseña hasheada
+            user.save()
+            messages.success(request, 'Usuari creat amb exit.')
+            return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+
+        else:
+            print("Errores de validación del formulario:", form.errors)
     else:
-        form = UserProfileForm()
+        form = UserForm()
+        print("Paso por aquí 3")
+   
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
-
-
-
-

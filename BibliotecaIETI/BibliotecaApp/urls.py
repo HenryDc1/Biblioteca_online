@@ -2,6 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from . import api
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -10,6 +12,7 @@ urlpatterns = [
 
     path('dashboard', views.dashboard, name='dashboard'),
     path('dashboard/usuari', views.usuari, name='usuari'),   
+    path('dashboard/usuaris/EditUsuaris', views.editUsuaris, name='editUsuaris'),
 
     # Reset password 
     path('recuperar_contrasenya/', auth_views.PasswordResetView.as_view(), name='recuperar_contrasenya'),
@@ -20,12 +23,18 @@ urlpatterns = [
     path('cerca_cataleg/', views.cerca_cataleg, name='cerca_cataleg'),
     path('create_log/', api.create_log, name='create_log'),
 
-    path('guardar-log/', views.guardar_log, name='guardar_log'),
+    path('guardar-log', views.guardar_log, name='guardar_log'),
 
-    path('upload_file/', views.upload_file, name='upload_file'),
-    path('crear_usuari/', views.crear_usuari, name='crear_usuari')
+    path('crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
     
+    path('dashboard/upload_file', views.upload_file, name='upload_file'),
 
-]
+    path('dashboard/prestecs', views.prestamos, name='prestamos'),
 
+    path('dashboard/usuaris/', views.usuaris, name='usuaris'),
+
+    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuaris, name='EditUsuaris'),
+
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
