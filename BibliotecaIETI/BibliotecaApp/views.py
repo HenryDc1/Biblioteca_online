@@ -18,6 +18,7 @@ import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
 from django.db.models import Q
+from .forms import UserForm
 from django.contrib.auth.hashers import make_password
 
 
@@ -367,3 +368,35 @@ def prestamos(request):
     
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
+
+# CREAR USUARIO PANEL
+def crear_usuari(request):
+    print("Paso por aquí 1")
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES)
+        print("Datos del formulario POST:", request.POST)
+        print("Archivos del formulario POST:", request.FILES)
+        
+        # contraseña hash
+        hashed_password = make_password("password")
+
+        if form.is_valid():
+            print("Paso por aquí 2")
+            user = form.save(commit=False)
+            user.has_password_changed = False
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.username = request.POST.get('first_name')   # Asigna el valor predeterminado o el que desees
+            user.password = hashed_password  # Guarda la contraseña hasheada
+            user.save()
+            messages.success(request, 'Usuari creat amb exit.')
+            return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+
+        else:
+            print("Errores de validación del formulario:", form.errors)
+    else:
+        form = UserForm()
+        print("Paso por aquí 3")
+   
+    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
