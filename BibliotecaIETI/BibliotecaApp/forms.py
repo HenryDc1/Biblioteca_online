@@ -21,4 +21,4 @@ class Importar(forms.Form):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'fecha_nacimiento', 'centro', 'ciclo', 'image', 'telefono', 'first_name', 'last_name']
+        fields = ['email', 'fecha_nacimiento', 'centro', 'ciclo', 'image', 'telefono', 'first_name', 'last_name', 'roles']
