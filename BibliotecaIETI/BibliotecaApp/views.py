@@ -1,9 +1,10 @@
 import hashlib
 import os
+import time
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.utils import formats
+from django.utils import formats, timezone
 from datetime import datetime
 from dateutil import parser
 from .forms import ChangePassword, Importar
@@ -12,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
+from .models import Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -397,6 +398,8 @@ def nou_prestec(request):
         # añadir nuevo Ejemplar a la base de datos 
         ejemplar_objs = []
         elemento = None
+        # espera de 0.5s para evitar errores de concurrencia
+        time.sleep(0.5)
         if request.POST.get('article').startswith('CD'):
             elemento = CD.objects.get(id_catalogo=request.POST.get('article'))
         elif request.POST.get('article').startswith('DVD'):
@@ -405,9 +408,12 @@ def nou_prestec(request):
             elemento = BR.objects.get(id_catalogo=request.POST.get('article'))
         elif request.POST.get('article').startswith('DIS'):
             elemento = Dispositivo.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('LB'):
+            elemento = Libro.objects.get(id_catalogo=request.POST.get('article'))
         # asignar un nuevo codigo a cada ejemplar a partir del ultimo codigo (EJ001)
         codigo = Ejemplar.objects.all().order_by('-codigo').first().codigo
         codigo = f'EJ{int(codigo[2:])+1:03}'
+        time.sleep(0.3)
         ejemplar_objs.append(Ejemplar(
             elemento=elemento,
             codigo=codigo,
@@ -415,17 +421,24 @@ def nou_prestec(request):
         ))
         Ejemplar.objects.bulk_create(ejemplar_objs)
 
+        # restar 1 a la cantidad de ejemplares disponibles
+        elemento.cantidad_disponible -= 1
+        elemento.save()
+
         # añadir nuevo prestamo a la base de datos
         usuario = User.objects.get(pk=request.POST.get('usuari'))
         ejemplar = Ejemplar.objects.get(codigo=codigo)
 
         # convierto la fecha de prestamo a formato datetime
-        fecha_prestamo = request.POST.get('date_range')
-        fecha_inicio_str, fecha_fin_str = fecha_prestamo.split(' fins ')
-        fecha_inicio = datetime.strptime(fecha_inicio_str, '%d-%m-%Y').date()
-        fecha_fin = datetime.strptime(fecha_fin_str, '%d-%m-%Y').date()
+        fecha_fin = timezone.make_aware(datetime.strptime(request.POST.get('date_range'), "%d-%m-%Y %H:%M"))
 
-        print(fecha_inicio, fecha_fin)
+        print(fecha_fin)
+        Prestamo.objects.create(
+            usuario=usuario,
+            ejemplar=ejemplar,
+            fecha_devolucion=fecha_fin,
+        )
+        messages.success(request, 'Prestec creat correctament!')
 
 
     return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
