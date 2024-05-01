@@ -386,6 +386,18 @@ def prestamos(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     prestamos = Prestamo.objects.all()
     
+    if request.method == 'POST':
+        prestamo_id = request.POST.get('id')
+        prestamo = Prestamo.objects.get(pk=prestamo_id)
+        ejemplar = Ejemplar.objects.get(pk=prestamo.ejemplar.id)
+        elemento = ejemplar.elemento
+        elemento.cantidad_disponible += 1
+        elemento.save()
+        prestamo.delete()
+        
+        messages.success(request, 'Prestec eliminat correctament!')
+
+
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
 

@@ -96,6 +96,9 @@ class Prestamo(models.Model):
     fecha_prestamo = models.DateTimeField(auto_now_add=True)
     fecha_devolucion = models.DateTimeField(null=True, blank=True)
     devuelto = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['fecha_devolucion']
     
     def __str__(self):
         return str(self.usuario)
