@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log, Prestamo, User
+from .models import Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -277,6 +277,7 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
 
+@login_required
 def process_csv(csv_file, centre_educatiu,request):
     user = request.user
     if not user.has_password_changed:
@@ -318,7 +319,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Manejar el caso donde la fila no tiene el formato correcto
                 messages.warning(request, f"Línea {line_number}: No se importó correctamente. Formato incorrecto.")
 
-# En tu vista Django
+@login_required
 def upload_file(request):
     if request.method == 'POST':
         form = Importar(request.POST, request.FILES)
@@ -339,6 +340,7 @@ def upload_file(request):
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
 
+@login_required
 def usuaris(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     centro_usuario_actual = request.user.centro
@@ -347,6 +349,7 @@ def usuaris(request):
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
 
+@login_required
 def EditUsuaris(request, user_id):
     # Obtener el usuario por su ID
     user = get_object_or_404(User, id=user_id)
@@ -361,9 +364,54 @@ def EditUsuaris(request, user_id):
 
 ## Prestamos
 
+@login_required
 def prestamos(request):
+    
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     prestamos = Prestamo.objects.all()
     
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
+
+@login_required
+def nou_prestec(request):
+    items_catalogo = ItemCatalogo.objects.all()
+    users = User.objects.all()
+    
+    if request.method == 'POST':
+        # añadir nuevo Ejemplar a la base de datos 
+        ejemplar_objs = []
+        elemento = None
+        if request.POST.get('article').startswith('CD'):
+            elemento = CD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DVD'):
+            elemento = DVD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('BR'):
+            elemento = BR.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DIS'):
+            elemento = Dispositivo.objects.get(id_catalogo=request.POST.get('article'))
+        # asignar un nuevo codigo a cada ejemplar a partir del ultimo codigo (EJ001)
+        codigo = Ejemplar.objects.all().order_by('-codigo').first().codigo
+        codigo = f'EJ{int(codigo[2:])+1:03}'
+        ejemplar_objs.append(Ejemplar(
+            elemento=elemento,
+            codigo=codigo,
+            disponible=False
+        ))
+        Ejemplar.objects.bulk_create(ejemplar_objs)
+
+        # añadir nuevo prestamo a la base de datos
+        usuario = User.objects.get(pk=request.POST.get('usuari'))
+        ejemplar = Ejemplar.objects.get(codigo=codigo)
+
+        # convierto la fecha de prestamo a formato datetime
+        fecha_prestamo = request.POST.get('date_range')
+        fecha_inicio_str, fecha_fin_str = fecha_prestamo.split(' fins ')
+        fecha_inicio = datetime.strptime(fecha_inicio_str, '%d-%m-%Y').date()
+        fecha_fin = datetime.strptime(fecha_fin_str, '%d-%m-%Y').date()
+
+        print(fecha_inicio, fecha_fin)
+
+
+    return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
+    

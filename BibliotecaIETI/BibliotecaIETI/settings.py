@@ -44,6 +44,9 @@ STATICFILES_DIRS = [
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'BibliotecaApp/static/')
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/'
+
+
 # Application definition
 
 INSTALLED_APPS = [

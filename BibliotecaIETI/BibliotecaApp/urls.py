@@ -28,6 +28,7 @@ urlpatterns = [
     path('dashboard/upload_file', views.upload_file, name='upload_file'),
 
     path('dashboard/prestecs', views.prestamos, name='prestamos'),
+    path('dashboard/prestecs/crear', views.nou_prestec, name='nou_prestec'),
 
     path('dashboard/usuaris/', views.usuaris, name='usuaris'),
 
