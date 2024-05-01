@@ -32,7 +32,8 @@ urlpatterns = [
 
     path('dashboard/usuaris/', views.usuaris, name='usuaris'),
 
-    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuaris, name='EditUsuaris'),
+    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuarisView, name='EditUsuarisView'),
 
+    path('crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

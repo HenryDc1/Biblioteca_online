@@ -52,6 +52,15 @@
                 </svg>
                 Editar Usuaris
               </a>
+              <a id="crear_usuari"
+              class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+              href="{% url 'crear_usuari' %}">
+              <!-- Pegar el SVG directamente aquí -->
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+              </svg>
+              Crear usuari
+            </a>
               {% endif %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-300 transition-colors" href="{% url 'usuari' %}">
             <svg
@@ -100,7 +109,7 @@
                       <td class="align-middle">{{ prestamos.fecha_prestamo }}</td>
                       <td class="align-middle">{{ prestamos.fecha_devolucion }}</td>
                       <td class="align-middle">
-                          <a href="{% url 'EditUsuaris' user.id %}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">Editar</a>
+                          <a href="" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095]">Editar</a>
                       </td>
                   </tr>
               {% endfor %}

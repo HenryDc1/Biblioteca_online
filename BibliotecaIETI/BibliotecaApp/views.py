@@ -18,6 +18,7 @@ import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
 from django.db.models import Q
+from .forms import UserForm
 from django.contrib.auth.hashers import make_password
 
 
@@ -71,16 +72,17 @@ def usuari(request):
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
                 if image_file:
-                    image_file.name = f'{user_id}.png'
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Guardar la imagen en el directorio adecuado
                     file_path = os.path.join(settings.STATIC_ROOT)
                     with open(file_path, 'wb+') as destination:
                         for chunk in image_file.chunks():
-                            # delete the old image
-                            if user.image:
-                                user.image.delete()
-                                
                             destination.write(chunk)
-
+                    
+                    # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
@@ -121,7 +123,6 @@ def editUsuaris(request):
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
-    users = User.objects.all()
 
     # actualizar datos del usuario
     if request.method == "POST":
@@ -171,13 +172,27 @@ def editUsuaris(request):
             registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
             return redirect('usuaris')
 
-    # Obtener fecha de nacimiento del usuario
+
+
+    return render(request, 'myapp/dashboard/usuaris.html')
+
+@login_required
+def EditUsuarisView(request, user_id):
+    # Obtener el usuario por su ID
+    user = get_object_or_404(User, id=user_id)
+    
+    # Aquí podrías definir el formulario de edición de usuario
+    # Por ejemplo, si estás utilizando forms.py:
+    # from .forms import UserForm
+    # form = UserForm(instance=user)
+
+    # Obtener la fecha de nacimiento del usuario si está disponible
     fecha_nacimiento = None
-    if request.user.fecha_nacimiento:
-        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
-
-    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
-
+    if user.fecha_nacimiento:
+        fecha_nacimiento = user.fecha_nacimiento.strftime('%Y-%m-%d')
+    
+    # Luego, renderizas el template con el formulario y el usuario
+    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user, 'fecha_nacimiento': fecha_nacimiento})
 
 @login_required
 def dashboard(request):
@@ -273,9 +288,9 @@ def guardar_log(request):
         
         Log.objects.create(evento=evento, nivel=nivel, usuario=usuario)
         
-        return JsonResponse({'mensaje': 'Log guardado correctamente.'})
+        return JsonResponse({'mensaje': 'Log guardat correctament.'})
     else:
-        return JsonResponse({'error': 'Método no permitido.'}, status=405)
+        return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
 @login_required
 def process_csv(csv_file, centre_educatiu,request):
@@ -317,7 +332,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 user.save()
             except ValueError:
                 # Manejar el caso donde la fila no tiene el formato correcto
-                messages.warning(request, f"Línea {line_number}: No se importó correctamente. Formato incorrecto.")
+                messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
 @login_required
 def upload_file(request):
@@ -329,11 +344,11 @@ def upload_file(request):
                 print("Paso por aqui 2") 
                 centre_educatiu = form.cleaned_data.get('centre_educatiu') 
                 process_csv(csv_file, centre_educatiu,request)
-                messages.success(request, 'El archivo CSV se ha importado correctamente.')
+                messages.success(request, "El fitxer CSV s'ha importat correctament.")
                 return render(request, 'myapp/dashboard/importar.html', {'form': form})
             else:
                 # Manejar el caso donde no se proporciona el archivo CSV
-                messages.error(request, 'No se proporcionó un archivo CSV')
+                messages.error(request, "No s'ha proporcionat cap fitxer CSV.")
                 print(form.errors)  # Imprime los errores del formulario en la consola
     else:
         form = Importar()
@@ -415,3 +430,52 @@ def nou_prestec(request):
 
     return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
     
+# CREAR USUARIO PANEL
+def crear_usuari(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES)
+        
+        try:
+            # Contraseña hash
+            hashed_password = make_password("password")
+
+            if form.is_valid():
+                username = request.POST.get('username')
+                #email = request.POST.get('email')
+
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, 'El nom de usuario ja está en us.')
+                    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+                
+                user = form.save(commit=False)
+                user.has_password_changed = False
+                user.first_name = request.POST.get('first_name')
+                user.last_name = request.POST.get('last_name')
+                user.username = request.POST.get('first_name')
+                user.password = hashed_password
+                user.save()
+                messages.success(request, 'Usuario creat amb éxit.')
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+            else:
+                # Capturar errores de validación específicos del campo email
+                email_errors = form.errors.get('email')
+                username_errors = form.errors.get('username')
+
+                if email_errors:
+                    messages.error(request, email_errors)
+                elif username_errors:
+                    messages.error(request, username_errors)
+                else:
+                    messages.error(request, 'Error de validació en el formulari')
+                
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+        except Exception as e:
+            print("Error:", str(e))
+            messages.error(request, 'El nom de usuari ya existeix.')
+            return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+    else:
+        form = UserForm()
+   
+    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
