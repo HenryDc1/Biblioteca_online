@@ -385,8 +385,9 @@ def prestamos(request):
     
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     prestamos = Prestamo.objects.all()
-    
-    if request.method == 'POST':
+
+  
+    if request.method == 'POST':        
         prestamo_id = request.POST.get('id')
         prestamo = Prestamo.objects.get(pk=prestamo_id)
         ejemplar = Ejemplar.objects.get(pk=prestamo.ejemplar.id)
