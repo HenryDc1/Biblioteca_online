@@ -293,14 +293,26 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
-@login_required
-def process_csv(csv_file, centre_educatiu,request):
+def process_csv(csv_file, centre_educatiu, request):
     user = request.user
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
+    
+    # Directorio donde se almacenarán los archivos CSV
+    csv_directory = os.path.join(settings.MEDIA_ROOT, 'csv_files')
+    
+    # Asegurarse de que el directorio exista, si no, créalo
+    if not os.path.exists(csv_directory):
+        os.makedirs(csv_directory)
+    
+    # Nombre del archivo
+    file_name = csv_file.name
+    
+    # Ruta relativa del archivo CSV
+    file_path = os.path.join(csv_directory, file_name)
+    
     # Guardar el archivo CSV en el sistema de archivos
-    file_path = os.path.join('/home/super/Baixades/', csv_file.name)
     with open(file_path, 'wb+') as destination:
         for chunk in csv_file.chunks():
             destination.write(chunk)
@@ -309,7 +321,7 @@ def process_csv(csv_file, centre_educatiu,request):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
         # contraseña hash
-        hashed_password = make_password("P@ssw0rd")
+        hashed_password = make_password("password")
 
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
@@ -335,7 +347,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Manejar el caso donde la fila no tiene el formato correcto
                 messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
-@login_required
+# En tu vista Django
 def upload_file(request):
     if request.method == 'POST':
         form = Importar(request.POST, request.FILES)
@@ -355,6 +367,7 @@ def upload_file(request):
         form = Importar()
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
+
 
 @login_required
 def usuaris(request):
