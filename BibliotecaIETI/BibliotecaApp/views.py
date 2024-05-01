@@ -309,7 +309,7 @@ def process_csv(csv_file, centre_educatiu,request):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
         # contraseña hash
-        hashed_password = make_password("password")
+        hashed_password = make_password("P@ssw0rd")
 
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
@@ -462,7 +462,7 @@ def crear_usuari(request):
         
         try:
             # Contraseña hash
-            hashed_password = make_password("password")
+            hashed_password = make_password("P@ssw0rd")
 
             if form.is_valid():
                 username = request.POST.get('username')
@@ -476,7 +476,7 @@ def crear_usuari(request):
                 user.has_password_changed = False
                 user.first_name = request.POST.get('first_name')
                 user.last_name = request.POST.get('last_name')
-                user.username = request.POST.get('first_name')
+                user.username = request.POST.get('email')
                 user.password = hashed_password
                 user.save()
                 messages.success(request, 'Usuario creat amb éxit.')
