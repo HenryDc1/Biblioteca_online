@@ -1,3 +1,5 @@
+import unicodedata
+import codecs
 import hashlib
 import os
 import time
@@ -72,6 +74,8 @@ def usuari(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -85,7 +89,25 @@ def usuari(request):
                     
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
-                 
+
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
+
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -132,6 +154,8 @@ def editUsuaris(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+                
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -146,6 +170,23 @@ def editUsuaris(request):
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
 
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
@@ -293,14 +334,27 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
-@login_required
-def process_csv(csv_file, centre_educatiu,request):
+
+def process_csv(csv_file, centre_educatiu, request):
     user = request.user
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
+    
+    # Directorio donde se almacenarán los archivos CSV
+    csv_directory = os.path.join(settings.MEDIA_ROOT, 'csv_files')
+    
+    # Asegurarse de que el directorio exista, si no, créalo
+    if not os.path.exists(csv_directory):
+        os.makedirs(csv_directory)
+    
+    # Nombre del archivo
+    file_name = csv_file.name
+    
+    # Ruta relativa del archivo CSV
+    file_path = os.path.join(csv_directory, file_name)
+    
     # Guardar el archivo CSV en el sistema de archivos
-    file_path = os.path.join('/home/super/Baixades/', csv_file.name)
     with open(file_path, 'wb+') as destination:
         for chunk in csv_file.chunks():
             destination.write(chunk)
@@ -309,7 +363,7 @@ def process_csv(csv_file, centre_educatiu,request):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
         # contraseña hash
-        hashed_password = make_password("P@ssw0rd")
+        hashed_password = make_password("password")
 
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
@@ -335,7 +389,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Manejar el caso donde la fila no tiene el formato correcto
                 messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
-@login_required
+# En tu vista Django
 def upload_file(request):
     if request.method == 'POST':
         form = Importar(request.POST, request.FILES)
@@ -355,6 +409,7 @@ def upload_file(request):
         form = Importar()
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
+
 
 @login_required
 def usuaris(request):
@@ -505,3 +560,4 @@ def crear_usuari(request):
         form = UserForm()
    
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+                  

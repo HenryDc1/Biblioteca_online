@@ -31,9 +31,10 @@ DEBUG = env('DEBUG')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-    
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
+
+ALLOWED_HOSTS = ['biblio5.ieti.site/', '192.168.151.195', '*']
+CSRF_TRUSTED_ORIGINS = ['https://biblio5.ieti.site']
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 STATIC_URL = "BibliotecaApp/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
