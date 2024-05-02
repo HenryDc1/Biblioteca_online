@@ -1,3 +1,5 @@
+import unicodedata
+import codecs
 import hashlib
 import os
 import time
@@ -72,6 +74,8 @@ def usuari(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -85,7 +89,25 @@ def usuari(request):
                     
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
-                 
+
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
+
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -132,6 +154,8 @@ def editUsuaris(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+                
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -146,6 +170,23 @@ def editUsuaris(request):
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
 
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
@@ -518,3 +559,4 @@ def crear_usuari(request):
         form = UserForm()
    
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+                  
