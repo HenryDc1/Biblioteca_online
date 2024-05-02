@@ -31,10 +31,12 @@ urlpatterns = [
     path('dashboard/upload_file', views.upload_file, name='upload_file'),
 
     path('dashboard/prestecs', views.prestamos, name='prestamos'),
+    path('dashboard/prestecs/crear', views.nou_prestec, name='nou_prestec'),
 
     path('dashboard/usuaris/', views.usuaris, name='usuaris'),
 
-    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuaris, name='EditUsuaris'),
+    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuarisView, name='EditUsuarisView'),
 
+    path('dashboard/crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

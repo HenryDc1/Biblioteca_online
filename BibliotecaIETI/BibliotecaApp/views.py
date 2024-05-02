@@ -1,9 +1,10 @@
 import hashlib
 import os
+import time
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.utils import formats
+from django.utils import formats, timezone
 from datetime import datetime
 from dateutil import parser
 from .forms import ChangePassword, Importar
@@ -12,12 +13,13 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Log, Prestamo, User
+from .models import Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.conf import settings
 from django.db.models import Q
+from .forms import UserForm
 from .forms import UserForm
 from django.contrib.auth.hashers import make_password
 
@@ -72,16 +74,17 @@ def usuari(request):
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
                 if image_file:
-                    image_file.name = f'{user_id}.png'
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Guardar la imagen en el directorio adecuado
                     file_path = os.path.join(settings.STATIC_ROOT)
                     with open(file_path, 'wb+') as destination:
                         for chunk in image_file.chunks():
-                            # delete the old image
-                            if user.image:
-                                user.image.delete()
-                                
                             destination.write(chunk)
-
+                    
+                    # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
@@ -122,7 +125,6 @@ def editUsuaris(request):
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
-    users = User.objects.all()
 
     # actualizar datos del usuario
     if request.method == "POST":
@@ -172,13 +174,27 @@ def editUsuaris(request):
             registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
             return redirect('usuaris')
 
-    # Obtener fecha de nacimiento del usuario
+
+
+    return render(request, 'myapp/dashboard/usuaris.html')
+
+@login_required
+def EditUsuarisView(request, user_id):
+    # Obtener el usuario por su ID
+    user = get_object_or_404(User, id=user_id)
+    
+    # Aquí podrías definir el formulario de edición de usuario
+    # Por ejemplo, si estás utilizando forms.py:
+    # from .forms import UserForm
+    # form = UserForm(instance=user)
+
+    # Obtener la fecha de nacimiento del usuario si está disponible
     fecha_nacimiento = None
-    if request.user.fecha_nacimiento:
-        fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
-
-    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
-
+    if user.fecha_nacimiento:
+        fecha_nacimiento = user.fecha_nacimiento.strftime('%Y-%m-%d')
+    
+    # Luego, renderizas el template con el formulario y el usuario
+    return render(request, 'myapp/dashboard/EditUsuaris.html', {'user': user, 'fecha_nacimiento': fecha_nacimiento})
 
 @login_required
 def dashboard(request):
@@ -274,10 +290,11 @@ def guardar_log(request):
         
         Log.objects.create(evento=evento, nivel=nivel, usuario=usuario)
         
-        return JsonResponse({'mensaje': 'Log guardado correctamente.'})
+        return JsonResponse({'mensaje': 'Log guardat correctament.'})
     else:
-        return JsonResponse({'error': 'Método no permitido.'}, status=405)
+        return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
+@login_required
 def process_csv(csv_file, centre_educatiu,request):
     user = request.user
     if not user.has_password_changed:
@@ -293,7 +310,7 @@ def process_csv(csv_file, centre_educatiu,request):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
         # contraseña hash
-        hashed_password = make_password("password")
+        hashed_password = make_password("P@ssw0rd")
 
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
@@ -317,9 +334,9 @@ def process_csv(csv_file, centre_educatiu,request):
                 user.save()
             except ValueError:
                 # Manejar el caso donde la fila no tiene el formato correcto
-                messages.warning(request, f"Línea {line_number}: No se importó correctamente. Formato incorrecto.")
+                messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
-# En tu vista Django
+@login_required
 def upload_file(request):
     if request.method == 'POST':
         form = Importar(request.POST, request.FILES)
@@ -329,17 +346,18 @@ def upload_file(request):
                 print("Paso por aqui 2") 
                 centre_educatiu = form.cleaned_data.get('centre_educatiu') 
                 process_csv(csv_file, centre_educatiu,request)
-                messages.success(request, 'El archivo CSV se ha importado correctamente.')
+                messages.success(request, "El fitxer CSV s'ha importat correctament.")
                 return render(request, 'myapp/dashboard/importar.html', {'form': form})
             else:
                 # Manejar el caso donde no se proporciona el archivo CSV
-                messages.error(request, 'No se proporcionó un archivo CSV')
+                messages.error(request, "No s'ha proporcionat cap fitxer CSV.")
                 print(form.errors)  # Imprime los errores del formulario en la consola
     else:
         form = Importar()
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
 
+@login_required
 def usuaris(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     centro_usuario_actual = request.user.centro
@@ -348,6 +366,7 @@ def usuaris(request):
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
 
+@login_required
 def EditUsuaris(request, user_id):
     # Obtener el usuario por su ID
     user = get_object_or_404(User, id=user_id)
@@ -362,41 +381,184 @@ def EditUsuaris(request, user_id):
 
 ## Prestamos
 
+@login_required
 def prestamos(request):
+    
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     prestamos = Prestamo.objects.all()
-    
+
+  
+    if request.method == 'POST':        
+        prestamo_id = request.POST.get('id')
+        prestamo = Prestamo.objects.get(pk=prestamo_id)
+        ejemplar = Ejemplar.objects.get(pk=prestamo.ejemplar.id)
+        elemento = ejemplar.elemento
+        elemento.cantidad_disponible += 1
+        elemento.save()
+        prestamo.delete()
+        
+        messages.success(request, 'Prestec eliminat correctament!')
+
+
     # Renderiza el template con la lista de usuarios
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
 
+@login_required
+def nou_prestec(request):
+    items_catalogo = ItemCatalogo.objects.all()
+    users = User.objects.all()
+    
+    if request.method == 'POST':
+        # añadir nuevo Ejemplar a la base de datos 
+        ejemplar_objs = []
+        elemento = None
+        # espera de 0.5s para evitar errores de concurrencia
+        time.sleep(0.5)
+        if request.POST.get('article').startswith('CD'):
+            elemento = CD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DVD'):
+            elemento = DVD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('BR'):
+            elemento = BR.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DIS'):
+            elemento = Dispositivo.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('LB'):
+            elemento = Libro.objects.get(id_catalogo=request.POST.get('article'))
+        # asignar un nuevo codigo a cada ejemplar a partir del ultimo codigo (EJ001)
+        codigo = Ejemplar.objects.all().order_by('-codigo').first().codigo
+        codigo = f'EJ{int(codigo[2:])+1:03}'
+        time.sleep(0.3)
+        ejemplar_objs.append(Ejemplar(
+            elemento=elemento,
+            codigo=codigo,
+            disponible=False
+        ))
+        Ejemplar.objects.bulk_create(ejemplar_objs)
+
+        # restar 1 a la cantidad de ejemplares disponibles
+        elemento.cantidad_disponible -= 1
+        elemento.save()
+
+        # añadir nuevo prestamo a la base de datos
+        usuario = User.objects.get(pk=request.POST.get('usuari'))
+        ejemplar = Ejemplar.objects.get(codigo=codigo)
+
+        # convierto la fecha de prestamo a formato datetime
+        fecha_fin = timezone.make_aware(datetime.strptime(request.POST.get('date_range'), "%d-%m-%Y %H:%M"))
+
+        print(fecha_fin)
+        Prestamo.objects.create(
+            usuario=usuario,
+            ejemplar=ejemplar,
+            fecha_devolucion=fecha_fin,
+        )
+        messages.success(request, 'Prestec creat correctament!')
+
+
+    return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
+    
 # CREAR USUARIO PANEL
 def crear_usuari(request):
-    print("Paso por aquí 1")
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
-        print("Datos del formulario POST:", request.POST)
-        print("Archivos del formulario POST:", request.FILES)
         
-        # contraseña hash
-        hashed_password = make_password("password")
+        try:
+            # Contraseña hash
+            hashed_password = make_password("P@ssw0rd")
 
-        if form.is_valid():
-            print("Paso por aquí 2")
-            user = form.save(commit=False)
-            user.has_password_changed = False
-            user.first_name = request.POST.get('first_name')
-            user.last_name = request.POST.get('last_name')
-            user.username = request.POST.get('first_name')   # Asigna el valor predeterminado o el que desees
-            user.password = hashed_password  # Guarda la contraseña hasheada
-            user.save()
-            messages.success(request, 'Usuari creat amb exit.')
+            if form.is_valid():
+                username = request.POST.get('username')
+                #email = request.POST.get('email')
+
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, 'El nom de usuario ja está en us.')
+                    return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+                
+                user = form.save(commit=False)
+                user.has_password_changed = False
+                user.first_name = request.POST.get('first_name')
+                user.last_name = request.POST.get('last_name')
+                user.username = request.POST.get('email')
+                user.password = hashed_password
+                user.save()
+                messages.success(request, 'Usuario creat amb éxit.')
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+            else:
+                # Capturar errores de validación específicos del campo email
+                email_errors = form.errors.get('email')
+                username_errors = form.errors.get('username')
+
+                if email_errors:
+                    messages.error(request, email_errors)
+                elif username_errors:
+                    messages.error(request, username_errors)
+                else:
+                    messages.error(request, 'Error de validació en el formulari')
+                
+                return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+        except Exception as e:
+            print("Error:", str(e))
+            messages.error(request, 'El nom de usuari ya existeix.')
             return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
 
-
-        else:
-            print("Errores de validación del formulario:", form.errors)
     else:
         form = UserForm()
-        print("Paso por aquí 3")
    
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
+
+@login_required
+def nou_prestec(request):
+    items_catalogo = ItemCatalogo.objects.all()
+    users = User.objects.all()
+    
+    if request.method == 'POST':
+        # añadir nuevo Ejemplar a la base de datos 
+        ejemplar_objs = []
+        elemento = None
+        # espera de 0.5s para evitar errores de concurrencia
+        time.sleep(0.5)
+        if request.POST.get('article').startswith('CD'):
+            elemento = CD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DVD'):
+            elemento = DVD.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('BR'):
+            elemento = BR.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('DIS'):
+            elemento = Dispositivo.objects.get(id_catalogo=request.POST.get('article'))
+        elif request.POST.get('article').startswith('LB'):
+            elemento = Libro.objects.get(id_catalogo=request.POST.get('article'))
+        # asignar un nuevo codigo a cada ejemplar a partir del ultimo codigo (EJ001)
+        codigo = Ejemplar.objects.all().order_by('-codigo').first().codigo
+        codigo = f'EJ{int(codigo[2:])+1:03}'
+        time.sleep(0.3)
+        ejemplar_objs.append(Ejemplar(
+            elemento=elemento,
+            codigo=codigo,
+            disponible=False
+        ))
+        Ejemplar.objects.bulk_create(ejemplar_objs)
+
+        # restar 1 a la cantidad de ejemplares disponibles
+        elemento.cantidad_disponible -= 1
+        elemento.save()
+
+        # añadir nuevo prestamo a la base de datos
+        usuario = User.objects.get(pk=request.POST.get('usuari'))
+        ejemplar = Ejemplar.objects.get(codigo=codigo)
+
+        # convierto la fecha de prestamo a formato datetime
+        fecha_fin = timezone.make_aware(datetime.strptime(request.POST.get('date_range'), "%d-%m-%Y %H:%M"))
+
+        print(fecha_fin)
+        Prestamo.objects.create(
+            usuario=usuario,
+            ejemplar=ejemplar,
+            fecha_devolucion=fecha_fin,
+        )
+        messages.success(request, 'Prestec creat correctament!')
+
+
+    return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
+    
+#
