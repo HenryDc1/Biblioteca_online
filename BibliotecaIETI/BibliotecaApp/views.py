@@ -560,5 +560,35 @@ def nou_prestec(request):
 
 
     return render(request, 'myapp/dashboard/nou_prestec.html', {'items_catalogo': items_catalogo, 'users': users})
+
+
     
-#
+# views.py
+
+def nou_element(request):
+    print("Entro en la funcion OK")
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn')
+        print(isbn)
+        titulo = request.POST.get('titulo')
+        autor = request.POST.get('autor')
+        editorial = request.POST.get('editorial')
+        num_paginas = request.POST.get('num_paginas')
+        data = request.POST.get('data')
+        
+        try:
+            # Crear un nuevo objeto Libro con los datos proporcionados
+            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=num_paginas, data_edicion=data)
+            libro.save()
+            
+            # Redireccionar a alguna página de éxito o a donde desees
+            return redirect('pagina_de_exito')
+        except Exception as e:
+            print("Error:", str(e))
+            # Manejar cualquier error que pueda ocurrir al guardar el libro
+            
+            # Renderizar el formulario con el error
+            return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
+
+    # Si no es una solicitud POST, simplemente renderiza el formulario vacío
+    return render(request, 'myapp/dashboard/nou_element.html', {})

@@ -1,0 +1,386 @@
+{% block content %} {% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+
+<head>
+    <title>Crear nou element | Biblioteca IETI</title>
+    <meta charset="UTF-8" />
+    <meta name="title" content="Los videojuegos de 2020" />
+    <meta name="description" content="Descripción de la WEB" />
+    <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* Fondo semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Asegura que esté por encima de otros elementos */
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: hwb(315 10% 5%);
+            /* Color del spinner */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            /* Animación giratoria */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script>
+
+
+        $(document).ready(function () {
+            // Añadir evento de tecla al campo de entrada del ISBN
+            $('#isbn').keypress(function (event) {
+                // Verificar si la tecla presionada es "Enter"
+                if (event.which === 13) {
+                    event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
+                    $('#ajax').submit(); // Enviar el formulario
+                    enviarAjax();
+
+                }
+            });
+            $('#search-icon').click(function () {
+                $('#ajax').submit(); // Enviar el formulario al hacer clic en la lupa
+                enviarAjax();
+            });
+            $('#cancelar-button').click(function (event) {
+                event.preventDefault();
+
+                // Limpiar los valores de los campos
+                $('#titulo').val('');
+                $('#autor').val('');
+                $('#data').val('');
+                $('#editorial').val('');
+                $('#numpag').val('');
+
+                // Ocultar todos los divs después del campo ISBN
+                $('#div-titol').hide();
+                $('#div-autor').hide();
+                $('#div-data').hide();
+                $('#div-pag').hide();
+                $('#submit-button').parent().hide();
+                $('#cancelar-button').parent().hide();
+            });
+
+            $('#search-icon').click(function (event) {
+                event.preventDefault();
+                var isbn = $('#isbn').val();
+
+                // Mostrar la animación de carga
+                $('#loading-overlay').show();
+
+                $.ajax({
+                    url: 'https://openlibrary.org/search.json?q=isbn:' + isbn,
+                    method: 'GET',
+                    success: function (data) {
+                        // Ocultar la animación de carga una vez que se han recibido los datos
+                        $('#loading-overlay').hide();
+
+                        if (data.docs && data.docs.length > 0) {
+                            var libro = data.docs[0];
+
+                            // Formatear la fecha del año
+                            var year = libro.first_publish_year;
+                            var formattedDate = year + '-01-01';
+                            console.log("Consola---->" + formattedDate) // Establecer el primer día del año con el año obtenido
+
+                            // Introducir los datos en los inputs del formulario
+                            $('#titulo').val(libro.title);
+                            $('#autor').val(libro.author_name.join(', '));
+                            $('#data').val(formattedDate); // Asignar la fecha formateada al campo de entrada
+                            var editorial = libro.publisher && libro.publisher.length > 0 ? libro.publisher[0] : 'No disponible';
+                            $('#editorial').val(editorial);
+                            $('#numpag').val(libro.number_of_pages_median ? libro.number_of_pages_median : '');
+                            // Mostrar los inputs y el botón
+                            $('#titulo').parent().show();
+                            $('#autor').parent().show();
+                            $('#data').parent().show();
+                            $('#editorial').parent().show();
+                            $('#numpag').parent().show();
+                            $('#submit-button').parent().show();
+                            $('#cancelar-button').parent().show();
+
+                        } else {
+                            alert('No se encontraron resultados para el ISBN proporcionado.');
+                        }
+                    },
+                    error: function () {
+                        // Ocultar la animación de carga en caso de error
+                        $('#loading-overlay').hide();
+                        alert('Error al buscar el libro.');
+                    }
+                });
+            });
+
+        });
+
+        function enviarAjax() {
+            var year = libro.first_publish_year;
+            var formattedDate = year + '-01-01';
+            var isbn = $('#isbn').val();
+            var titulo = $('#titulo').val();
+            var autor = $('#autor').val();
+            var editorial = $('#editorial').val();
+            var num_paginas = $('#num_paginas').val();
+            var data = $('#data').val(formattedDate);
+
+
+            var datosCombinados = {
+                isbn: isbn,
+                titulo: titulo,
+                autor: autor,
+                editorial: editorial,
+                num_paginas: num_paginas,
+                data: data,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'nou_element' %}",
+                data: datosCombinados,
+                success: function (response) {
+                    var libro = response.libro;
+                    // Manejar la respuesta del servidor si es necesario
+                },
+                error: function (xhr, status, error) {
+                    // Manejar errores si es necesario
+                }
+            });
+        }
+
+
+
+
+    </script>
+</head>
+
+
+<body>
+    {% include 'myapp/messages.html' %}
+    <div class="min-h-screen flex flex-col">
+        {% include 'myapp/header.html'%}
+        <main class="flex-1 flex">
+            <div class="bg-gray-100 w-64 p-4">
+                <nav class="space-y-4">
+                    <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                        href="{% url 'dashboard' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-5 h-5">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Dashboard
+                    </a>
+                    {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
+                    <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                        href="{% url 'prestamos' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-5 h-5">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                        </svg>
+                        Préstecs
+                    </a>
+                    <a id="importar"
+                        class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                        href="{% url 'upload_file' %}">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-database-import">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3" />
+                            <path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68 -.05 2.454 -.144m5.546 -2.856v-6" />
+                            <path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341 -.002 .51 -.006" />
+                            <path d="M19 22v-6" />
+                            <path d="M22 19l-3 -3l-3 3" />
+                        </svg>
+                        Importar
+                    </a>
+                    <a id="usuaris"
+                        class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                        href="{% url 'usuaris' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4">
+                            <path
+                                d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" />
+                        </svg>
+                        Editar Usuaris
+                    </a>
+                    <a id="crear_usuari"
+                        class="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-300 transition-colors"
+                        href="{% url 'crear_usuari' %}">
+                        <!-- Pegar el SVG directamente aquí -->
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            class="w-6 h-6 font-light">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                        Crear usuari
+                    </a>
+                    {% endif %}
+                    <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors "
+                        href="{% url 'usuari' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-5 h-5">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Perfil
+                    </a>
+                </nav>
+            </div>
+            <div class="flex-1 p-4">
+                <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+
+                <div class="flex-1 p-4 flex flex-col">
+
+                    <div class="flex justify-center ">
+                        {% if user.is_authenticated %}
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-1/2" data-v0-t="card">
+                            <div class="flex flex-col space-y-1.5 p-6">
+                                <h3
+                                    class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-[#bd1e59]">
+                                    Crear nou element
+                                </h3>
+                                <p class="text-sm text-[#bd1e59]">
+                                    Introdueix només l'ISBN de l'element que desitgis per a crear un nou element al
+                                    catàleg.
+                                </p>
+                            </div>
+                            <div class="p-6">
+                                <form id="ajax" method="POST">
+
+                                    <div class="relative">
+                                        <label for="isbn"
+                                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]">
+                                            ISBN
+                                        </label>
+                                        <div class="flex items-center">
+                                            <input 
+                                                class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                                                placeholder="Introdueix l'ISBN del llibre que desitgis" type="text"
+                                                name="isbn" id="isbn" required />
+                                            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="absolute right-3 top-1/2 -translate-y-1/8 w-5 h-5 text-[#bd1e59] cursor-pointer">
+                                                <circle cx="11" cy="11" r="8"></circle>
+                                                <path d="m21 21-4.3-4.3"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form id="buscar-libro-form" action="{% url 'nou_element' %}" method="POST"
+                                    enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="grid gap-4">
+
+                                        <div id="div-titol" style="display: none">
+                                            <label
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                                for="titulo">
+                                                Titol
+                                            </label>
+                                            <input
+                                                class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                                id="titulo" type="text" name="titulo" readonly />
+                                        </div>
+                                        <div id="div-autor" style="display: none">
+                                            <label
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                                for="autor">
+                                                Autor
+                                            </label>
+                                            <input
+                                                class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                                id="autor" type="text" name="autor" readonly />
+                                        </div>
+                                        <div id="div-data" style="display: none">
+                                            <label
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                                for="data">
+                                                Data d' edición
+                                            </label>
+                                            <input
+                                                class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                                id="data" type="date" name="data" readonly />
+                                        </div>
+
+                                        <div id="div-pag" style="display: none">
+                                            <label
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                                for="numpag">
+                                                Número de paginas
+                                            </label>
+                                            <input
+                                                class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                                id="numpag" type="number" name="numpag" readonly />
+                                        </div>
+                                    </div>
+                                    <div id="loading-overlay" style="display: none;">
+                                        <div class="spinner"></div>
+                                    </div>
+
+                                    <div class="flex items-center pt-8 pb-4"
+                                        style="margin-top:20px;margin-bottom:10px; display: none;">
+                                        <input id="submit-button" type="submit" value="Crear"
+                                            class="canviarPassOkk inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-[#bd1e59] text-white hover:bg-[#f4c095] hover:cursor-pointer" />
+                                    </div>
+                                    <div class="flex items-center py-0" style="margin-top:2px; display: none;">
+                                        <input id="cancelar-button" type="reset" value="Cancelar"
+                                            class="canviarPass inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full pl-3 text-center text-gray-900 col-span-6 hover:bg-gray-200 shadow-sm hover:text-gray-800" />
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        {% else %}
+
+
+                        {% endif %}
+                        <div id="titulo-libro"></div>
+                        <div id="autor-libro"></div>
+                        <div id="fecha-edicion"></div>
+                        <div id="editorial"></div>
+                        <div id="num-paginas"></div>
+                    </div>
+                </div>
+        </main>
+    </div>
+    <script>
+
+    </script>
+</body>
+
+
+</html>
+
+
+{% endblock %}

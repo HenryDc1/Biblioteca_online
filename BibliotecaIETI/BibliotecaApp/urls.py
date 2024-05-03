@@ -39,4 +39,6 @@ urlpatterns = [
 
     path('dashboard/crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
+    path('dashboard/nou_element/', views.nou_element, name='nou_element'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
