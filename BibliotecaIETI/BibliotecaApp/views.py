@@ -276,12 +276,12 @@ def canviar_contrasenya(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
 
-
+@csrf_exempt
 def cerca_cataleg(request):
-    if request.method == 'POST':
-        query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-        only_available = request.POST.get('only_available', '')  # Verificar si el checkbox está marcado
-        print("Valor de only_available:", only_available)  # Agregar un print para verificar el valor
+    if request.method == 'GET':
+        query = request.GET.get('cerca', '')  # Obtener el término de búsqueda del formulario
+        only_available = request.GET.get('nomes_disponible', '')  # Verificar si el checkbox está marcado
+        print("Valor de nomes_disponible:", only_available)  # Agregar un print para verificar el valor
         # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
         if len(query) >= 3:
             # Realizar la solicitud a la API de búsqueda
