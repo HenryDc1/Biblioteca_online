@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from django.core.management.base import BaseCommand
-from BibliotecaApp.models import Libro, CD, DVD, BR, Dispositivo, Ejemplar, User, Reserva, Prestamo
+from BibliotecaApp.models import ItemCatalogo, ItemPorCentro, Libro, CD, DVD, BR, Dispositivo, Ejemplar, User, Reserva, Prestamo, Centro
 from datetime import timedelta
 from django.contrib.auth.hashers import make_password
 
@@ -22,6 +22,7 @@ class Command(BaseCommand):
     #         model.objects.all().delete()
 
     def insertar_datos_ficticios(self, data):
+        '''
         self.insertar_usuarios(data['Usuarios'])  # Primero inserta los usuarios
         self.insertar_libros(data['Libros'])
         self.insertar_cds(data['CDs'])
@@ -31,7 +32,15 @@ class Command(BaseCommand):
         self.insertar_ejemplares(data['Ejemplares'])
         self.insertar_reservas(data['Reservas'])
         self.insertar_prestamos(data['Prestamos'])
+        self.insertar_centros(data['Centros'])'''
+        self.insertar_items_por_centro(data['item_por_centro'])
 
+    def insertar_centros(self, centros):
+        for centro_data in centros:
+            Centro.objects.create(
+                id_centro=centro_data['id_centro'],
+                nombre=centro_data['nombre'],
+            )
 
     def insertar_libros(self, libros):
         for libro_data in libros:
@@ -186,3 +195,20 @@ class Command(BaseCommand):
             )
             ejemplar.disponible = False
             ejemplar.save()
+    def insertar_items_por_centro(self,items_por_centro):
+        for item_por_centro_data in items_por_centro:
+            cantidad_disponible = item_por_centro_data.get('cantidad_disponible', 0)
+            centro_id = item_por_centro_data['centro_id']
+            item_id = item_por_centro_data['item_id']
+            ItemPorCentro.objects.create(
+                centro_id=centro_id,
+                item_id=item_id,
+                cantidad_disponible=cantidad_disponible
+            )
+            item = ItemCatalogo.objects.get(pk=item_id)
+            item.cantidad += cantidad_disponible
+            item.save()
+            item_por_centro = ItemPorCentro.objects.get(centro_id=centro_id, item_id=item_id)
+            item_por_centro.item = item
+            item_por_centro.save()
+            

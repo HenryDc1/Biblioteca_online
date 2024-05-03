@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
+from .models import Centro, Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -290,12 +290,18 @@ def cerca_cataleg(request):
                 response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
             else:
                 response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
-                print("Todos")
-
             
             if response.status_code == 200:
                 data = response.json().get('ItemCatalogo', [])
+                for item in data:
+                    centros = item.get('centros', [])
+                    for centro in centros:
+                        centro_id = centro.get('centro_id')
+                        centro_name = Centro.objects.get(id=centro_id).nombre  # Obtiene el nombre del centro
+                        centro['nombre_centro'] = centro_name  # Agrega el nombre del centro al diccionario
+                                                
                 
+                    
                 # Crear objeto Paginator
                 paginator = Paginator(data, 25)  # 25 resultados por página por defecto
                 
@@ -315,7 +321,8 @@ def cerca_cataleg(request):
             return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
     else:
         return render(request, 'myapp/cerca_cataleg.html')
-    
+
+
 def registrar_evento(evento, nivel, usuario=None):
     # Si no se proporciona un usuario, se asumirá como Anónimo
     if usuario is None:
