@@ -12,10 +12,10 @@
     <div class="container min-w-full">
         {% include 'myapp/header.html'%}
         
-        <div >
+        <div>
             <div class="w-full py-2 lg:py-4 md:ml-auto p-12 lg:p-32">
                 <h1 class="text-3xl font-bold mt-4 mb-8 text-[#bd1e59]">Resultats de la cerca: "{{ query }}"</h1>
-    
+        
                 <!-- Mostrar resultados de la búsqueda -->
                 <div class="search-results" id="search-results">
                     {% if resultados %}
@@ -32,13 +32,35 @@
                                 <hr class="border-2 border-[#bd1e59] mt-4 mb-8">
                             {% endfor %}
                         </ul>
-                    </div>
-                    {% else %}
+                        
+                        <!-- Mostrar la paginación -->
+                        <div class="pagination flex justify-center items-center mt-6">
+                            <span class="step-links">
+                                {% if resultados.has_previous %}
+                                    <a href="?{% if 'nomes_disponible' in request.GET %}nomes_disponible=on&{% endif %}cerca={{ query }}&page=1" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-l">Primera</a>
+                                    <a href="?{% if 'nomes_disponible' in request.GET %}nomes_disponible=on&{% endif %}cerca={{ query }}&page={{ resultados.previous_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Anterior</a>
+                                {% endif %}
+                                
+                                <span class="current bg-rose-600 text-[#bd1e59] font-semibold py-2 px-4">
+                                    Página {{ resultados.number }} de {{ resultados.paginator.num_pages }}.
+                                </span>
+                                
+                                {% if resultados.has_next %}
+                                    <a href="?{% if 'nomes_disponible' in request.GET %}nomes_disponible=on&{% endif %}cerca={{ query }}&page={{ resultados.next_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Siguiente</a>
+                                    <a href="?{% if 'nomes_disponible' in request.GET %}nomes_disponible=on&{% endif %}cerca={{ query }}&page={{ resultados.paginator.num_pages }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-r">Última</a>
+                                {% endif %}
+                            </span>
+                        </div>
+
+
+                        
+                        {% else %}
                         <p>No s'han trobat resultats per: "{{ query }}"</p>
                     {% endif %}
                 </div>
             </div>
         </div>
+        
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
