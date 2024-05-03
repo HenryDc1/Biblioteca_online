@@ -13,10 +13,27 @@ class ItemCatalogo(models.Model):
     data_edicion = models.DateField()
     cantidad = models.IntegerField(default=0)  # Campo para la cantidad total
     cantidad_disponible = models.IntegerField(default=0)  # Campo para la cantidad disponible
+    reservado = models.IntegerField(default=0)
+    prestado = models.IntegerField(default=0)
+    no_disponible = models.IntegerField(default=0)
     
     def __str__(self):
         return str(self.titulo)
 
+class Centro(models.Model):
+    id_centro = models.CharField(max_length=200, unique=True)
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+class ItemPorCentro(models.Model):
+    item = models.ForeignKey(ItemCatalogo, on_delete=models.CASCADE)
+    centro = models.ForeignKey(Centro, on_delete=models.CASCADE)
+    cantidad_disponible = models.IntegerField(default=0)
+    reservado = models.IntegerField(default=0)
+    prestado = models.IntegerField(default=0)
+    no_disponible = models.IntegerField(default=0)
 
 # Modelo para los libros
 class Libro(ItemCatalogo):

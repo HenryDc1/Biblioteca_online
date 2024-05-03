@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 import requests
-from .models import Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
+from .models import Centro, Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -23,6 +23,7 @@ from django.conf import settings
 from django.db.models import Q
 from .forms import UserForm
 from django.contrib.auth.hashers import make_password
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -277,37 +278,51 @@ def canviar_contrasenya(request):
     return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
 
 
+@csrf_exempt
 def cerca_cataleg(request):
-    if request.method == 'POST':
-        query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-        only_available = request.POST.get('only_available', '')  # Verificar si el checkbox está marcado
-        print("Valor de only_available:", only_available)  # Agregar un print para verificar el valor
-        # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
+    if request.method == 'GET':
+        query = request.GET.get('cerca', '')
+        only_available = request.GET.get('nomes_disponible', '')
+        print("Valor de nomes_disponible:", only_available)
+        
         if len(query) >= 3:
-            # Realizar la solicitud a la API de búsqueda
             if only_available:
                 response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
             else:
                 response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
-            # Verificar si la solicitud fue exitosa (código de estado 200)
+            
             if response.status_code == 200:
-                # Obtener los resultados de la respuesta JSON
                 data = response.json().get('ItemCatalogo', [])
-                # Renderizar la plantilla con los resultados de la búsqueda
-                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': data})
+                for item in data:
+                    centros = item.get('centros', [])
+                    for centro in centros:
+                        centro_id = centro.get('centro_id')
+                        centro_name = Centro.objects.get(id=centro_id).nombre  # Obtiene el nombre del centro
+                        centro['nombre_centro'] = centro_name  # Agrega el nombre del centro al diccionario
+                                                
+                
+                    
+                # Crear objeto Paginator
+                paginator = Paginator(data, 25)  # 25 resultados por página por defecto
+                
+                # Obtener número de página a mostrar
+                page_number = request.GET.get('page')
+                
+                # Obtener página de resultados
+                page_obj = paginator.get_page(page_number)
+                
+                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj})
             else:
-                # Si la solicitud no fue exitosa, mostrar un mensaje de error
                 error_message = 'Error al obtener resultados de la búsqueda'
                 registrar_evento('Error al obtener resultados de la búsqueda', 'ERROR')
                 return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
         else:
-            # Si la longitud de la consulta es menor a 3 caracteres, mostrar un mensaje de error
             error_message = 'La consulta debe tener al menos 3 caracteres'
             return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
     else:
-        # Si la solicitud no es POST, simplemente renderizar la plantilla sin ningún dato
         return render(request, 'myapp/cerca_cataleg.html')
-    
+
+
 def registrar_evento(evento, nivel, usuario=None):
     # Si no se proporciona un usuario, se asumirá como Anónimo
     if usuario is None:
