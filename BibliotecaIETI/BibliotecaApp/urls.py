@@ -11,7 +11,7 @@ urlpatterns = [
     path('canviar_contrasenya', views.canviar_contrasenya, name='canviar_contrasenya'),
 
     path('panell', views.dashboard, name='dashboard'),
-    path('panell/usuari', views.usuari, name='usuari'),   
+    path('panell/perfil', views.usuari, name='usuari'),   
     path('panell/usuaris/editar_usuari', views.editUsuaris, name='editUsuaris'),
 
     # Reset password 
