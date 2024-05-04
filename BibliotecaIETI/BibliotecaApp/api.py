@@ -26,10 +26,16 @@ def get_ItemCatalogo(request):
     for item in items:
         item_data = model_to_dict(item)  # Convertir el objeto modelo a un diccionario
         # Obtener la información de los centros para este item y agregarla al diccionario de datos del item
-        centros_data = list(ItemPorCentro.objects.filter(item=item).values('centro_id', 'cantidad_disponible', 'reservado', 'prestado', 'no_disponible'))
+        centros_data = list(ItemPorCentro.objects.filter(item=item).values('item_id', 'centro_id', 'cantidad_disponible', 'reservado', 'prestado', 'no_disponible'))
         item_data['centros'] = centros_data
-
+        
         items_data.append(item_data)
+        # añadir cdu de libro a partir de la tabla libro (Si empieza por "LB"):
+        if item.id_catalogo[:2] == "LB":
+            libro = Libro.objects.get(id_catalogo=item.id_catalogo)
+            item_data['CDU'] = libro.CDU
+            item_data['ISBN'] = libro.ISBN
+
 
     return JsonResponse({
         "status": "OK",
