@@ -1015,7 +1015,7 @@
   "Usuarios": [
     {
       "username": "Anonimo",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Anonimo",
       "last_name": "Anonimo",
       "email": "Anonimo@Anonimo.com",
@@ -1027,7 +1027,7 @@
     },
     {
       "username": "Javier",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Javier",
       "last_name": "Bernabeu",
       "email": "contacto.javierbc@gmail.com",
@@ -1039,7 +1039,7 @@
     },
     {
       "username": "Henry",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Henry",
       "last_name": "Doudo",
       "email": "henydoudoc@gmail.com",
@@ -1051,7 +1051,7 @@
     },
     {
       "username": "Mehdi",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Mehdi",
       "last_name": "Regbaoui",
       "email": "mregbaoui.cf@iesesteveterradas.cat",
@@ -1063,7 +1063,7 @@
     },
     {
       "username": "xavi",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Xavi",
       "last_name": "Profe",
       "email": "xavi@example.com",
@@ -1075,7 +1075,7 @@
     },
     {
       "username": "enric",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Enric",
       "last_name": "Profe",
       "email": "enric@example.com",
@@ -1087,7 +1087,7 @@
     },
     {
       "username": "Leandro",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Leandro",
       "last_name": "Profe",
       "email": "leandro@example.com",
@@ -1099,7 +1099,7 @@
     },
     {
       "username": "maricarmen",
-      "password": "password",
+      "password": "P@ssw0rd",
       "first_name": "Maricarmen",
       "last_name": "Profe",
       "email": "maricarmen@example.com",
