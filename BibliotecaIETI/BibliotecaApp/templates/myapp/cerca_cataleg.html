@@ -55,17 +55,35 @@
                                         </th>
                                         </tr>
                                     </thead>
+                                    {% if 'nomes_disponible' in request.GET %}
+                                    {% for centro in libro.centros %}
+                                        {% if centro.cantidad_disponible > 0 %}
+                                            <tbody class="[&amp;_tr:last-child]:border-0 hover:bg-gray-100">
+                                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                                    <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm"><strong>{{ centro.nombre_centro }}</strong></td>
+                                                    <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.cantidad_disponible }}</td>
+                                                    <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.reservado }}</td>
+                                                    <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.prestado }}</td>
+                                                    <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.no_disponible }}</td>
+                                                </tr>
+                                            </tbody>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
                                     {% for centro in libro.centros %}
                                         <tbody class="[&amp;_tr:last-child]:border-0 hover:bg-gray-100">
                                             <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm"><strong>{{ centro.nombre_centro }}</strong></td>
-                                            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.cantidad_disponible }}</td>
-                                            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.reservado}}</td>
-                                            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.prestado}}</td>
-                                            <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.no_disponible}}</td>
+                                                <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm"><strong>{{ centro.nombre_centro }}</strong></td>
+                                                <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.cantidad_disponible }}</td>
+                                                <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.reservado }}</td>
+                                                <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.prestado }}</td>
+                                                <td class="p-2 align-middle [&amp;:has([role=checkbox])]:pr-0 text-sm">{{ centro.no_disponible }}</td>
                                             </tr>
                                         </tbody>
                                     {% endfor %}
+                                {% endif %}
+                                
+
                                     </table>
 
                                 {% else %}

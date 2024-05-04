@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>Dashboard | Biblioteca IETI</title>
+    <title>Panell | Biblioteca Mari Carmen Brito</title>
     <meta charset="UTF-8" />
     <meta name="title" content="Los videojuegos de 2020" />
     <meta name="description" content="Descripción de la WEB" />
@@ -28,7 +28,7 @@
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
               </svg>
-              Dashboard
+              Panell
             </a>
             {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors" 
@@ -75,7 +75,7 @@
           </nav>
         </div>
         <div class="flex-1 p-4">
-          <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+          <h2 class="text-2xl font-bold mb-4">Panell - Editar Usuaris</h2>
           <div
             class="rounded-lg border bg-card text-card-foreground shadow-sm"
             data-v0-t="card"
@@ -111,9 +111,27 @@
           <hr class="border-2 border-[#bd1e59] mt-4 mb-8"> 
         </div>
         
-        
-        
         </div>
+
+        <div class="pagination flex justify-center items-center mt-6">
+          {% if users.has_previous %}
+            <a href="?page=1" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-l">Primera</a>
+            <a href="?page={{ users.previous_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Anterior</a>
+          {% endif %}
+
+          
+
+          <span class="current bg-rose-600 text-[#bd1e59] font-semibold py-2 px-4">
+            Página {{ users.number }} de {{ total_pages }}.
+          </span>
+        
+
+          {% if users.has_next %}
+              <a href="?page={{ users.next_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Siguiente</a>
+              <a href="?page={{ users.paginator.num_pages }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-r">Última</a>
+          {% endif %}
+        </div>
+        
       </main>
     </div>
 

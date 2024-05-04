@@ -388,7 +388,7 @@ def process_csv(csv_file, centre_educatiu, request):
                 username, last_name, email, fecha_nacimiento, ciclo, centro, roles, telefono  = row
                 # Crea un nuevo objeto User y asigna los valores
                 user = User(
-                    username=username,
+                    username=email,
                     password=hashed_password,  # Guarda la contraseña hasheada
                     first_name=username,
                     last_name=last_name,
@@ -426,15 +426,33 @@ def upload_file(request):
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def usuaris(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     centro_usuario_actual = request.user.centro
-    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual,)
+    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual)
     
-    # Renderiza el template con la lista de usuarios
-    return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
+    # Pagina los usuarios
+    paginator = Paginator(users, 25)  # Divide los usuarios en grupos de 25 por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud GET
+    
+    try:
+        users = paginator.page(page_number)
+    except PageNotAnInteger: 
+        # Si la página no es un número entero, muestra la primera página
+        users = paginator.page(1)
+    except EmptyPage: 
+        # Si la página está fuera de rango (por encima del número máximo de páginas), muestra la última página
+        users = paginator.page(paginator.num_pages)
+    
+    # Pasa el número total de páginas al contexto de la plantilla
+    total_pages = paginator.num_pages
+    
+    # Renderiza el template con la lista de usuarios paginada
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'total_pages': total_pages})
+
 
 @login_required
 def EditUsuaris(request, user_id):
@@ -454,10 +472,22 @@ def EditUsuaris(request, user_id):
 @login_required
 def prestamos(request):
     
-    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    # Obtén todos los préstamos
     prestamos = Prestamo.objects.all()
-
-  
+    
+    # Pagina los préstamos
+    paginator = Paginator(prestamos, 25)  # Divide los préstamos en grupos de 25 por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud GET
+    
+    try:
+        prestamos = paginator.page(page_number)
+    except PageNotAnInteger: 
+        # Si la página no es un número entero, muestra la primera página
+        prestamos = paginator.page(1)
+    except EmptyPage: 
+        # Si la página está fuera de rango (por encima del número máximo de páginas), muestra la última página
+        prestamos = paginator.page(paginator.num_pages)
+    
     if request.method == 'POST':        
         prestamo_id = request.POST.get('id')
         prestamo = Prestamo.objects.get(pk=prestamo_id)
@@ -467,10 +497,9 @@ def prestamos(request):
         elemento.save()
         prestamo.delete()
         
-        messages.success(request, 'Prestec eliminat correctament!')
+        messages.success(request, '¡Préstamo eliminado correctamente!')
 
-
-    # Renderiza el template con la lista de usuarios
+    # Renderiza el template con la lista de préstamos paginada
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
 
 @login_required

@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # self.eliminar_datos_antiguos()
-        with open(r'C:\Users\MR7\Desktop\BiblioMariCarmen\BibliotecaMariCarmen\BibliotecaIETI\BibliotecaApp\management\commands\datosfake.json', 'r',encoding='utf-8') as f:
+        with open(r'D:\Usuarios\M E H D I\Desktop\Proyecto-Biblioteca\BibliotecaMariCarmen\BibliotecaIETI\BibliotecaApp\management\commands\datosfake.json', 'r',encoding='utf-8') as f:
             data = json.load(f)
             self.insertar_datos_ficticios(data)
         self.stdout.write(self.style.SUCCESS("¡Datos insertados exitosamente!"))
@@ -32,7 +32,9 @@ class Command(BaseCommand):
         self.insertar_reservas(data['Reservas'])
         self.insertar_prestamos(data['Prestamos'])
         self.insertar_centros(data['Centros'])
+        '''
         self.insertar_items_por_centro(data['item_por_centro'])
+        '''
 
     def insertar_libros(self, libros):
         for libro_data in libros:
@@ -194,7 +196,7 @@ class Command(BaseCommand):
                 id_centro=centro_data['id_centro'],
                 nombre=centro_data['nombre'],
             )
-            
+    '''        
     def insertar_items_por_centro(self,items_por_centro):
         for item_por_centro_data in items_por_centro:
             cantidad_disponible = item_por_centro_data.get('cantidad_disponible', 0)
@@ -211,4 +213,4 @@ class Command(BaseCommand):
             item_por_centro = ItemPorCentro.objects.get(centro_id=centro_id, item_id=item_id)
             item_por_centro.item = item
             item_por_centro.save()
-            
+    '''

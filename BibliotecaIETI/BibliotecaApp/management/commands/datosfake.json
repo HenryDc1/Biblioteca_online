@@ -1166,58 +1166,18 @@
     {
       "id_centro": "CT002",
       "nombre": "Salesianos San José Artesano"
-    }
-  ],
-  "item_por_centro": [
-    {
-      "cantidad_disponible": 0,
-      "centro_id": 1,
-      "item_id": 1
     },
     {
-      "cantidad_disponible": 1,
-      "centro_id": 1,
-      "item_id": 2
+      "id_centro": "CT003",
+      "nombre": "Francesc Macià"
     },
     {
-      "cantidad_disponible": 4,
-      "centro_id": 2,
-      "item_id": 2
+      "id_centro": "CT004",
+      "nombre": "Joan Miró"
     },
     {
-      "cantidad_disponible": 0,
-      "centro_id": 1,
-      "item_id": 3
-    },
-    {
-      "cantidad_disponible": 0,
-      "centro_id": 1,
-      "item_id": 4
-    },
-    {
-      "cantidad_disponible": 1,
-      "centro_id": 1,
-      "item_id": 5
-    },
-    {
-      "cantidad_disponible": 10,
-      "centro_id": 1,
-      "item_id": 6
-    },
-    {
-      "cantidad_disponible": 10,
-      "centro_id": 1,
-      "item_id": 7
-    },
-    {
-      "cantidad_disponible": 10,
-      "centro_id": 1,
-      "item_id": 8
-    },
-    {
-      "cantidad_disponible": 10,
-      "centro_id": 1,
-      "item_id": 9
+      "id_centro": "CT005",
+      "nombre": "Maria Aurèlia Capmany"
     }
   ]
 }
