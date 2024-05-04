@@ -86,25 +86,25 @@
                         {% csrf_token %}
                         <div class="mb-4">
                             <label for="article" class="block text-sm font-medium text-[#bd1e59]">Article</label>
-                            <select required name="article" id="article" class="mt-1 block w-full py-2 px-3 border border-[#bd1e59] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#bd1e59] focus:border-[#bd1e59] sm:text-sm">
-                                <option value="" disabled selected style="display:none;">Selecciona un article</option>
-                                {% for item in items_catalogo|dictsort:"ocio" %}
-                                    {% if item.cantidad_disponible != 0 %}
+                            <select required name="article" id="article" class="select2 mt-1 block w-full py-2 px-3 border border-[#bd1e59] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#bd1e59] focus:border-[#bd1e59] sm:text-sm">
+                              <option value="" disabled selected style="display:none;">Selecciona un artículo</option>
+                              {% for item in items_catalogo|dictsort:"ocio" %}
+                                  {% if item.cantidad_disponible != 0 %}
                                       <option value="{{ item.id_catalogo }}">{{ item.ocio }} - {{ item.titulo }} ({{ item.cantidad_disponible }} disponibles)</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+                                  {% endif %}
+                              {% endfor %}
+                          </select>
                         </div>
                         <div class="mb-4">
                             <label for="usuari" class="block text-sm font-medium text-[#bd1e59]">Usuari</label>
-                            <select required name="usuari" id="usuari" class="mt-1 block w-full py-2 px-3 border border-[#bd1e59] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#bd1e59] focus:border-[#bd1e59] sm:text-sm">
-                                <option value="" disabled selected>Selecciona un usuari</option>
-                                {% for usuari in users|dictsort:"username" %}
-                                    {% if usuari.email != 'admin@admin.com' and usuari.email != 'Anonimo@Anonimo.com'%}
-                                        <option value="{{usuari.id}}">{{usuari.username}} {{usuari.last_name}} - {{usuari.email}}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+                            <select required name="usuari" id="usuari" class="select2 mt-1 block w-full py-2 px-3 border border-[#bd1e59] bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#bd1e59] focus:border-[#bd1e59] sm:text-sm">
+                              <option value="" disabled selected>Selecciona un usuario</option>
+                              {% for usuari in users|dictsort:"username" %}
+                                  {% if usuari.email != 'admin@admin.com' and usuari.email != 'Anonimo@Anonimo.com'%}
+                                      <option value="{{usuari.id}}">{{usuari.username}} {{usuari.last_name}} - {{usuari.email}}</option>
+                                  {% endif %}
+                              {% endfor %}
+                          </select>
                         </div>
                         <div class="mb-4">
                           <label for="date_range" class="block text-sm font-medium text-[#bd1e59]">Data</label>
@@ -145,7 +145,11 @@
           locale: customLocale
       });
   </script>
-
+<script>
+  $(document).ready(function() {
+      $('.select2').select2();
+  });
+</script>
     <script>
         // logs PENDIENTES
 
@@ -170,6 +174,9 @@
     }
     
   </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  
 </html>
 {% else %}
     <script>
