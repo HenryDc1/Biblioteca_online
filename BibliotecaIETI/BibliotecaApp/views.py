@@ -117,6 +117,8 @@ def usuari(request):
                     user.centro = request.POST.get('centro', user.centro)
                 if user.ciclo != request.POST.get('ciclo', user.ciclo):
                     user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.telefono != request.POST.get('telefono', user.telefono):
+                    user.telefono = request.POST.get('telefono', user.telefono)
                 if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
                     user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
                 

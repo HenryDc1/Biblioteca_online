@@ -1,14 +1,4 @@
 {
-  "Centros": [
-    {
-      "id_centro": "CT001",
-      "nombre": "Esteve Terradas Illa"
-    },
-    {
-      "id_centro": "CT002",
-      "nombre": "Salesianos San José Artesano"
-    }
-  ],
   "Libros": [
     {
       "id_catalogo": "LB001",
@@ -1166,6 +1156,16 @@
       "ejemplar": "EJ003",
       "fecha_prestamo": "2024-04-26T08:00:00",
       "fecha_devolucion": null
+    }
+  ],
+  "Centros": [
+    {
+      "id_centro": "CT001",
+      "nombre": "Esteve Terradas Illa"
+    },
+    {
+      "id_centro": "CT002",
+      "nombre": "Salesianos San José Artesano"
     }
   ],
   "item_por_centro": [
