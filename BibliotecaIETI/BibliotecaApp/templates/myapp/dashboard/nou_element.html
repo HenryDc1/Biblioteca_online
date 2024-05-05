@@ -48,127 +48,96 @@
     </style>
     <script>
 
+$(document).ready(function () {
+    console.log("He entrado !!!!!")
 
-        $(document).ready(function () {
-            // Añadir evento de tecla al campo de entrada del ISBN
-            $('#isbn').keypress(function (event) {
-                // Verificar si la tecla presionada es "Enter"
-                if (event.which === 13) {
-                    event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
-                    $('#ajax').submit(); // Enviar el formulario
-                    enviarAjax();
-
-                }
-            });
-            $('#search-icon').click(function () {
-                $('#ajax').submit(); // Enviar el formulario al hacer clic en la lupa
-                enviarAjax();
-            });
-            $('#cancelar-button').click(function (event) {
-                event.preventDefault();
-
-                // Limpiar los valores de los campos
-                $('#titulo').val('');
-                $('#autor').val('');
-                $('#data').val('');
-                $('#editorial').val('');
-                $('#numpag').val('');
-
-                // Ocultar todos los divs después del campo ISBN
-                $('#div-titol').hide();
-                $('#div-autor').hide();
-                $('#div-data').hide();
-                $('#div-pag').hide();
-                $('#submit-button').parent().hide();
-                $('#cancelar-button').parent().hide();
-            });
-
-            $('#search-icon').click(function (event) {
-                event.preventDefault();
-                var isbn = $('#isbn').val();
-
-                // Mostrar la animación de carga
-                $('#loading-overlay').show();
-
-                $.ajax({
-                    url: 'https://openlibrary.org/search.json?q=isbn:' + isbn,
-                    method: 'GET',
-                    success: function (data) {
-                        // Ocultar la animación de carga una vez que se han recibido los datos
-                        $('#loading-overlay').hide();
-
-                        if (data.docs && data.docs.length > 0) {
-                            var libro = data.docs[0];
-
-                            // Formatear la fecha del año
-                            var year = libro.first_publish_year;
-                            var formattedDate = year + '-01-01';
-                            console.log("Consola---->" + formattedDate) // Establecer el primer día del año con el año obtenido
-
-                            // Introducir los datos en los inputs del formulario
-                            $('#titulo').val(libro.title);
-                            $('#autor').val(libro.author_name.join(', '));
-                            $('#data').val(formattedDate); // Asignar la fecha formateada al campo de entrada
-                            var editorial = libro.publisher && libro.publisher.length > 0 ? libro.publisher[0] : 'No disponible';
-                            $('#editorial').val(editorial);
-                            $('#numpag').val(libro.number_of_pages_median ? libro.number_of_pages_median : '');
-                            // Mostrar los inputs y el botón
-                            $('#titulo').parent().show();
-                            $('#autor').parent().show();
-                            $('#data').parent().show();
-                            $('#editorial').parent().show();
-                            $('#numpag').parent().show();
-                            $('#submit-button').parent().show();
-                            $('#cancelar-button').parent().show();
-
-                        } else {
-                            alert('No se encontraron resultados para el ISBN proporcionado.');
-                        }
-                    },
-                    error: function () {
-                        // Ocultar la animación de carga en caso de error
-                        $('#loading-overlay').hide();
-                        alert('Error al buscar el libro.');
-                    }
-                });
-            });
-
-        });
-
-        function enviarAjax() {
-            var year = libro.first_publish_year;
-            var formattedDate = year + '-01-01';
-            var isbn = $('#isbn').val();
-            var titulo = $('#titulo').val();
-            var autor = $('#autor').val();
-            var editorial = $('#editorial').val();
-            var num_paginas = $('#num_paginas').val();
-            var data = $('#data').val(formattedDate);
-
-
-            var datosCombinados = {
-                isbn: isbn,
-                titulo: titulo,
-                autor: autor,
-                editorial: editorial,
-                num_paginas: num_paginas,
-                data: data,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            };
-
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'nou_element' %}",
-                data: datosCombinados,
-                success: function (response) {
-                    var libro = response.libro;
-                    // Manejar la respuesta del servidor si es necesario
-                },
-                error: function (xhr, status, error) {
-                    // Manejar errores si es necesario
-                }
-            });
+    // Añadir evento de tecla al campo de entrada del ISBN
+    $('#isbn').keypress(function (event) {
+        // Verificar si la tecla presionada es "Enter"
+        if (event.which === 13) {
+            console.log("He entrado !!!!!")
+            event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
+            $('#buscar-libro-form').submit(); // Enviar el formulario
         }
+    });
+
+    // Controlador de eventos click para #search-icon
+    $('#search-icon').click(function (event) {
+        console.log("He entrado2 !!!!!")
+        event.preventDefault();
+        var isbn = $('#isbn').val();
+
+        // Mostrar la animación de carga
+        $('#loading-overlay').show();
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: 'https://openlibrary.org/search.json?q=isbn:' + isbn,
+            method: 'GET',
+            success: function (data) {
+                // Ocultar la animación de carga una vez que se han recibido los datos
+                $('#loading-overlay').hide();
+
+                if (data.docs && data.docs.length > 0) {
+                    var libro = data.docs[0];
+                    console.log("He entrado !!!!!")
+                    // Formatear la fecha del año
+                    var year = libro.first_publish_year;
+                    var formattedDate = year + '-01-01';
+                    console.log("Consola---->" + formattedDate) // Establecer el primer día del año con el año obtenido
+
+                    // Introducir los datos en los inputs del formulario
+                    $('#titulo').val(libro.title);
+                    $('#autor').val(libro.author_name.join(', '));
+                    $('#data').val(formattedDate); // Asignar la fecha formateada al campo de entrada
+                    var editorial = libro.publisher && libro.publisher.length > 0 ? libro.publisher[0] : 'No disponible';
+                    $('#editorial').val(editorial);
+                    $('#numpag').val(libro.number_of_pages_median ? libro.number_of_pages_median : 'No disponible');
+                    // Mostrar los inputs y el botón
+                    $('#titulo').parent().show();
+                    $('#autor').parent().show();
+                    $('#data').parent().show();
+                    $('#editorial').parent().show();
+                    $('#numpag').parent().show();
+                    $('#submit-button').parent().show();
+                    $('#cancelar-button').parent().show();
+
+                } else {
+                    alert('No se encontraron resultados para el ISBN proporcionado.');
+                }
+            },
+            error: function () {
+                // Ocultar la animación de carga en caso de error
+                $('#loading-overlay').hide();
+                alert('Error al buscar el libro.');
+            }
+        });
+    });
+
+    // Controlador de eventos click para #cancelar-button
+    $('#cancelar-button').click(function (event) {
+        event.preventDefault();
+
+        // Limpiar los valores de los campos
+        $('#titulo').val('');
+        $('#autor').val('');
+        $('#data').val('');
+        $('#editorial').val('');
+        $('#numpag').val('');
+
+        // Ocultar todos los divs después del campo ISBN
+        $('#div-pag').hide();
+        $('#div-editorial').hide();
+        $('#div-titol').hide();
+        $('#div-autor').hide();
+        $('#div-data').hide();
+        console.log("Paso por aqui!!")
+        $('#submit-button').parent().hide();
+        $('#cancelar-button').parent().hide();
+    });
+});
+
+
 
 
 
@@ -274,32 +243,30 @@
                                 </p>
                             </div>
                             <div class="p-6">
-                                <form id="ajax" method="POST">
-
-                                    <div class="relative">
-                                        <label for="isbn"
-                                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]">
-                                            ISBN
-                                        </label>
-                                        <div class="flex items-center">
-                                            <input 
-                                                class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
-                                                placeholder="Introdueix l'ISBN del llibre que desitgis" type="text"
-                                                name="isbn" id="isbn" required />
-                                            <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="absolute right-3 top-1/2 -translate-y-1/8 w-5 h-5 text-[#bd1e59] cursor-pointer">
-                                                <circle cx="11" cy="11" r="8"></circle>
-                                                <path d="m21 21-4.3-4.3"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </form>
                                 <form id="buscar-libro-form" action="{% url 'nou_element' %}" method="POST"
                                     enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="grid gap-4">
+
+                                        <div class="relative">
+                                            <label for="isbn"
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]">
+                                                ISBN
+                                            </label>
+                                            <div class="flex items-center">
+                                                <input
+                                                    class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                                                    placeholder="Introdueix l'ISBN del llibre que desitgis" type="text"
+                                                    name="isbn" id="isbn" required />
+                                                <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="absolute right-3 top-1/2 -translate-y-1/8 w-5 h-5 text-[#bd1e59] cursor-pointer">
+                                                    <circle cx="11" cy="11" r="8"></circle>
+                                                    <path d="m21 21-4.3-4.3"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
 
                                         <div id="div-titol" style="display: none">
                                             <label
@@ -321,6 +288,16 @@
                                                 class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
                                                 id="autor" type="text" name="autor" readonly />
                                         </div>
+                                        <div id="div-editorial" style="display: none">
+                                            <label
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
+                                                for="editorial">
+                                                Editorial
+                                            </label>
+                                            <input
+                                                class="flex h-10 w-full bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md"
+                                                id="editorial" type="text" name="editorial" readonly />
+                                        </div>
                                         <div id="div-data" style="display: none">
                                             <label
                                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
@@ -334,8 +311,8 @@
 
                                         <div id="div-pag" style="display: none">
                                             <label
-                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]"
-                                                for="numpag">
+                                                for="numpag"
+                                                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[#bd1e59]">
                                                 Número de paginas
                                             </label>
                                             <input

@@ -569,22 +569,24 @@ def nou_element(request):
     print("Entro en la funcion OK")
     if request.method == 'POST':
         isbn = request.POST.get('isbn')
-        print(isbn)
         titulo = request.POST.get('titulo')
         autor = request.POST.get('autor')
         editorial = request.POST.get('editorial')
-        num_paginas = request.POST.get('num_paginas')
+        numpag = request.POST.get('numpag')
         data = request.POST.get('data')
+    
         
         try:
             # Crear un nuevo objeto Libro con los datos proporcionados
-            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=num_paginas, data_edicion=data)
+            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data)
             libro.save()
             
             # Redireccionar a alguna página de éxito o a donde desees
-            return redirect('pagina_de_exito')
+            return redirect('myapp/dashboard/nou_element.html')
+            messages.success(request, 'Exemplar afegit amb exit.')
         except Exception as e:
             print("Error:", str(e))
+            messages.error(request, "L'exemplar ja existeix al cataleg")
             # Manejar cualquier error que pueda ocurrir al guardar el libro
             
             # Renderizar el formulario con el error
