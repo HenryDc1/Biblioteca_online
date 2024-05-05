@@ -172,12 +172,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = ''
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = '/'
-
 AUTH_USER_MODEL = 'BibliotecaApp.User'
 LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = '/'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -190,10 +187,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 SITE_ID = 1
-
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/'
-
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
