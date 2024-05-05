@@ -1,5 +1,5 @@
 {% block content %} {% load static %}
-
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -161,6 +161,7 @@
                   />
                 </div>
               </form>
+              <a href="{% provider_login_url 'google' %}">Iniciar sesión con Google</a>
             </div>
           </div>
           {% endif %}
