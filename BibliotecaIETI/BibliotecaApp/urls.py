@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 from . import api
@@ -37,5 +37,7 @@ urlpatterns = [
     path('panell/crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
     path('dashboard/nou_element/', views.nou_element, name='nou_element'),
+
+    path('accounts/', include('allauth.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

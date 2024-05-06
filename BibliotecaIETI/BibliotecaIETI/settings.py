@@ -189,7 +189,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SITE_ID = 1
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
+    'github': {
         'SCOPE': [
             'profile',
             'email',
@@ -197,7 +197,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'OAUTH_PKCE_ENABLED': True,
 
     }
    
