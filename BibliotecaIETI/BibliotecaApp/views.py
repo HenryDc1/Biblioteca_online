@@ -13,7 +13,7 @@ from .forms import ChangePassword, Importar
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse,QueryDict
 import requests
 from .models import Centro, Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
@@ -24,6 +24,9 @@ from django.db.models import Q
 from .forms import UserForm
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
+from django.db.models.functions import ExtractYear
+from django.contrib.sessions.models import Session
+
 
 
 # Create your views here.
@@ -281,17 +284,51 @@ def canviar_contrasenya(request):
 
 @csrf_exempt
 def cerca_cataleg(request):
+    tipos_ocio = ItemCatalogo.objects.values_list('ocio', flat=True).distinct()
+    tipos_dataEdicion = ItemCatalogo.objects.annotate(year=ExtractYear('data_edicion')).values_list('year', flat=True).distinct()
+    tipos_dataEdicion = sorted(tipos_dataEdicion, reverse=True)
+    tipos_dataEdicion = [tipos_dataEdicion[0], tipos_dataEdicion[-1]]
+    tipos_centros = Centro.objects.all()
+    estados = ['Disponible', 'Reservat', 'Prestat', 'No disponible']
+
+    # Eliminar los parámetros de búsqueda de la sesión al cargar la página
+    if not request.GET:
+        if 'original_params' in request.session:
+            del request.session['original_params']
+            request.session.save()
+
+    original_params = request.session.get('original_params', {})
+    query = original_params.get('query', '')
+    only_available = original_params.get('only_available', '')
+    max_year_search = original_params.get('maxYearSearch', '')
+    min_year_search = original_params.get('minYearSearch', '')
+
     if request.method == 'GET':
-        query = request.GET.get('cerca', '')
-        only_available = request.GET.get('nomes_disponible', '')
-        print("Valor de nomes_disponible:", only_available)
-        
+        new_params = request.GET.copy()
+        query = new_params.get('cerca', query)
+        only_available = new_params.get('nomes_disponible', only_available)
+        max_year_search = new_params.get('maxYearSearch', max_year_search)
+        min_year_search = new_params.get('minYearSearch', min_year_search)
+        tipo_ocio_search = request.GET.getlist('tipo', [])  
+        centro_search = request.GET.getlist('centro', [])  # Obtener la lista de centros seleccionados
+        tipo_query_string = '&'.join([f'tipo={tipo}' for tipo in tipo_ocio_search])
+        centro_query_string = '&'.join([f'centro={centro}' for centro in centro_search])  # Convertir la lista de centros en una cadena de consulta
+        # estado del elemento
+        estado_search = request.GET.getlist('estado')
+        estado_query_string = '&'.join([f'estado={estado}' for estado in estado_search])
+
+        print(estado_query_string)
+
+        request.session['original_params'] = {
+            'query': query,
+        }
+
         if len(query) >= 3:
-            if only_available:
-                print("solo disponibles")
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
-            else:
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
+            if len(query) >= 3:
+                if only_available:
+                    response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true&maxYearSearch={max_year_search}&minYearSearch={min_year_search}&{tipo_query_string}&{centro_query_string}&{estado_query_string}')  # Incluir los centros seleccionados en la solicitud
+                else:
+                    response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&maxYearSearch={max_year_search}&minYearSearch={min_year_search}&{tipo_query_string}&{centro_query_string}&{estado_query_string}')  # Incluir los centros seleccionados en la solicitud
             
             if response.status_code == 200:
                 data = response.json().get('ItemCatalogo', [])
@@ -299,21 +336,15 @@ def cerca_cataleg(request):
                     centros = item.get('centros', [])
                     for centro in centros:
                         centro_id = centro.get('centro_id')
-                        centro_name = Centro.objects.get(id=centro_id).nombre  # Obtiene el nombre del centro
-                        centro['nombre_centro'] = centro_name  # Agrega el nombre del centro al diccionario
-                                                
-                
-                    
-                # Crear objeto Paginator
-                paginator = Paginator(data, 25)  # 25 resultados por página por defecto
-                
-                # Obtener número de página a mostrar
+                        centro_name = get_object_or_404(Centro, id=centro_id).nombre  # Modificar esta línea para buscar por id_centro en lugar de id
+                        centro['nombre_centro'] = centro_name
+
+                paginator = Paginator(data, 25)
                 page_number = request.GET.get('page')
-                
-                # Obtener página de resultados
                 page_obj = paginator.get_page(page_number)
-                
-                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj})
+
+                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+
             else:
                 error_message = 'Error al obtener resultados de la búsqueda'
                 registrar_evento('Error al obtener resultados de la búsqueda', 'ERROR')
@@ -322,8 +353,7 @@ def cerca_cataleg(request):
             error_message = 'La consulta debe tener al menos 3 caracteres'
             return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
     else:
-        return render(request, 'myapp/cerca_cataleg.html')
-
+        return render(request, 'myapp/cerca_cataleg.html', {'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
 
 def registrar_evento(evento, nivel, usuario=None):
     # Si no se proporciona un usuario, se asumirá como Anónimo

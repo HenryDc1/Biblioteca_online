@@ -5,10 +5,19 @@ from django.db.models import Q
 
 from django.db.models import Sum, F
 
+from django.db.models.functions import ExtractYear
+
 def get_ItemCatalogo(request):
     query = request.GET.get('search', '')
     only_available = request.GET.get('only_available', '')
+    max_year = request.GET.get('maxYearSearch', '')
+    min_year = request.GET.get('minYearSearch', '')
+    tipo_ocio_search = request.GET.getlist('tipo') 
+    centro_search = request.GET.getlist('centro')  
+    estado_search = request.GET.getlist('estado')
+    
 
+    
     # Obtener todos los elementos del catálogo
     items = ItemCatalogo.objects.all()
 
@@ -20,30 +29,52 @@ def get_ItemCatalogo(request):
     if only_available == 'true':
         items = items.annotate(total_disponible=Sum('itemporcentro__cantidad_disponible'))
         items = items.filter(total_disponible__gt=0)
+        
+    if tipo_ocio_search:  
+        items = items.filter(ocio__in=tipo_ocio_search)
+        
+    if centro_search:
+        # Filtrar los elementos por centro que tengan al menos una cantidad disponible 
+        items = items.filter(itemporcentro__centro__id_centro__in=centro_search, itemporcentro__cantidad_disponible__gt=0)
+        # comprobar que no hayan duplicados
+        items = items.distinct()
+        
+    if estado_search:
+        for estado in estado_search:
+            if estado == 'Disponible':
+                items = items.filter(cantidad_disponible__gt=0)
+            elif estado == 'Reservat':
+                items = items.filter(reservado__gt=0)
+            elif estado == 'Prestat':
+                items = items.filter(prestado__gt=0)
+            elif estado == 'No disponible':
+                items = items.filter(no_disponible__gt=0)
+            else:
+                return JsonResponse({'status': 'Error', 'message': 'Estado no válido'}, status=400)
+
+    if max_year.isdigit() and min_year.isdigit():
+        items = items.annotate(year=ExtractYear('data_edicion'))
+        items = items.filter(year__lte=int(max_year), year__gte=int(min_year))
 
     # Crear una lista para almacenar los datos de los items junto con la información de los centros
     items_data = []
     for item in items:
-        item_data = model_to_dict(item)  # Convertir el objeto modelo a un diccionario
-        # Obtener la información de los centros para este item y agregarla al diccionario de datos del item
+        item_data = model_to_dict(item)
         centros_data = list(ItemPorCentro.objects.filter(item=item).values('item_id', 'centro_id', 'cantidad_disponible', 'reservado', 'prestado', 'no_disponible'))
         item_data['centros'] = centros_data
-        
+
         items_data.append(item_data)
-        # añadir cdu de libro a partir de la tabla libro (Si empieza por "LB"):
+
         if item.id_catalogo[:2] == "LB":
             libro = Libro.objects.get(id_catalogo=item.id_catalogo)
             item_data['CDU'] = libro.CDU
             item_data['ISBN'] = libro.ISBN
-
 
     return JsonResponse({
         "status": "OK",
         "ItemCatalogo": items_data,
     }, safe=False)
 
-    
-    
     
     
 def create_log(request):
