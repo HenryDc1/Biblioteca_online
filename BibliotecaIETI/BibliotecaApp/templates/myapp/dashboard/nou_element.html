@@ -47,6 +47,68 @@
         }
     </style>
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+var userEmail = "{{ user.email }}";
+var userRoles = "{{ user.roles }}";
+
+$(document).keydown(function (event) {
+// Verifica si la tecla Alt está presionada y la letra corresponde a una de las opciones
+if (event.shiftKey) {
+  switch (event.key.toLowerCase()) {
+    case 'u':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'crear_usuari' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+
+    case 'n':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'nou_element' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'd':
+      window.location.href = "{% url 'dashboard' %}";
+      break;
+    case 'i':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'upload_file' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'e':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'usuaris' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'r':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'prestamos' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+
+      break;
+    case 'p':
+      console.log("Alt + 'p' presionado.");
+      window.location.href = "{% url 'usuari' %}";
+      break;
+    case 'c':
+      console.log("Alt + 'c' presionado.");
+      window.location.href = "{% url 'canviar_contrasenya' %}";
+      break;
+    default:
+      console.log("Tecla no reconocida.");
+  }
+}
+});
 
 $(document).ready(function () {
     console.log("He entrado !!!!!")
@@ -136,7 +198,7 @@ $(document).ready(function () {
         $('#cancelar-button').parent().hide();
     });
 });
-
+});
 
 
 
@@ -342,11 +404,6 @@ $(document).ready(function () {
 
 
                         {% endif %}
-                        <div id="titulo-libro"></div>
-                        <div id="autor-libro"></div>
-                        <div id="fecha-edicion"></div>
-                        <div id="editorial"></div>
-                        <div id="num-paginas"></div>
                     </div>
                 </div>
         </main>

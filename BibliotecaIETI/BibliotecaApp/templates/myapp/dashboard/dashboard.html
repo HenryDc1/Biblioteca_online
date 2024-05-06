@@ -207,15 +207,12 @@
       $('.canviarPass').click(function () {
         llamadaAjaxLog("DASHBOARD:  a donat click a 'Canviar contrasenya'", "INFO");
       });
-      var userType = "{% if user.email == 'admin2@admin.com' or user.roles == 'Bibliotecari' %}admin{% else %}user{% endif %}";
       $(document).keydown(function (event) {
         // Verifica si la tecla Alt está presionada y la letra corresponde a una de las opciones
-        
-        if (event.altKey) {
+        if (event.shiftKey) {
           switch (event.key.toLowerCase()) {
             case 'u':
-              console.log("Alt + 'u' presionado. Redirigiendo...");
-              if (userEmail === 'admin2@admin.com' || userRoles === 'Bibliotecari') {
+              if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
                 window.location.href = "{% url 'crear_usuari' %}";
               } else {
                 console.log("El usuario no tiene permisos para crear usuarios.");
@@ -223,36 +220,31 @@
               break;
 
               case 'n':
-              console.log("Alt + 'u' presionado. Redirigiendo...");
-              if (userEmail === 'admin2@admin.com' || userRoles === 'Bibliotecari') {
+              if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
                 window.location.href = "{% url 'nou_element' %}";
               } else {
                 console.log("El usuario no tiene permisos para crear usuarios.");
               }
               break;
             case 'd':
-              console.log("Alt + 'd' presionado.");
               window.location.href = "{% url 'dashboard' %}";
               break;
             case 'i':
-              console.log("Alt + 'i' presionado.");
-              if (userEmail === 'admin2@admin.com' || userRoles === 'Bibliotecari') {
+              if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
                 window.location.href = "{% url 'upload_file' %}";
               } else {
                 console.log("El usuario no tiene permisos para crear usuarios.");
               }
               break;
             case 'e':
-              console.log("Alt + 'e' presionado.");
-              if (userEmail === 'admin2@admin.com' || userRoles === 'Bibliotecari') {
+              if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
                 window.location.href = "{% url 'usuaris' %}";
               } else {
                 console.log("El usuario no tiene permisos para crear usuarios.");
               }
               break;
             case 'r':
-              console.log("Alt + 'r' presionado.");
-              if (userEmail === 'admin2@admin.com' || userRoles === 'Bibliotecari') {
+              if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
                 window.location.href = "{% url 'prestamos' %}";
               } else {
                 console.log("El usuario no tiene permisos para crear usuarios.");

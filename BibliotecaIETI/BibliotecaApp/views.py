@@ -22,6 +22,7 @@ from django.db.models import Q
 from .forms import UserForm
 from .forms import UserForm
 from django.contrib.auth.hashers import make_password
+from django.db.models import Max
 
 
 # Create your views here.
@@ -567,6 +568,7 @@ def nou_prestec(request):
 
 def nou_element(request):
     print("Entro en la funcion OK")
+    
     if request.method == 'POST':
         isbn = request.POST.get('isbn')
         titulo = request.POST.get('titulo')
@@ -574,16 +576,38 @@ def nou_element(request):
         editorial = request.POST.get('editorial')
         numpag = request.POST.get('numpag')
         data = request.POST.get('data')
-    
         
         try:
+            # Verificar si ya existe un libro con el mismo ISBN
+            existing_libro = Libro.objects.filter(ISBN=isbn).exists()
+            if existing_libro:
+                messages.error(request, "L'exemplar amb aquest ISBN ja existeix al cataleg")
+                return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
+            
+            # Obtener el último valor de id_catalogo
+            last_id_catalogo = Libro.objects.aggregate(Max('id_catalogo'))['id_catalogo__max']
+            
+            # Si no hay ningún libro en la base de datos, empezar desde LB001
+            if last_id_catalogo:
+                # Extraer el número y convertirlo a entero
+                last_id_number = int(last_id_catalogo[2:])
+                
+                # Incrementar en uno
+                new_id_number = last_id_number + 1
+                
+                # Formar el nuevo id_catalogo
+                new_id_catalogo = "LB" + str(new_id_number).zfill(3)
+            else:
+                new_id_catalogo = "LB001"
+            
             # Crear un nuevo objeto Libro con los datos proporcionados
-            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data)
+            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data, id_catalogo=new_id_catalogo)
             libro.save()
             
             # Redireccionar a alguna página de éxito o a donde desees
-            return redirect('myapp/dashboard/nou_element.html')
             messages.success(request, 'Exemplar afegit amb exit.')
+            return redirect('myapp/dashboard/nou_element.html')
+            
         except Exception as e:
             print("Error:", str(e))
             messages.error(request, "L'exemplar ja existeix al cataleg")
