@@ -1,13 +1,13 @@
-<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
+{% load static %}
+
+<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between min-h-28">
   <div class="flex flex-col ml-32 justify-center">
     <h2 class="text-2xl font-bold text-[#bd1e59] text-start flex items-center">
       <a href="{% url 'index' %}">
       Biblioteca Mari Carmen Brito
       </a>
     </h2>
-    {% if user.is_authenticated%}
-      <p class="text-md text-muted-foreground text-[#bd1e59]">Benvingut/da, {{ user.username }}</p>
-    {% endif %}
+
   </div>
   {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
   <div class="flex items-center">
@@ -145,12 +145,21 @@
     </script>
   {% endif %}
   {% if user.is_authenticated %}
-  <div class="clickSortir flex items-center space-x-4 mr-52">
+  <div class="flex mr-52">
+    <div class="clickSortir flex flex-col space-x-4  justify-center items-end">
+    <p class="text-md text-muted-foreground text-[#bd1e59]">Benvingut/da, {{ user.username }}</p>
+
     <a
       href="{% url 'logout' %}"
       class="text-[#bd1e59] border-b-2 border-transparent font-bold hover:border-[#bd1e59] transition-colors text-xl"
-      >Tancar sessió</a
+      >Tancar sessió</amr-52
     >
+    </div>
+    <div class="flex items-center ml-4">
+      <a href="{% url 'dashboard' %}">
+        <img src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
+      </a>
+    </div>
   </div>
   {% endif %}
 </header>
