@@ -13,198 +13,6 @@
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <style>
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.5);
-            /* Fondo semi-transparente */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            /* Asegura que esté por encima de otros elementos */
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: hwb(315 10% 5%);
-            /* Color del spinner */
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            /* Animación giratoria */
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-var userEmail = "{{ user.email }}";
-var userRoles = "{{ user.roles }}";
-
-$(document).keydown(function (event) {
-// Verifica si la tecla Alt está presionada y la letra corresponde a una de las opciones
-if (event.shiftKey) {
-  switch (event.key.toLowerCase()) {
-    case 'u':
-      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
-        window.location.href = "{% url 'crear_usuari' %}";
-      } else {
-        console.log("El usuario no tiene permisos para crear usuarios.");
-      }
-      break;
-
-    case 'n':
-      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
-        window.location.href = "{% url 'nou_element' %}";
-      } else {
-        console.log("El usuario no tiene permisos para crear usuarios.");
-      }
-      break;
-    case 'd':
-      window.location.href = "{% url 'dashboard' %}";
-      break;
-    case 'i':
-      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
-        window.location.href = "{% url 'upload_file' %}";
-      } else {
-        console.log("El usuario no tiene permisos para crear usuarios.");
-      }
-      break;
-    case 'e':
-      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
-        window.location.href = "{% url 'usuaris' %}";
-      } else {
-        console.log("El usuario no tiene permisos para crear usuarios.");
-      }
-      break;
-    case 'r':
-      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
-        window.location.href = "{% url 'prestamos' %}";
-      } else {
-        console.log("El usuario no tiene permisos para crear usuarios.");
-      }
-
-      break;
-    case 'p':
-      console.log("Alt + 'p' presionado.");
-      window.location.href = "{% url 'usuari' %}";
-      break;
-    case 'c':
-      console.log("Alt + 'c' presionado.");
-      window.location.href = "{% url 'canviar_contrasenya' %}";
-      break;
-    default:
-      console.log("Tecla no reconocida.");
-  }
-}
-});
-
-$(document).ready(function () {
-    console.log("He entrado !!!!!")
-
-    // Añadir evento de tecla al campo de entrada del ISBN
-    $('#isbn').keypress(function (event) {
-        // Verificar si la tecla presionada es "Enter"
-        if (event.which === 13) {
-            console.log("He entrado !!!!!")
-            event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
-            $('#buscar-libro-form').submit(); // Enviar el formulario
-        }
-    });
-
-    // Controlador de eventos click para #search-icon
-    $('#search-icon').click(function (event) {
-        console.log("He entrado2 !!!!!")
-        event.preventDefault();
-        var isbn = $('#isbn').val();
-
-        // Mostrar la animación de carga
-        $('#loading-overlay').show();
-
-        // Realizar la solicitud AJAX
-        $.ajax({
-            url: 'https://openlibrary.org/search.json?q=isbn:' + isbn,
-            method: 'GET',
-            success: function (data) {
-                // Ocultar la animación de carga una vez que se han recibido los datos
-                $('#loading-overlay').hide();
-
-                if (data.docs && data.docs.length > 0) {
-                    var libro = data.docs[0];
-                    console.log("He entrado !!!!!")
-                    // Formatear la fecha del año
-                    var year = libro.first_publish_year;
-                    var formattedDate = year + '-01-01';
-                    console.log("Consola---->" + formattedDate) // Establecer el primer día del año con el año obtenido
-
-                    // Introducir los datos en los inputs del formulario
-                    $('#titulo').val(libro.title);
-                    $('#autor').val(libro.author_name.join(', '));
-                    $('#data').val(formattedDate); // Asignar la fecha formateada al campo de entrada
-                    var editorial = libro.publisher && libro.publisher.length > 0 ? libro.publisher[0] : 'No disponible';
-                    $('#editorial').val(editorial);
-                    $('#numpag').val(libro.number_of_pages_median ? libro.number_of_pages_median : 'No disponible');
-                    // Mostrar los inputs y el botón
-                    $('#titulo').parent().show();
-                    $('#autor').parent().show();
-                    $('#data').parent().show();
-                    $('#editorial').parent().show();
-                    $('#numpag').parent().show();
-                    $('#submit-button').parent().show();
-                    $('#cancelar-button').parent().show();
-
-                } else {
-                    alert('No se encontraron resultados para el ISBN proporcionado.');
-                }
-            },
-            error: function () {
-                // Ocultar la animación de carga en caso de error
-                $('#loading-overlay').hide();
-                alert('Error al buscar el libro.');
-            }
-        });
-    });
-
-    // Controlador de eventos click para #cancelar-button
-    $('#cancelar-button').click(function (event) {
-        event.preventDefault();
-
-        // Limpiar los valores de los campos
-        $('#titulo').val('');
-        $('#autor').val('');
-        $('#data').val('');
-        $('#editorial').val('');
-        $('#numpag').val('');
-
-        // Ocultar todos los divs después del campo ISBN
-        $('#div-pag').hide();
-        $('#div-editorial').hide();
-        $('#div-titol').hide();
-        $('#div-autor').hide();
-        $('#div-data').hide();
-        console.log("Paso por aqui!!")
-        $('#submit-button').parent().hide();
-        $('#cancelar-button').parent().hide();
-    });
-});
-});
-
-
-
-
-
-    </script>
 </head>
 
 
@@ -408,8 +216,192 @@ $(document).ready(function () {
                 </div>
         </main>
     </div>
-    <script>
+    <style>
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* Fondo semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Asegura que esté por encima de otros elementos */
+        }
 
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: hwb(315 10% 5%);
+            /* Color del spinner */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            /* Animación giratoria */
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+var userEmail = "{{ user.email }}";
+var userRoles = "{{ user.roles }}";
+
+$(document).keydown(function (event) {
+// Verifica si la tecla Alt está presionada y la letra corresponde a una de las opciones
+if (event.shiftKey) {
+  switch (event.key.toLowerCase()) {
+    case 'u':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'crear_usuari' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+
+    case 'n':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'nou_element' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'd':
+      window.location.href = "{% url 'dashboard' %}";
+      break;
+    case 'i':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'upload_file' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'e':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'usuaris' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+      break;
+    case 'r':
+      if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'prestamos' %}";
+      } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+      }
+
+      break;
+    case 'p':
+      console.log("Alt + 'p' presionado.");
+      window.location.href = "{% url 'usuari' %}";
+      break;
+    case 'c':
+      console.log("Alt + 'c' presionado.");
+      window.location.href = "{% url 'canviar_contrasenya' %}";
+      break;
+    default:
+      console.log("Tecla no reconocida.");
+  }
+}
+});
+
+$(document).ready(function () {
+    console.log("He entrado !!!!!")
+
+    // Añadir evento de tecla al campo de entrada del ISBN
+    $('#isbn').keypress(function (event) {
+        // Verificar si la tecla presionada es "Enter"
+        if (event.which === 13) {
+            console.log("He entrado !!!!!")
+            event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
+            $('#buscar-libro-form').submit(); // Enviar el formulario
+        }
+    });
+
+    // Controlador de eventos click para #search-icon
+    $('#search-icon').click(function (event) {
+        console.log("He entrado2 !!!!!")
+        event.preventDefault();
+        var isbn = $('#isbn').val();
+
+        // Mostrar la animación de carga
+        $('#loading-overlay').show();
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: 'https://openlibrary.org/search.json?q=isbn:' + isbn,
+            method: 'GET',
+            success: function (data) {
+                // Ocultar la animación de carga una vez que se han recibido los datos
+                $('#loading-overlay').hide();
+
+                if (data.docs && data.docs.length > 0) {
+                    var libro = data.docs[0];
+                    console.log("He entrado !!!!!")
+                    // Formatear la fecha del año
+                    var year = libro.first_publish_year;
+                    var formattedDate = year + '-01-01';
+                    console.log("Consola---->" + formattedDate) // Establecer el primer día del año con el año obtenido
+
+                    // Introducir los datos en los inputs del formulario
+                    $('#titulo').val(libro.title);
+                    $('#autor').val(libro.author_name.join(', '));
+                    $('#data').val(formattedDate); // Asignar la fecha formateada al campo de entrada
+                    var editorial = libro.publisher && libro.publisher.length > 0 ? libro.publisher[0] : 'No disponible';
+                    $('#editorial').val(editorial);
+                    $('#numpag').val(libro.number_of_pages_median ? libro.number_of_pages_median : 'No disponible');
+                    // Mostrar los inputs y el botón
+                    $('#titulo').parent().show();
+                    $('#autor').parent().show();
+                    $('#data').parent().show();
+                    $('#editorial').parent().show();
+                    $('#numpag').parent().show();
+                    $('#submit-button').parent().show();
+                    $('#cancelar-button').parent().show();
+
+                } else {
+                    alert('No se encontraron resultados para el ISBN proporcionado.');
+                }
+            },
+            error: function () {
+                // Ocultar la animación de carga en caso de error
+                $('#loading-overlay').hide();
+                alert('Error al buscar el libro.');
+            }
+        });
+    });
+
+    // Controlador de eventos click para #cancelar-button
+    $('#cancelar-button').click(function (event) {
+        event.preventDefault();
+
+        // Limpiar los valores de los campos
+        $('#titulo').val('');
+        $('#autor').val('');
+        $('#data').val('');
+        $('#editorial').val('');
+        $('#numpag').val('');
+
+        // Ocultar todos los divs después del campo ISBN
+        $('#div-pag').hide();
+        $('#div-editorial').hide();
+        $('#div-titol').hide();
+        $('#div-autor').hide();
+        $('#div-data').hide();
+        console.log("Paso por aqui!!")
+        $('#submit-button').parent().hide();
+        $('#cancelar-button').parent().hide();
+    });
+    });
+});
     </script>
 </body>
 
