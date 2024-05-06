@@ -11,6 +11,7 @@
     <meta name="title" content="Los videojuegos de 2020" />
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <link rel="stylesheet" href="{% static 'input.css' %} " />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
@@ -42,6 +43,15 @@
                   </svg>
                     Préstecs
                   </a>
+                  <a id="nou_element" class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+                    href="{% url 'nou_element' %}">
+                    <!-- Pegar el SVG directamente aquí -->
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
+                    </svg>
+                    
+                    Nou Llibre
+                </a>
                     <a id="importar"
                       class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                       href="{% url 'upload_file' %}">
@@ -79,7 +89,7 @@
                 </nav>
             </div>
             <div class="flex-1 p-4">
-            <h2 class="text-2xl font-bold mb-4">Panell - Crear Usuari</h2>
+            <h2 class="text-2xl font-bold mb-4"><span class="border-black border-b-2">P</span>anell - <span class="border-black border-b-2">C</span>rear Usuari</h2>
 
             <div class="flex-1 p-4 flex flex-col">
 
@@ -176,7 +186,90 @@
         </main>     
     </div>
     <script>
-   
+   document.addEventListener('DOMContentLoaded', function () {
+
+var userEmail = "{{ user.email }}";
+var userRoles = "{{ user.roles }}";
+
+// Verifica si la tecla Alt está presionada y la letra corresponde a una de las opciones
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyF' && event.altKey && event.ctrlKey) {
+    window.location.href = "{% url 'usuari' %}";
+}
+});
+
+window.addEventListener('keydown', (event) => {
+if (event.code === 'KeyC' && event.altKey && event.ctrlKey) {
+    if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+                window.location.href = "{% url 'crear_usuari' %}";
+    } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+    }
+}
+});
+
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyN' && event.altKey && event.ctrlKey) {
+        // do your stuff
+        if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'nou_element' %}";
+    } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+    }
+    }
+});
+
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyP' && event.altKey && event.ctrlKey) {
+        // do your stuff
+        window.location.href = "{% url 'dashboard' %}";
+    }
+});
+
+
+window.addEventListener('keydown', (event) => {
+if (event.code === 'KeyI' && event.altKey && event.ctrlKey) {
+    // do your stuff
+    if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'upload_file' %}";
+    } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+    }
+}
+});
+
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyE' && event.altKey && event.ctrlKey) {
+        // do your stuff
+        if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'usuaris' %}";
+    } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+    }
+    }
+});
+
+window.addEventListener('keydown', (event) => {
+if (event.code === 'KeyR' && event.altKey && event.ctrlKey) {
+    // do your stuff
+    if (userEmail === 'admin@admin.com' || userRoles === 'Bibliotecari') {
+        window.location.href = "{% url 'prestamos' %}";
+    } else {
+        console.log("El usuario no tiene permisos para crear usuarios.");
+    }
+}
+});
+
+window.addEventListener('keydown', (event) => {
+if (event.code === 'KeyV' && event.altKey && event.ctrlKey) {
+    // do your stuff
+    window.location.href = "{% url 'canviar_contrasenya' %}";
+
+}
+});
+
+
+});
     </script>
 </body>
 

@@ -643,12 +643,12 @@ def nou_element(request):
                 new_id_catalogo = "LB001"
             
             # Crear un nuevo objeto Libro con los datos proporcionados
-            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data, id_catalogo=new_id_catalogo)
+            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data, id_catalogo=new_id_catalogo, ocio="Novel·la",CDU='821.133.1(73)-31' )
             libro.save()
             
             # Redireccionar a alguna página de éxito o a donde desees
             messages.success(request, 'Exemplar afegit amb exit.')
-            return redirect('myapp/dashboard/nou_element.html')
+            return redirect('nou_element')
             
         except Exception as e:
             print("Error:", str(e))

@@ -89,3 +89,7 @@
     height: 100%;
     border-radius: 1px;
 }
+
+.border-black {
+    border-color: black;
+}

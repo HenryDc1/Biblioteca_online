@@ -125,17 +125,15 @@
       });
   
       // Agregar un evento de escucha para la tecla Enter en el campo de entrada
-      input2.addEventListener('keypress', function(event) {
-  
-          // Verificar si la tecla presionada es Enter (código 13)
-          if (event.key === 'Enter') {
-              // Cancelar el comportamiento predeterminado del formulario para evitar que se envíe automáticamente
-              event.preventDefault();
-              // Verificar si el campo de entrada está vacío
-              if (input2.value.trim() !== '') {
-  
-                  // Enviar el formulario solo si hay algo escrito en el campo de entrada
-                  form.submit();
+      // Agregar un evento de escucha para la tecla Enter en el campo de entrada input2
+      $('#search-input').keypress(function(event) {
+          if (event.which === 13) { // 13 es el código de tecla para "Enter"
+              var input2Value = $('#search-input').val(); // Obtener el valor del campo input2
+
+              if (input2Value.trim() !== "") { // Verificar si el valor no está vacío
+                  console.log("He entrado en search-input-busqueda avanzada !!!!!");
+                  event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
+                  $('#search-form').submit(); // Enviar el otro formulario
               }
           }
       });
