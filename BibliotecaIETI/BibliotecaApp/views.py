@@ -1,3 +1,5 @@
+import unicodedata
+import codecs
 import hashlib
 import os
 import time
@@ -11,9 +13,9 @@ from .forms import ChangePassword, Importar
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse,QueryDict
 import requests
-from .models import Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
+from .models import Centro, Libro, Log, Prestamo, User, ItemCatalogo, Ejemplar, CD, DVD, BR, Dispositivo
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -22,7 +24,11 @@ from django.db.models import Q
 from .forms import UserForm
 from .forms import UserForm
 from django.contrib.auth.hashers import make_password
+from django.core.paginator import Paginator
 from django.db.models import Max
+from django.db.models.functions import ExtractYear
+from django.contrib.sessions.models import Session
+
 
 
 # Create your views here.
@@ -74,6 +80,8 @@ def usuari(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -87,7 +95,25 @@ def usuari(request):
                     
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
-                 
+
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
+
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
                 if user.last_name != request.POST.get('last_name', user.last_name):
@@ -96,6 +122,8 @@ def usuari(request):
                     user.centro = request.POST.get('centro', user.centro)
                 if user.ciclo != request.POST.get('ciclo', user.ciclo):
                     user.ciclo = request.POST.get('ciclo', user.ciclo)
+                if user.telefono != request.POST.get('telefono', user.telefono):
+                    user.telefono = request.POST.get('telefono', user.telefono)
                 if user.fecha_nacimiento != parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento)):
                     user.fecha_nacimiento = parser.parse(request.POST.get('fecha_nacimiento', user.fecha_nacimiento))
                 
@@ -134,6 +162,8 @@ def editUsuaris(request):
             try:
                 user = User.objects.get(pk=user_id)
                 image_file = request.FILES.get('image')
+                
+                # DESARROLLO:
                 if image_file:
                     # Generar un nombre único para la imagen utilizando un hash
                     hash_object = hashlib.md5(image_file.read())
@@ -148,6 +178,23 @@ def editUsuaris(request):
                     # Asignar el nombre de la imagen al usuario
                     user.image = request.FILES.get('image')
 
+
+                ''' PRODUCCION:
+                if image_file:
+                    # Generar un nombre único para la imagen utilizando un hash
+                    hash_object = hashlib.md5(image_file.read())
+                    hashed_name = hash_object.hexdigest() + '.png'
+
+                    # Normalizar el nombre del archivo para eliminar caracteres no ASCII
+                    normalized_name = unicodedata.normalize('NFKD', hashed_name).encode('ASCII', 'ignore').decode('ASCII')
+
+                    # Guardar la imagen en el directorio adecuado con el nombre normalizado
+                    file_path = os.path.join('/djangoApp/BibliotecaMariCarmen/BibliotecaIETI/static/profile_photos', normalized_name)
+                    with open(file_path, 'wb+') as destination:
+                        for chunk in image_file.chunks():
+                            destination.write(chunk)                    # Asignar el nombre de la imagen al usuario
+                    user.image = f'profile_photos/{normalized_name}'
+                '''
                  
                 if user.first_name != request.POST.get('first_name', user.first_name):
                     user.first_name = request.POST.get('first_name', user.first_name)
@@ -237,38 +284,79 @@ def canviar_contrasenya(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'myapp/dashboard/canviar_contrasenya.html', {'form': form})
 
-
+@csrf_exempt
 def cerca_cataleg(request):
-    if request.method == 'POST':
-        query = request.POST.get('query', '')  # Obtener el término de búsqueda del formulario
-        only_available = request.POST.get('only_available', '')  # Verificar si el checkbox está marcado
-        print("Valor de only_available:", only_available)  # Agregar un print para verificar el valor
-        # Verificar si la longitud de la consulta es mayor o igual a 3 caracteres
+    tipos_ocio = ItemCatalogo.objects.values_list('ocio', flat=True).distinct()
+    tipos_dataEdicion = ItemCatalogo.objects.annotate(year=ExtractYear('data_edicion')).values_list('year', flat=True).distinct()
+    tipos_dataEdicion = sorted(tipos_dataEdicion, reverse=True)
+    tipos_dataEdicion = [tipos_dataEdicion[0], tipos_dataEdicion[-1]]
+    tipos_centros = Centro.objects.all()
+    estados = ['Disponible', 'Reservat', 'Prestat', 'No disponible']
+
+    # Eliminar los parámetros de búsqueda de la sesión al cargar la página
+    if not request.GET:
+        if 'original_params' in request.session:
+            del request.session['original_params']
+            request.session.save()
+
+    original_params = request.session.get('original_params', {})
+    query = original_params.get('query', '')
+    only_available = original_params.get('only_available', '')
+    max_year_search = original_params.get('maxYearSearch', '')
+    min_year_search = original_params.get('minYearSearch', '')
+
+    if request.method == 'GET':
+        new_params = request.GET.copy()
+        query = new_params.get('cerca', query)
+        only_available = new_params.get('nomes_disponible', only_available)
+        max_year_search = new_params.get('maxYearSearch', max_year_search)
+        min_year_search = new_params.get('minYearSearch', min_year_search)
+        tipo_ocio_search = request.GET.getlist('tipo', [])  
+        centro_search = request.GET.getlist('centro', [])  # Obtener la lista de centros seleccionados
+        tipo_query_string = '&'.join([f'tipo={tipo}' for tipo in tipo_ocio_search])
+        centro_query_string = '&'.join([f'centro={centro}' for centro in centro_search])  # Convertir la lista de centros en una cadena de consulta
+        # estado del elemento
+        estado_search = request.GET.getlist('estado')
+        estado_query_string = '&'.join([f'estado={estado}' for estado in estado_search])
+
+        print(estado_query_string)
+
+        request.session['original_params'] = {
+            'query': query,
+        }
+
         if len(query) >= 3:
-            # Realizar la solicitud a la API de búsqueda
-            if only_available:
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true')
-            else:
-                response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}')
-            # Verificar si la solicitud fue exitosa (código de estado 200)
+            if len(query) >= 3:
+                if only_available:
+                    response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&only_available=true&maxYearSearch={max_year_search}&minYearSearch={min_year_search}&{tipo_query_string}&{centro_query_string}&{estado_query_string}')  # Incluir los centros seleccionados en la solicitud
+                else:
+                    response = requests.get(f'http://127.0.0.1:8000/get_ItemCatalogo?search={query}&maxYearSearch={max_year_search}&minYearSearch={min_year_search}&{tipo_query_string}&{centro_query_string}&{estado_query_string}')  # Incluir los centros seleccionados en la solicitud
+            
             if response.status_code == 200:
-                # Obtener los resultados de la respuesta JSON
                 data = response.json().get('ItemCatalogo', [])
-                # Renderizar la plantilla con los resultados de la búsqueda
-                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': data})
+                for item in data:
+                    centros = item.get('centros', [])
+                    for centro in centros:
+                        centro_id = centro.get('centro_id')
+                        centro_name = get_object_or_404(Centro, id=centro_id).nombre  # Modificar esta línea para buscar por id_centro en lugar de id
+                        centro['nombre_centro'] = centro_name
+
+                paginator = Paginator(data, 25)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+
+                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+
             else:
-                # Si la solicitud no fue exitosa, mostrar un mensaje de error
                 error_message = 'Error al obtener resultados de la búsqueda'
                 registrar_evento('Error al obtener resultados de la búsqueda', 'ERROR')
                 return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
         else:
-            # Si la longitud de la consulta es menor a 3 caracteres, mostrar un mensaje de error
             error_message = 'La consulta debe tener al menos 3 caracteres'
             return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
     else:
-        # Si la solicitud no es POST, simplemente renderizar la plantilla sin ningún dato
-        return render(request, 'myapp/cerca_cataleg.html')
-    
+        return render(request, 'myapp/cerca_cataleg.html', {'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+
 def registrar_evento(evento, nivel, usuario=None):
     # Si no se proporciona un usuario, se asumirá como Anónimo
     if usuario is None:
@@ -295,14 +383,26 @@ def guardar_log(request):
     else:
         return JsonResponse({'error': 'Mètode no permès.'}, status=405)
 
-@login_required
-def process_csv(csv_file, centre_educatiu,request):
+def process_csv(csv_file, centre_educatiu, request):
     user = request.user
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
+    
+    # Directorio donde se almacenarán los archivos CSV
+    csv_directory = os.path.join(settings.MEDIA_ROOT, 'csv_files')
+    
+    # Asegurarse de que el directorio exista, si no, créalo
+    if not os.path.exists(csv_directory):
+        os.makedirs(csv_directory)
+    
+    # Nombre del archivo
+    file_name = csv_file.name
+    
+    # Ruta relativa del archivo CSV
+    file_path = os.path.join(csv_directory, file_name)
+    
     # Guardar el archivo CSV en el sistema de archivos
-    file_path = os.path.join('/home/super/Baixades/', csv_file.name)
     with open(file_path, 'wb+') as destination:
         for chunk in csv_file.chunks():
             destination.write(chunk)
@@ -311,7 +411,7 @@ def process_csv(csv_file, centre_educatiu,request):
     with open(file_path, 'r', encoding='ISO-8859-1') as file:
         csv_reader = csv.reader(file, delimiter=',')
         # contraseña hash
-        hashed_password = make_password("P@ssw0rd")
+        hashed_password = make_password("password")
 
         # Iterar sobre cada fila del archivo CSV
         for line_number, row in enumerate(csv_reader, start=1):
@@ -320,7 +420,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 username, last_name, email, fecha_nacimiento, ciclo, centro, roles, telefono  = row
                 # Crea un nuevo objeto User y asigna los valores
                 user = User(
-                    username=username,
+                    username=email,
                     password=hashed_password,  # Guarda la contraseña hasheada
                     first_name=username,
                     last_name=last_name,
@@ -337,7 +437,7 @@ def process_csv(csv_file, centre_educatiu,request):
                 # Manejar el caso donde la fila no tiene el formato correcto
                 messages.warning(request, f"Línea {line_number}: No s'ha importat correctament. Format incorrecte.")
 
-@login_required
+# En tu vista Django
 def upload_file(request):
     if request.method == 'POST':
         form = Importar(request.POST, request.FILES)
@@ -358,14 +458,33 @@ def upload_file(request):
         print("Paso por aqui 3") 
     return render(request, 'myapp/dashboard/importar.html', {'form': form})
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 @login_required
 def usuaris(request):
     # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
     centro_usuario_actual = request.user.centro
-    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual,)
+    users = User.objects.exclude(email='Anonimo@Anonimo.com').exclude(is_superuser=True).exclude(id=request.user.id).filter(centro=centro_usuario_actual)
     
-    # Renderiza el template con la lista de usuarios
-    return render(request, 'myapp/dashboard/usuaris.html', {'users': users})
+    # Pagina los usuarios
+    paginator = Paginator(users, 25)  # Divide los usuarios en grupos de 25 por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud GET
+    
+    try:
+        users = paginator.page(page_number)
+    except PageNotAnInteger: 
+        # Si la página no es un número entero, muestra la primera página
+        users = paginator.page(1)
+    except EmptyPage: 
+        # Si la página está fuera de rango (por encima del número máximo de páginas), muestra la última página
+        users = paginator.page(paginator.num_pages)
+    
+    # Pasa el número total de páginas al contexto de la plantilla
+    total_pages = paginator.num_pages
+    
+    # Renderiza el template con la lista de usuarios paginada
+    return render(request, 'myapp/dashboard/usuaris.html', {'users': users, 'total_pages': total_pages})
+
 
 @login_required
 def EditUsuaris(request, user_id):
@@ -385,10 +504,22 @@ def EditUsuaris(request, user_id):
 @login_required
 def prestamos(request):
     
-    # Obtén todos los usuarios excluyendo el usuario anónimo y el superusuario
+    # Obtén todos los préstamos
     prestamos = Prestamo.objects.all()
-
-  
+    
+    # Pagina los préstamos
+    paginator = Paginator(prestamos, 25)  # Divide los préstamos en grupos de 25 por página
+    page_number = request.GET.get('page')  # Obtiene el número de página de la solicitud GET
+    
+    try:
+        prestamos = paginator.page(page_number)
+    except PageNotAnInteger: 
+        # Si la página no es un número entero, muestra la primera página
+        prestamos = paginator.page(1)
+    except EmptyPage: 
+        # Si la página está fuera de rango (por encima del número máximo de páginas), muestra la última página
+        prestamos = paginator.page(paginator.num_pages)
+    
     if request.method == 'POST':        
         prestamo_id = request.POST.get('id')
         prestamo = Prestamo.objects.get(pk=prestamo_id)
@@ -398,10 +529,9 @@ def prestamos(request):
         elemento.save()
         prestamo.delete()
         
-        messages.success(request, 'Prestec eliminat correctament!')
+        messages.success(request, '¡Préstamo eliminado correctamente!')
 
-
-    # Renderiza el template con la lista de usuarios
+    # Renderiza el template con la lista de préstamos paginada
     return render(request, 'myapp/dashboard/prestecs.html', {'prestamos': prestamos})
 
 @login_required
@@ -508,6 +638,60 @@ def crear_usuari(request):
    
     return render(request, 'myapp/dashboard/crear_usuari.html', {'form': form})
 
+#AÑADIR NUEVO LIBRO A PARTIR DE API EXTERNA                 
+def nou_element(request):
+    print("Entro en la funcion OK")
+    
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn')
+        titulo = request.POST.get('titulo')
+        autor = request.POST.get('autor')
+        editorial = request.POST.get('editorial')
+        numpag = request.POST.get('numpag')
+        data = request.POST.get('data')
+        
+        try:
+            # Verificar si ya existe un libro con el mismo ISBN
+            existing_libro = Libro.objects.filter(ISBN=isbn).exists()
+            if existing_libro:
+                messages.error(request, "L'exemplar amb aquest ISBN ja existeix al cataleg")
+                return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
+            
+            # Obtener el último valor de id_catalogo
+            last_id_catalogo = Libro.objects.aggregate(Max('id_catalogo'))['id_catalogo__max']
+            
+            # Si no hay ningún libro en la base de datos, empezar desde LB001
+            if last_id_catalogo:
+                # Extraer el número y convertirlo a entero
+                last_id_number = int(last_id_catalogo[2:])
+                
+                # Incrementar en uno
+                new_id_number = last_id_number + 1
+                
+                # Formar el nuevo id_catalogo
+                new_id_catalogo = "LB" + str(new_id_number).zfill(3)
+            else:
+                new_id_catalogo = "LB001"
+            
+            # Crear un nuevo objeto Libro con los datos proporcionados
+            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data, id_catalogo=new_id_catalogo, ocio="Novel·la",CDU='821.133.1(73)-31' )
+            libro.save()
+            
+            # Redireccionar a alguna página de éxito o a donde desees
+            messages.success(request, 'Exemplar afegit amb exit.')
+            return redirect('nou_element')
+            
+        except Exception as e:
+            print("Error:", str(e))
+            messages.error(request, "L'exemplar ja existeix al cataleg")
+            # Manejar cualquier error que pueda ocurrir al guardar el libro
+            
+            # Renderizar el formulario con el error
+            return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
+
+    # Si no es una solicitud POST, simplemente renderiza el formulario vacío
+    return render(request, 'myapp/dashboard/nou_element.html', {})
+
 @login_required
 def nou_prestec(request):
     items_catalogo = ItemCatalogo.objects.all()
@@ -564,57 +748,3 @@ def nou_prestec(request):
 
 
     
-# views.py
-
-def nou_element(request):
-    print("Entro en la funcion OK")
-    
-    if request.method == 'POST':
-        isbn = request.POST.get('isbn')
-        titulo = request.POST.get('titulo')
-        autor = request.POST.get('autor')
-        editorial = request.POST.get('editorial')
-        numpag = request.POST.get('numpag')
-        data = request.POST.get('data')
-        
-        try:
-            # Verificar si ya existe un libro con el mismo ISBN
-            existing_libro = Libro.objects.filter(ISBN=isbn).exists()
-            if existing_libro:
-                messages.error(request, "L'exemplar amb aquest ISBN ja existeix al cataleg")
-                return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
-            
-            # Obtener el último valor de id_catalogo
-            last_id_catalogo = Libro.objects.aggregate(Max('id_catalogo'))['id_catalogo__max']
-            
-            # Si no hay ningún libro en la base de datos, empezar desde LB001
-            if last_id_catalogo:
-                # Extraer el número y convertirlo a entero
-                last_id_number = int(last_id_catalogo[2:])
-                
-                # Incrementar en uno
-                new_id_number = last_id_number + 1
-                
-                # Formar el nuevo id_catalogo
-                new_id_catalogo = "LB" + str(new_id_number).zfill(3)
-            else:
-                new_id_catalogo = "LB001"
-            
-            # Crear un nuevo objeto Libro con los datos proporcionados
-            libro = Libro(ISBN=isbn, titulo=titulo, autor=autor, editorial=editorial, paginas=numpag, data_edicion=data, id_catalogo=new_id_catalogo)
-            libro.save()
-            
-            # Redireccionar a alguna página de éxito o a donde desees
-            messages.success(request, 'Exemplar afegit amb exit.')
-            return redirect('myapp/dashboard/nou_element.html')
-            
-        except Exception as e:
-            print("Error:", str(e))
-            messages.error(request, "L'exemplar ja existeix al cataleg")
-            # Manejar cualquier error que pueda ocurrir al guardar el libro
-            
-            # Renderizar el formulario con el error
-            return render(request, 'myapp/dashboard/nou_element.html', {'error_message': 'Error al crear el libro'})
-
-    # Si no es una solicitud POST, simplemente renderiza el formulario vacío
-    return render(request, 'myapp/dashboard/nou_element.html', {})

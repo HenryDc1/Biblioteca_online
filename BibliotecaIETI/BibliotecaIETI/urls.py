@@ -30,4 +30,7 @@ urlpatterns = [
 
     path('guardar-log/', views.guardar_log, name='guardar_log'),
 
+    path('accounts/', include('allauth.urls')),
+
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

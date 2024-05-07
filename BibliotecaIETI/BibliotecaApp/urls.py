@@ -10,9 +10,9 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('canviar_contrasenya', views.canviar_contrasenya, name='canviar_contrasenya'),
 
-    path('dashboard', views.dashboard, name='dashboard'),
-    path('dashboard/usuari', views.usuari, name='usuari'),   
-    path('dashboard/usuaris/EditUsuaris', views.editUsuaris, name='editUsuaris'),
+    path('panell', views.dashboard, name='dashboard'),
+    path('panell/perfil', views.usuari, name='usuari'),   
+    path('panell/usuaris/editar_usuari', views.editUsuaris, name='editUsuaris'),
 
     # Reset password 
     path('recuperar_contrasenya/', auth_views.PasswordResetView.as_view(), name='recuperar_contrasenya'),
@@ -25,20 +25,17 @@ urlpatterns = [
 
     path('guardar-log', views.guardar_log, name='guardar_log'),
 
-    path('crear_usuari/', views.crear_usuari, name='crear_usuari'),
+    path('panell/importar_arxiu', views.upload_file, name='upload_file'),
 
-    
-    path('dashboard/upload_file', views.upload_file, name='upload_file'),
+    path('panell/prestecs', views.prestamos, name='prestamos'),
+    path('panell/prestecs/crear', views.nou_prestec, name='nou_prestec'),
 
-    path('dashboard/prestecs', views.prestamos, name='prestamos'),
-    path('dashboard/prestecs/crear', views.nou_prestec, name='nou_prestec'),
+    path('panell/usuaris/', views.usuaris, name='usuaris'),
 
-    path('dashboard/usuaris/', views.usuaris, name='usuaris'),
+    path('panell/usuaris/editar_usuari/<str:user_id>/', views.EditUsuarisView, name='EditUsuarisView'),
 
-    path('dashboard/usuaris/EditUsuaris/<str:user_id>/', views.EditUsuarisView, name='EditUsuarisView'),
+    path('panell/crear_usuari/', views.crear_usuari, name='crear_usuari'),
 
-    path('dashboard/crear_usuari/', views.crear_usuari, name='crear_usuari'),
-
-    path('dashboard/nou_element/', views.nou_element, name='nou_element'),
+    path('panell/nou_element/', views.nou_element, name='nou_element')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

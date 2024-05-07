@@ -1,16 +1,166 @@
-<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between">
-  <h2 class="text-xl font-bold text-[#bd1e59] text-start pl-32">
-    <a href="{% url 'index' %}">
-    Biblioteca MariCarmen
-    </a>
-  </h2>
+{% load static %}
+
+<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between min-h-28">
+  <div class="flex flex-col ml-32 justify-center">
+    <h2 class="text-2xl font-bold text-[#bd1e59] text-start flex items-center">
+      <a href="{% url 'index' %}">
+      Biblioteca Mari Carmen Brito
+      </a>
+    </h2>
+
+  </div>
+  {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
+  <div class="flex items-center">
+    <div class="relative">
+      <form id="search-form" action="{% url 'cerca_cataleg' %}" method="GET">
+        <!--{% csrf_token %}-->
+        <div class="relative flex items-center">
+          <input id="only-available" name="nomes_disponible" type="checkbox" class="hidden"/>
+          <label for="only-available" class="text-sm font-bold text-[#bd1e59]  py-2 flex items-center cursor-pointer">
+              <span class="w-4 h-4 border-2  border-[#bd1e59] rounded-sm mr-2 flex-shrink-0"></span>
+              Cercar només disponibles
+          </label>
+        </div>
+        <div class="relative">
+            <input id="search-input"
+                   class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                   placeholder="Cerca ràpida..."
+                   type="search"
+                   name="cerca"
+            />
+            <svg id="search-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#bd1e59] cursor-pointer">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </div>
+    </form>
+    <div class=" flex items-center p-4 mb-4 rounded-lg" id="autocompleteContainer" style="display: none; position: absolute; z-index: 9999; max-width: fit-content; white-space: nowrap; overflow: hidden; background-color: rgb(255, 255, 255); box-shadow: 0 0 1.5px;">
+      <!-- Aquí se mostrarán los resultados del autocompletado -->
+      <div id="autocompleteResults" class="ms-3 text-sm font-medium pr-4" data-v0-t="card" style="color: black;">Buscant resultats...</div>
+  </div>
+    </div>
+  </div>  
+  
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('search-input');
+        const autocompleteContainer = document.getElementById('autocompleteContainer');
+
+        if (input) {
+            input.addEventListener('input', function() {
+                const query = input.value;
+
+                if (query.length >= 3) {
+                    autocompleteContainer.style.display = 'block'; // Mostrar el contenedor de autocompletado
+                    fetch(`/get_ItemCatalogo?search=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            mostrarSugerencias(data.ItemCatalogo);
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener sugerencias:', error);
+                        });
+                } else {
+                    autocompleteContainer.style.display = 'none'; // Ocultar el contenedor de autocompletado si el texto en el input es menor a 3 caracteres
+                }
+            });
+        }
+
+        function mostrarSugerencias(sugerencias) {
+          const suggestionsList = document.getElementById('autocompleteResults');
+          suggestionsList.innerHTML = '';
+
+          if (sugerencias.length === 0) {
+              // Ocultar el contenedor si no hay sugerencias
+              autocompleteContainer.style.display = 'none';
+              return;
+          }
+
+          sugerencias.slice(0, 5).forEach(item => { // Mostrar solo las primeras 5 sugerencias
+              const p = document.createElement('p');
+              p.textContent = item.titulo;
+              p.classList.add('px-4', 'py-2', 'font-bold', 'id_ItemCatalogo');
+              p.setAttribute('data-id', item.id);
+              p.addEventListener('click', function(event) {
+                  // Al hacer clic en la sugerencia, cambiar el valor del campo de entrada al texto de la sugerencia
+                  input.value = item.titulo;
+                  // Evitar el envío del formulario al hacer clic en una sugerencia
+                  event.preventDefault();
+              });
+              suggestionsList.appendChild(p);
+          });
+
+          // Mostrar el contenedor si hay sugerencias disponibles
+          autocompleteContainer.style.display = 'block';
+      }
+
+  
+  
+  
+  
+      // Obtener el formulario y el campo de entrada
+      const form = document.getElementById('search-form');
+      const input2 = document.getElementById('search-input');
+      const searchIcon = document.getElementById('search-icon');
+  
+      searchIcon.addEventListener('click', function() {
+  
+          // Verificar si el campo de entrada está vacío
+          if (input2.value.trim() !== '') {
+              // Enviar el formulario solo si hay algo escrito en el campo de entrada
+              form.submit();
+          }
+      });
+  
+      // Agregar un evento de escucha para la tecla Enter en el campo de entrada
+      // Agregar un evento de escucha para la tecla Enter en el campo de entrada input2
+      $('#search-input').keypress(function(event) {
+          if (event.which === 13) { // 13 es el código de tecla para "Enter"
+              var input2Value = $('#search-input').val(); // Obtener el valor del campo input2
+
+              if (input2Value.trim() !== "") { // Verificar si el valor no está vacío
+                  console.log("He entrado en search-input-busqueda avanzada !!!!!");
+                  event.preventDefault(); // Prevenir el comportamiento predeterminado del Enter
+                  $('#search-form').submit(); // Enviar el otro formulario
+              }
+          }
+      });
+  
+      
+  
+  });
+  
+    </script>
+  {% endif %}
   {% if user.is_authenticated %}
-  <div class="clickSortir flex items-center space-x-4 pr-32">
+  <div class="flex mr-52">
+    <div class="clickSortir flex flex-col space-x-4  justify-center items-end">
+    <p class="text-md text-muted-foreground text-[#bd1e59]">Benvingut/da, {{ user.username }}</p>
+
     <a
       href="{% url 'logout' %}"
-      class="text-[#bd1e59] border-b-2 border-transparent hover:border-[#bd1e59] transition-colors text-xl"
-      >Sortir</a
+      class="text-[#bd1e59] border-b-2 border-transparent font-bold hover:border-[#bd1e59] transition-colors text-xl"
+      >Tancar sessió</amr-52
     >
+    </div>
+    <div class="flex items-center ml-4">
+      <a href="{% url 'dashboard' %}">
+        <img src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
+      </a>
+    </div>
   </div>
   {% endif %}
 </header>
+

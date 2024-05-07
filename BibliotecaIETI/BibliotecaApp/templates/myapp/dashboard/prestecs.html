@@ -3,11 +3,12 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title>Dashboard | Biblioteca IETI</title>
+    <title>Panell | Biblioteca Mari Carmen Brito</title>
     <meta charset="UTF-8" />
     <meta name="title" content="Los videojuegos de 2020" />
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
+    <link rel="stylesheet" href="{% static 'input.css' %} " />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
 
@@ -28,7 +29,7 @@
                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
               </svg>
-              Dashboard
+              Panell
             </a>
             {% if user.email == "admin@admin.com" or user.roles == "Bibliotecari" %}
             <a class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors bg-gray-200" 
@@ -38,6 +39,15 @@
             </svg>
               Préstecs
             </a>
+            <a id="nou_element" class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
+            href="{% url 'nou_element' %}">
+            <!-- Pegar el SVG directamente aquí -->
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023"/>
+            </svg>
+            
+            Nou Llibre
+          </a>
               <a id="importar"
                 class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
                 href="{% url 'upload_file' %}">
@@ -75,7 +85,7 @@
           </nav>
         </div>
         <div class="flex-1 p-4">
-          <h2 class="text-2xl font-bold mb-4">Dashboard</h2>
+          <h2 class="text-2xl font-bold mb-4"><span class="border-black border-b-2">P</span>anell - P<span class="border-black border-b-2">r</span>estecs</h2>
           <div
             class="rounded-lg border bg-card text-card-foreground shadow-sm"
             data-v0-t="card"
@@ -96,7 +106,7 @@
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Id cataleg</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Nombre</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data de préstec</th>
-                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data de devolució</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data limit de devolució</th>
                     <th class="text-center align-middle border-b-2 border-[#bd1e59] pr-2" >Marcar com retornat</th>
                 </tr>
             </thead>
@@ -136,8 +146,24 @@
               </div>
           </div>
         </div>
-        
         </div>
+
+        <div class="pagination flex justify-center items-center mt-6">
+          {% if prestamos.has_previous %}
+            <a href="?page=1" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-l">Primera</a>
+            <a href="?page={{ prestamos.previous_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Anterior</a>
+          {% endif %}
+          
+          <span class="current text-[#bd1e59] font-semibold py-2 px-4">
+            Página {{ prestamos.number }} de {{ prestamos.paginator.num_pages }}.
+          </span>
+        
+          {% if prestamos.has_next %}
+            <a href="?page={{ prestamos.next_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Siguiente</a>
+            <a href="?page={{ prestamos.paginator.num_pages }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-r">Última</a>
+          {% endif %}
+        </div>        
+
       </main>
     </div>
 
