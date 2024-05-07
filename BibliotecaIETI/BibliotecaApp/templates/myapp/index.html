@@ -170,6 +170,14 @@
                   />
                 </div>
               </form>
+              <form method="post" action="{% url 'github_login' %}">
+                {% csrf_token %}
+                <button type="submit">
+                    Iniciar sesión con GitHub
+                </button>
+            </form>
+            
+            
             </div>
           </div>
           {% endif %}

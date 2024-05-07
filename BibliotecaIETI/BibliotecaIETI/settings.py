@@ -173,6 +173,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'BibliotecaApp.User'
+ACCOUNT_USER_MODEL = 'BibliotecaApp.User'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -189,7 +190,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SITE_ID = 1
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
+    'github': {
         'SCOPE': [
             'profile',
             'email',
@@ -197,7 +198,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'OAUTH_PKCE_ENABLED': True,
 
     }
    
