@@ -170,7 +170,8 @@
                   />
                 </div>
               </form>
-              <form method="post" action="{% url 'github_login' %}">
+              <form method="post" action="{% provider_login_url 'github' %}">
+                
                 {% csrf_token %}
                 <div class="space-y-4 ">
                   <button type="submit" class="whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 hover:bg-gray-200 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full flex items-center justify-center gap-2">
