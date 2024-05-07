@@ -1,8 +1,8 @@
 {% load static %}
 
-<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between min-h-28">
+<header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between max-h-24 lg:max-h-28">
   <div class="flex flex-col ml-6 md:ml-16 lg:ml-32 justify-center">
-    <h2 class="text-2xl font-bold text-[#bd1e59] text-start flex items-center">
+    <h2 class="text-sm lg:text-2xl font-bold text-[#bd1e59] text-start flex items-center">
       <a href="{% url 'index' %}">
       Biblioteca Mari Carmen Brito
       </a>
@@ -10,20 +10,20 @@
 
   </div>
   {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
-  <div class="flex items-center mr-8">
+  <div class="flex items-center {% if user.is_authenticated %}mx-2{%else%}mr-8{% endif %} lg:mr-0">
     <div class="relative ">
       <form id="search-form" action="{% url 'cerca_cataleg' %}" method="GET">
         <!--{% csrf_token %}-->
         <div class="relative flex items-center">
           <input id="only-available" name="nomes_disponible" type="checkbox" class="hidden"/>
-          <label for="only-available" class="text-sm font-bold text-[#bd1e59]  py-2 flex items-center cursor-pointer">
-              <span class="w-4 h-4 border-2  border-[#bd1e59] rounded-sm mr-2 flex-shrink-0"></span>
+          <label for="only-available" class="[font-size:10px;] font-bold text-[#bd1e59]  py-2 flex items-center cursor-pointer lg:text-xl">
+              <span class="w-4 h-4 border-2  border-[#bd1e59] rounded-sm mr-2 flex-shrink-0 "></span>
               Cercar només disponibles
           </label>
         </div>
-        <div class="relative">
+        <div class="relative ">
             <input id="search-input"
-                   class="flex h-10 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
+                   class="flex h-8 w-full text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-[#bd1e59] rounded-md px-4 py-2 pr-10"
                    placeholder="Cerca ràpida..."
                    type="search"
                    name="cerca"
@@ -47,11 +47,42 @@
     <div class=" flex items-center p-4 mb-4 rounded-lg" id="autocompleteContainer" style="display: none; position: absolute; z-index: 9999; max-width: fit-content; white-space: nowrap; overflow: hidden; background-color: rgb(255, 255, 255); box-shadow: 0 0 1.5px;">
       <!-- Aquí se mostrarán los resultados del autocompletado -->
       <div id="autocompleteResults" class="ms-3 text-sm font-medium pr-4" data-v0-t="card" style="color: black;">Buscant resultats...</div>
-  </div>
+      </div>
     </div>
   </div>  
-  
+  {% endif %}
+  {% if user.is_authenticated %}
+  <div class="flex mr-8 lg:mr-52">
+    <div class="clickSortir flex flex-col space-x-4  justify-center items-end text-end lg:text-start text-sm lg:text-xl">
+    <p class="text-md text-muted-foreground text-[#bd1e59]">Benvingut/da, {{ user.username }}</p>
 
+    <a
+      href="{% url 'logout' %}"
+      class="text-[#bd1e59] border-b-2 border-transparent font-bold hover:border-[#bd1e59] transition-colors text-md lg:text-xl"
+      >Tancar sessió</amr-52
+    >
+    </div>
+    <div class="hidden lg:flex items-center ml-4">
+      <a href="{% url 'dashboard' %}">
+        {% if is_external_url %}
+            <img src="{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
+        {% else %}
+            <img src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
+        {% endif %}
+      </a>
+    </div>
+  </div>
+  {% else %}
+  <div class="hidden lg:flex items-center mr-52">
+    <a
+      href="{% url 'index' %}"
+      class="text-[#bd1e59] border-b-2 border-transparent font-bold hover:border-[#bd1e59] transition-colors text-xl"
+      >Iniciar sessió</a
+    >
+  </div>
+  {% endif %}
+
+  {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
   <script>
     document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById('search-input');
@@ -144,28 +175,6 @@
   
     </script>
   {% endif %}
-  {% if user.is_authenticated %}
-  <div class="flex mr-52">
-    <div class="clickSortir flex flex-col space-x-4  justify-center items-end">
-    <p class="text-md text-muted-foreground text-[#bd1e59]">Benvingut/da, {{ user.username }}</p>
-
-    <a
-      href="{% url 'logout' %}"
-      class="text-[#bd1e59] border-b-2 border-transparent font-bold hover:border-[#bd1e59] transition-colors text-xl"
-      >Tancar sessió</amr-52
-    >
-    </div>
-    <div class="flex items-center ml-4">
-      <a href="{% url 'dashboard' %}">
-        {% if is_external_url %}
-            <img src="{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
-        {% else %}
-            <img src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-16 h-16 object-cover hover:opacity-80 transition-opacity block bg-white" />
-        {% endif %}
-
-      </a>
-    </div>
-  </div>
-  {% endif %}
 </header>
+
 
