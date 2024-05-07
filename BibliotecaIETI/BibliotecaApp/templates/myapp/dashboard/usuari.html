@@ -109,8 +109,11 @@
               <div class="p-6 flex">
                   <form action="{% url 'usuari' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
                     <div class="w-48 h-48 flex justify-center relative mb-4">
-                     
-                      <img id="profile-image" src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
+                      {% if is_external_url %}
+                          <img id="profile-image" src="{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
+                      {% else %}
+                          <img id="profile-image" src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
+                      {% endif %}
                       <label for="image" class="hover:cursor-pointer rounded-full w-48 h-48 absolute top-0 left-0 bg-black/50 flex justify-center items-center flex-col opacity-0 transition-opacity hover:opacity-100">
                           <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"/>
