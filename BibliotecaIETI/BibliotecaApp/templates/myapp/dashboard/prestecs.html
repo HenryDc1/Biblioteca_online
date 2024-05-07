@@ -210,6 +210,8 @@
                 fecha.parentElement.querySelector('.alertaMenos3dias').classList.remove('hidden');
             }
             else if (dias < 3) {
+                // borrar el bg-pink-300/30
+                fecha.parentElement.classList.remove('bg-pink-300/30');
                 fecha.parentElement.classList.add('bg-amber-200');
                 fecha.parentElement.querySelector('.alertaMenos3dias').classList.remove('hidden');
             }
