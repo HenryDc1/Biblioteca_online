@@ -17,8 +17,14 @@
     <div class="min-h-screen flex flex-col">
       {% include 'myapp/header.html'%}
       <main class="flex-1 flex">
-        <div class="bg-gray-100 w-64 p-4">
+        <div class="bg-gray-100 w-64 p-4 hidden lg:block absolute min-h-full  lg:static">
+
           <nav class="space-y-4">
+            <button class="lg:hidden" id="menu-toggleClose">
+              <svg class="w-8 h-8 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+              </svg>
+            </button>
             <a
               class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-200 transition-colors"
               href="{% url 'dashboard' %}"
@@ -83,7 +89,14 @@
           </nav>
         </div>
         <div class="flex-1 p-4">
+          <div class="mb-4 flex items-center justify-between">
+            <button class="lg:hidden" id="menu-toggle">
+              <svg class="w-8 h-8 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+              </svg>
+            </button>
           <h2 class="text-2xl font-bold mb-4">Panell - Editar Usuaris</h2>
+          </div>
           <div
             class="rounded-lg border bg-card text-card-foreground shadow-sm"
             data-v0-t="card"
@@ -97,7 +110,7 @@
 
             </div>
               <div class="p-6 flex">
-                  <form action="{% url 'editUsuaris' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
+                <form action="{% url 'editUsuaris' %}" method="post" class="w-full flex flex-col lg:flex-row items-center lg:items-start" enctype="multipart/form-data">
                     <div class="w-48 h-48 flex justify-center relative mb-4">
                      
                       <img id="profile-image" src="{% static '' %}{{ user.image }}" alt="Imatge de perfil" class="rounded-full w-48 h-48 object-cover hover:opacity-80 transition-opacity block" />
@@ -248,6 +261,15 @@
 
 
             document.addEventListener('DOMContentLoaded', function () {
+              var toggleButton = document.getElementById('menu-toggle');
+              var toggleButtonClose = document.getElementById('menu-toggleClose');
+              var sidebar = document.querySelector('.bg-gray-100');
+              toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+              });
+              toggleButtonClose.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+              });
 
 var userEmail = "{{ user.email }}";
 var userRoles = "{{ user.roles }}";
