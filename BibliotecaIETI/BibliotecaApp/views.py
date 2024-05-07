@@ -32,11 +32,35 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from allauth.socialaccount.models import SocialAccount
 
-@receiver(post_save, sender=SocialAccount)
-def update_password_changed_flag(sender, instance, created, **kwargs):
-    if created and instance.provider == 'github':
-        instance.user.has_password_changed = True
-        instance.user.save()
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+import requests
+
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver
+
+@receiver(user_signed_up)
+def handle_user_signed_up(sender, request, user, **kwargs):
+    # Aquí puedes acceder al objeto de usuario recién creado (user)
+    # y actualizar los campos específicos según los datos que llegan de GitHub
+    social_account = user.socialaccount_set.first()  # Obtener la cuenta social asociada al usuario
+    if social_account:
+        extra_data = social_account.extra_data  # Datos adicionales proporcionados por GitHub
+        # print(extra_data)  # Imprimir todos los datos adicionales de GitHub
+        
+        # Por ejemplo, si quieres actualizar el campo 'nombre' del usuario con el nombre de GitHub
+        user.nombre = extra_data.get('name', '')  # 'name' es el campo de nombre en los datos de GitHub
+        user.has_password_changed = True  # Actualiza el campo específico del usuario
+        user.centro = 'Esteve Terradas Illa'
+        user.fecha_nacimiento = '1998-12-07'
+        avatar_url = extra_data.get('avatar_url')
+        if avatar_url:
+            user.image = avatar_url
+            user.save()  # Guarda los cambios
+        else:
+            user.save()  # Guarda los cambios
+
+
 
 
 # Create your views here.

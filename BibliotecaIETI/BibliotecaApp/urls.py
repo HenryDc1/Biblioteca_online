@@ -38,6 +38,8 @@ urlpatterns = [
 
     path('dashboard/nou_element/', views.nou_element, name='nou_element'),
 
+
+
     path('accounts/', include('allauth.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

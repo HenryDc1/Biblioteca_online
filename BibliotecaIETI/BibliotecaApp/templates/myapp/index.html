@@ -170,12 +170,13 @@
                   />
                 </div>
               </form>
-              <form method="post" action="{% provider_login_url 'github' %}">
+              <form method="post" action="{% url 'github_login' %}">
                 {% csrf_token %}
                 <button type="submit">
-                  Iniciar sesión con GitHub
+                    Iniciar sesión con GitHub
                 </button>
             </form>
+            
             
             </div>
           </div>
