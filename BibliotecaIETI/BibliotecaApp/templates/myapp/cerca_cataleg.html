@@ -28,10 +28,10 @@
                             <div class="items">
                                 <button type="button" class="flex justify-between items-center w-full" onclick="showMore(event)">
                                     <span class="text-lg"> Tipo </span>
-                                    <svg class="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
                                     </svg>
-                                </button> 
+                                </button>
                                 <div class="dropdown-content hidden bg-white pt-2">
                                     <div class="flex flex-col">
                                     {% for tipo in tipos_ocio %}
@@ -239,17 +239,29 @@
 
         function showMore(event) {
             event.preventDefault();
-            var dropdownContent = event.target.nextElementSibling;
-
+            var target = event.target;
+        
+            // Verificar si el clic se produjo en el botón o en uno de sus hijos (como el span)
+            if (target.tagName.toLowerCase() !== 'button') {
+                // Obtener el botón padre
+                target = target.closest('button');
+            }
+        
+            var dropdownContent = target.nextElementSibling;
+        
             if (dropdownContent) {
                 if (dropdownContent.style.display === 'block') {
                     dropdownContent.style.display = 'none';
+                    // Cambiar el SVG a un ícono de flecha hacia abajo cuando se oculta el contenido
+                    target.querySelector('svg').innerHTML = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>';
                 } else {
                     dropdownContent.style.display = 'block';
+                    // Cambiar el SVG a un ícono de flecha hacia arriba cuando se muestra el contenido
+                    target.querySelector('svg').innerHTML = '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>';
                 }
             }
-        }
-
+        }        
+        
         
         function updateMaxYear() {
             var maxYearInput = document.querySelector('input[name="maxYearSearch"]');
