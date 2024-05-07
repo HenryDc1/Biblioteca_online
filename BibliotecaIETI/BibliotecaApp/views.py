@@ -65,6 +65,17 @@ def handle_user_signed_up(sender, request, user, **kwargs):
 
 # Create your views here.
 def index(request):
+    try:
+        user_image = str(request.user.image)  # Convierte la URL a una cadena de texto
+        print(user_image)
+        if user_image.startswith("https://"):
+            is_external_url = True
+            print("htt")
+        else:
+            is_external_url = False
+            print("noo httt")
+    except:
+        pass
     if request.method == "POST":
 
         # Validate using the User model
@@ -94,7 +105,11 @@ def index(request):
             messages.error(request, 'Email o contrasenya incorrectes')
             return redirect('index')
     else:
-        return render(request, 'myapp/index.html', {})
+        try:
+            return render(request, 'myapp/index.html', {'is_external_url': is_external_url})
+        except:
+            return render(request, 'myapp/index.html', {})
+
     
 
 @login_required
@@ -171,13 +186,21 @@ def usuari(request):
             messages.error(request, 'Falta el campo ID')
             registrar_evento('Intento de actualización de datos sin ID', 'ERROR')
             return redirect('usuari')
-
+    
+    user_image = str(request.user.image)  # Convierte la URL a una cadena de texto
+    print(user_image)
+    if user_image.startswith("https://"):
+        is_external_url = True
+        print("htt")
+    else:
+        is_external_url = False
+        print("noo httt")
     # Obtener fecha de nacimiento del usuario
     fecha_nacimiento = None
     if request.user.fecha_nacimiento:
         fecha_nacimiento = request.user.fecha_nacimiento.strftime('%Y-%m-%d')
 
-    return render(request, 'myapp/dashboard/usuari.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento})
+    return render(request, 'myapp/dashboard/usuari.html', {'users': users, 'fecha_nacimiento': fecha_nacimiento, 'is_external_url': is_external_url})
 
 #Editar Otros usuarios,
 @login_required
@@ -279,10 +302,18 @@ def EditUsuarisView(request, user_id):
 @login_required
 def dashboard(request):
     user = request.user
+    user_image = str(request.user.image)  # Convierte la URL a una cadena de texto
+    print(user_image)
+    if user_image.startswith("https://"):
+        is_external_url = True
+        print("htt")
+    else:
+        is_external_url = False
+        print("noo httt")
     if not user.has_password_changed:
         messages.warning(request, 'La contrasenya predeterminada és insegura. Canvia-la ara mateix per poder accedir als continguts.')
         return render(request, 'myapp/dashboard/canviar_contrasenya.html')
-    return render(request, 'myapp/dashboard/dashboard.html')
+    return render(request, 'myapp/dashboard/dashboard.html',{'user': user,'is_external_url': is_external_url})
 
 @login_required
 def logout_user(request):
@@ -318,6 +349,17 @@ def canviar_contrasenya(request):
 
 @csrf_exempt
 def cerca_cataleg(request):
+    try:
+        user_image = str(request.user.image)  # Convierte la URL a una cadena de texto
+        print(user_image)
+        if user_image.startswith("https://"):
+            is_external_url = True
+            print("htt")
+        else:
+            is_external_url = False
+            print("noo httt")
+    except:
+        pass
     tipos_ocio = ItemCatalogo.objects.values_list('ocio', flat=True).distinct()
     tipos_dataEdicion = ItemCatalogo.objects.annotate(year=ExtractYear('data_edicion')).values_list('year', flat=True).distinct()
     tipos_dataEdicion = sorted(tipos_dataEdicion, reverse=True)
@@ -377,17 +419,26 @@ def cerca_cataleg(request):
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
 
-                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
-
+                try:
+                    return render(request, 'myapp/cerca_cataleg.html', {'is_external_url': is_external_url,'query': query, 'resultados': page_obj, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+                except:
+                    return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'resultados': page_obj, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
             else:
                 error_message = 'Error al obtener resultados de la búsqueda'
                 registrar_evento('Error al obtener resultados de la búsqueda', 'ERROR')
                 return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
         else:
             error_message = 'La consulta debe tener al menos 3 caracteres'
-            return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
+            try:
+                return render(request, 'myapp/cerca_cataleg.html', {'is_external_url': is_external_url, 'query': query, 'error_message': error_message})
+            except:
+                return render(request, 'myapp/cerca_cataleg.html', {'query': query, 'error_message': error_message})
+
     else:
-        return render(request, 'myapp/cerca_cataleg.html', {'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+        try:
+            return render(request, 'myapp/cerca_cataleg.html', {'is_external_url': is_external_url, 'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
+        except:
+            return render(request, 'myapp/cerca_cataleg.html', {'tipos_ocio': tipos_ocio, 'tipos_dataEdicion': tipos_dataEdicion, 'tipos_centros': tipos_centros, 'estados': estados})
 
 def registrar_evento(evento, nivel, usuario=None):
     # Si no se proporciona un usuario, se asumirá como Anónimo
