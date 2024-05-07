@@ -1,7 +1,7 @@
 {% load static %}
 
 <header class="py-4 border-b border-gray-200 bg-[#f4c095] flex justify-between min-h-28">
-  <div class="flex flex-col ml-32 justify-center">
+  <div class="flex flex-col ml-6 md:ml-16 lg:ml-32 justify-center">
     <h2 class="text-2xl font-bold text-[#bd1e59] text-start flex items-center">
       <a href="{% url 'index' %}">
       Biblioteca Mari Carmen Brito
@@ -10,8 +10,8 @@
 
   </div>
   {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
-  <div class="flex items-center">
-    <div class="relative">
+  <div class="flex items-center mr-8">
+    <div class="relative ">
       <form id="search-form" action="{% url 'cerca_cataleg' %}" method="GET">
         <!--{% csrf_token %}-->
         <div class="relative flex items-center">

@@ -5,7 +5,7 @@
   <head>
     <title>Biblioteca Mari Carmen Brito</title>
     <meta charset="UTF-8" />
-    <meta name="title" content="Los videojuegos de 2020" />
+    <meta name="title" content="Biblioteca Mari Carmen Brito " />
     <meta name="description" content="Descripción de la WEB" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <link rel="stylesheet" href="{% static 'input.css' %}" />
@@ -25,9 +25,9 @@
     <div class="container min-w-full">
       {% include 'myapp/header.html'%}
       <div
-        class="flex flex-col lg:flex-row items-center lg:my-24 px-8 lg:px-12 xl:px-32"
+        class="flex flex-col w-full lg:flex-row  items-center lg:my-24 px-6 lg:px-16 xl:px-32"
       >
-        <div class="w-full md:w-1/2 pr-4 py-4">
+        <div class="w-full lg:w-1/2 md:px-12 lg:px-4 py-4">
           <h1 class="text-3xl font-bold leading-tight text-[#bd1e59]">
             Bibilioteca Mari Carmen Brito, el teu viatge cap al coneixement.
           </h1>
@@ -81,7 +81,7 @@
           
         </div>
         
-        <div class="w-full md:w-1/2 mt-8 md:mt-0 lg:px-24 py-24 lg:py-2 ">
+        <div class="w-full lg:w-1/2 mt-8 md:mt-0 md:px-12 lg:px-24 py-4 md:py-8 lg:py-2 ">
           {% if user.is_authenticated %}
           <div class="rounded-lg border bg-card text-card-foreground shadow-sm max-w-sm"> <!-- Agrega la clase max-w-sm para limitar el ancho -->
             <div class="flex flex-col space-y-1.5 p-6">
