@@ -73,6 +73,7 @@
     </div>
   </div>
   {% else %}
+    {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
   <div class="hidden lg:flex items-center mr-52">
     <a
       href="{% url 'index' %}"
@@ -80,6 +81,7 @@
       >Iniciar sessió</a
     >
   </div>
+    {%endif%}
   {% endif %}
 
   {% if request.path != '/' and request.path != '/BibliotecaApp/' %}

@@ -129,7 +129,7 @@
                         <td class="flex items-center" style="vertical-align: middle; line-height: 1;">
                           <span class=" flex items-center py-3">
                           &nbsp;
-                          <svg  xmlns="http://www.w3.org/2000/svg" class="hidden alertaMenos3dias"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                          <svg  xmlns="http://www.w3.org/2000/svg" class="hidden alertaMenos3dias cursor-pointer"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
                           &nbsp;
                           {{ prestamos.usuario }}
                           </span>
@@ -192,6 +192,24 @@
           sidebar.classList.toggle('hidden');
         });
 
+        var mensajeAlerta = document.createElement('div');
+        mensajeAlerta.id = 'mensajeAlerta';
+        mensajeAlerta.style.display = 'none';
+        mensajeAlerta.className = 'absolute bg-gray-50 border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center w-full max-w-sm';
+        mensajeAlerta.innerHTML = '<p class="text-red-500 flex-grow">Atenció! Aquest préstec ha de ser retornat en menys de 3 dies.</p>';
+        
+        document.body.appendChild(mensajeAlerta);
+
+
+        mensajeAlertaMenos1dia = document.createElement('div');
+        mensajeAlertaMenos1dia.id = 'mensajeAlertaMenos1dia';
+        mensajeAlertaMenos1dia.style.display = 'none';
+        mensajeAlertaMenos1dia.className = 'absolute bg-gray-50 border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center max-w-sm';
+        mensajeAlertaMenos1dia.innerHTML = "<p class='text-red-500 flex-grow'>¡Atenció! Aquest préstec hauria d'haver-se retornat ja.</p>";
+
+        document.body.appendChild(mensajeAlertaMenos1dia);
+
+
         // hacer que los que le queden menos de 3 dias para devolverlo se pongan en rojo
         var fechaActual = new Date();
         var fechaActual = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
@@ -206,15 +224,68 @@
             var diferencia = fechaDevolucion - fechaActual;
             var dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
             if (dias < 0) {
+
                 fecha.parentElement.classList.add('bg-red-300');
                 fecha.parentElement.querySelector('.alertaMenos3dias').classList.remove('hidden');
+
+                // Mostrar el div de alerta justo encima del icono
+                var alertaSVG = fecha.parentElement.querySelector('.alertaMenos3dias');
+
+                alertaSVG.addEventListener('mouseover', function() {
+                    // Obtener la posición del icono
+                    var iconoPos = alertaSVG.getBoundingClientRect();
+
+                    // Calcular la posición del div de alerta
+                    var alertaPosTop = iconoPos.top - mensajeAlertaMenos1dia.offsetHeight;
+                    var alertaPosLeft = iconoPos.left + (iconoPos.width / 2) - (mensajeAlertaMenos1dia.offsetWidth / 2);
+
+                    // Ajustar el tamaño del div de alerta
+                    mensajeAlertaMenos1dia.style.width = '50%';
+
+                    // Ajustar la posición del div de alerta
+                    mensajeAlertaMenos1dia.style.top = alertaPosTop + 'px';
+                    mensajeAlertaMenos1dia.style.left = alertaPosLeft + 'px';
+
+                    // Mostrar el div de alerta
+                    mensajeAlertaMenos1dia.style.display = 'block';
+                });
+
+                // Ocultar el div de alerta cuando se retira el cursor del SVG
+                alertaSVG.addEventListener('mouseout', function() {
+                    mensajeAlertaMenos1dia.style.display = 'none';
+                });
             }
             else if (dias < 3) {
-                // borrar el bg-pink-300/30
-                fecha.parentElement.classList.remove('bg-pink-300/30');
-                fecha.parentElement.classList.add('bg-amber-200');
-                fecha.parentElement.querySelector('.alertaMenos3dias').classList.remove('hidden');
-            }
+              fecha.parentElement.classList.remove('bg-pink-300/30');
+              fecha.parentElement.classList.add('bg-amber-200');
+              fecha.parentElement.querySelector('.alertaMenos3dias').classList.remove('hidden');
+      
+              // Mostrar el div de alerta justo encima del icono
+              var alertaSVG = fecha.parentElement.querySelector('.alertaMenos3dias');
+              alertaSVG.addEventListener('mouseover', function() {
+                  // Obtener la posición del icono
+                  var iconoPos = alertaSVG.getBoundingClientRect();
+      
+                  // Calcular la posición del div de alerta
+                  var alertaPosTop = iconoPos.top - mensajeAlerta.offsetHeight;
+                  var alertaPosLeft = iconoPos.left + (iconoPos.width / 2) - (mensajeAlerta.offsetWidth / 2);
+      
+                  // Ajustar el tamaño del div de alerta
+                  mensajeAlerta.style.width = '50%';
+      
+                  // Ajustar la posición del div de alerta
+                  mensajeAlerta.style.top = alertaPosTop + 'px';
+                  mensajeAlerta.style.left = alertaPosLeft + 'px';
+      
+                  // Mostrar el div de alerta
+                  mensajeAlerta.style.display = 'block';
+              });
+      
+              // Ocultar el div de alerta cuando se retira el cursor del SVG
+              alertaSVG.addEventListener('mouseout', function() {
+                  mensajeAlerta.style.display = 'none';
+              });
+          }
           
         });
 
