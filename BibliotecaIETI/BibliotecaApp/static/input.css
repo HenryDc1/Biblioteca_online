@@ -145,3 +145,11 @@ input[type="range"]::-ms-thumb {
     border-radius: 50%;
     background-color: rgb(255, 90, 151) !important;
 }
+
+.bg-gray-50 {
+        background-color: rgb(249, 250, 251);
+}
+
+.text-red-500 {
+        color: rgb(239,  68, 68);
+}

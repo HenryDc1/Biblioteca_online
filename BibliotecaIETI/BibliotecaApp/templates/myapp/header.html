@@ -74,6 +74,7 @@
   </div>
   {% else %}
     {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
+
   <div class="hidden lg:flex items-center mr-52">
     <a
       href="{% url 'index' %}"
@@ -81,7 +82,7 @@
       >Iniciar sessió</a
     >
   </div>
-    {%endif%}
+        {%endif%}
   {% endif %}
 
   {% if request.path != '/' and request.path != '/BibliotecaApp/' %}
@@ -174,9 +175,17 @@
       
   
   });
-  
+          
     </script>
   {% endif %}
+
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SEGZ1SPGXE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SEGZ1SPGXE');
+</script>
 </header>
-
-

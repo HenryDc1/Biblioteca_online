@@ -118,7 +118,7 @@
                     <th class="text-left align-middle border-b-2 border-[#bd1e59] pl-2">Correu electrònic</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Id cataleg</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Nombre</th>
-                    <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data de préstec</th>
+                    <th class="text-left align-middle border-b-2 border-[#bd1e59] pr-2">Data de préstec</th>
                     <th class="text-left align-middle border-b-2 border-[#bd1e59]">Data limit de devolució</th>
                     <th class="text-center align-middle border-b-2 border-[#bd1e59] pr-2" >Marcar com retornat</th>
                 </tr>
@@ -163,8 +163,8 @@
 
         <div class="pagination flex justify-center items-center mt-6">
           {% if prestamos.has_previous %}
-            <a href="?page=1" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-l">Primera</a>
-            <a href="?page={{ prestamos.previous_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Anterior</a>
+            <a href="?page=1" class="mx-2 rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-l">Primera</a>
+            <a href="?page={{ prestamos.previous_page_number }}" class="mx-2 rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Anterior</a>
           {% endif %}
           
           <span class="current text-[#bd1e59] font-semibold py-2 px-4">
@@ -172,8 +172,8 @@
           </span>
         
           {% if prestamos.has_next %}
-            <a href="?page={{ prestamos.next_page_number }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Siguiente</a>
-            <a href="?page={{ prestamos.paginator.num_pages }}" class="rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-r">Última</a>
+            <a href="?page={{ prestamos.next_page_number }}" class="mx-2 rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4">Siguiente</a>
+            <a href="?page={{ prestamos.paginator.num_pages }}" class="mx-2 rounded-md bg-[#f4c095] hover:bg-gray-200 text-[#bd1e59] font-semibold py-2 px-4 rounded-r">Última</a>
           {% endif %}
         </div>        
 
@@ -195,8 +195,8 @@
         var mensajeAlerta = document.createElement('div');
         mensajeAlerta.id = 'mensajeAlerta';
         mensajeAlerta.style.display = 'none';
-        mensajeAlerta.className = 'absolute bg-gray-50 border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center w-full max-w-sm';
-        mensajeAlerta.innerHTML = '<p class="text-red-500 flex-grow">Atenció! Aquest préstec ha de ser retornat en menys de 3 dies.</p>';
+        mensajeAlerta.className = 'absolute bg-white border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center w-full max-w-sm';
+        mensajeAlerta.innerHTML = '<p class="text-red-500 flex-grow" style="color:red;">Atenció! Aquest préstec ha de ser retornat en menys de 3 dies.</p>';
         
         document.body.appendChild(mensajeAlerta);
 
@@ -204,8 +204,8 @@
         mensajeAlertaMenos1dia = document.createElement('div');
         mensajeAlertaMenos1dia.id = 'mensajeAlertaMenos1dia';
         mensajeAlertaMenos1dia.style.display = 'none';
-        mensajeAlertaMenos1dia.className = 'absolute bg-gray-50 border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center max-w-sm';
-        mensajeAlertaMenos1dia.innerHTML = "<p class='text-red-500 flex-grow'>¡Atenció! Aquest préstec hauria d'haver-se retornat ja.</p>";
+        mensajeAlertaMenos1dia.className = 'absolute bg-white border border-gray-300 shadow-md p-4 rounded-md z-10 flex items-center max-w-sm';
+        mensajeAlertaMenos1dia.innerHTML = "<p class='text-red-500 flex-grow' style='color:red;'>¡Atenció! Aquest préstec hauria d'haver-se retornat ja.</p>";
 
         document.body.appendChild(mensajeAlertaMenos1dia);
 
