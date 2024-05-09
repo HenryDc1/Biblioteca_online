@@ -10,4 +10,4 @@ A més, la nostra pàgina web ofereix una àmplia gamma de serveis, incloent la 
 Uneix-te a nosaltres en aquest viatge literari i descobreix tot el que la nostra biblioteca en línia té per oferir. La aventura comença ara mateix. Benvinguts a la Biblioteca Mari Carmen, el vostre refugi literari a la web.
 
 
-![Captura de pantalla de 2024-05-09 15-54-42](https://github.com/Jovaoo/BibliotecaMariCarmen/assets/96047417/16ca8703-45d0-4a0e-b468-387f38ab1096)
+![Captura de pantalla de 2024-05-09 16-31-02](https://github.com/Jovaoo/BibliotecaMariCarmen/assets/96047417/d96983a8-e7a0-4d8a-ae5f-cb6b32ec0d50)
